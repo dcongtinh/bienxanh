@@ -13,14 +13,7 @@ import { inject } from 'mobx-react'
 }))
 class LoginPage extends Component {
     render() {
-        return (
-            <div>
-                <LoginForm
-                    onLogin={this.props.login}
-                    isLoggingIn={this.props.isLoggingIn}
-                />
-            </div>
-        )
+        return <LoginForm {...this.props} />
     }
 }
 

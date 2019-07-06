@@ -14,7 +14,7 @@ class Register extends Component {
     render() {
         return (
             <div>
-                <RegisterForm onRegister={this.props.register} />
+                <RegisterForm {...this.props} />
             </div>
         )
     }

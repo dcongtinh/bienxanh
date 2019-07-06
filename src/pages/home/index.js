@@ -4,7 +4,7 @@ import createIsAuthenticated from 'hoc/is-authenticated'
 @createIsAuthenticated({})
 class HomePage extends Component {
     render() {
-        return <div>Home Page : {this.props.hello}</div>
+        return <div>Dashboard</div>
     }
 }
 

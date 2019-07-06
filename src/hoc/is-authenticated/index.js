@@ -32,7 +32,7 @@ const createIsAuthenticated = ({ authRequired = true }) => Component => {
             ) {
                 return <Redirect to={'/'} />
             }
-            return <Component {...this.props} hello="world" />
+            return <Component {...this.props} />
         }
     }
 

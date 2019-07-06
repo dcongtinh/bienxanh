@@ -1,13 +1,52 @@
-import React, { Component } from 'react'
+import React from 'react'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Container from '@material-ui/core/Container'
 import Header from 'components/layout/header'
+import Sidebar from 'components/layout/sidebar'
+import { observer } from 'mobx-react'
+import { withStyles } from '@material-ui/core/styles'
 
-export default class BaseLayout extends Component {
+const styles = theme => ({
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto'
+    },
+    container: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4)
+    }
+})
+
+@observer
+class BaseLayout extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            openDrawer: true
+        }
+    }
+    toogleDrawer = () => {
+        this.setState({ openDrawer: !this.state.openDrawer })
+    }
     render() {
+        let { classes } = this.props
+        let { openDrawer } = this.state
         return (
-            <div>
-                <Header />
-                <div>{this.props.children}</div>
+            <div style={{ display: 'flex' }}>
+                <CssBaseline />
+                <Header open={openDrawer} toogleDrawer={this.toogleDrawer} />
+                <Sidebar open={openDrawer} toogleDrawer={this.toogleDrawer} />
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Container maxWidth="lg" className={classes.container}>
+                        {this.props.children}
+                    </Container>
+                </main>
             </div>
         )
     }
 }
+
+export default withStyles(styles)(BaseLayout)

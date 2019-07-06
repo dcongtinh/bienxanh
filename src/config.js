@@ -6,7 +6,6 @@ const config = {
 
 const c = path => {
     const cPath = config.API_URL + path
-    console.log(cPath)
     return cPath
 }
 
