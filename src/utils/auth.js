@@ -1,4 +1,4 @@
-export const authTokenKey = '@reactAppStater:authToken'
+export const authTokenKey = '@bienxanh:authToken'
 
 export const saveToken = token => {
     return localStorage.setItem(authTokenKey, token)
