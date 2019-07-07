@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import LoginForm from 'components/auth/login-form'
 
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({
     authRequired: false
@@ -11,6 +11,7 @@ import { inject } from 'mobx-react'
     login: ({ username, password }) => auth.login({ username, password }),
     isLoggingIn: auth.isLoggingIn
 }))
+@observer
 class LoginPage extends Component {
     render() {
         return <LoginForm {...this.props} />

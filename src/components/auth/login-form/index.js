@@ -6,10 +6,18 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Container from '@material-ui/core/Container'
 import { Link } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { withStyles } from '@material-ui/core/styles'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+
+const SignInSchema = Yup.object().shape({
+    username: Yup.string().required('* This field is required'),
+    password: Yup.string().required('* This field is required')
+})
 
 const styles = theme => ({
     '@global': {
@@ -43,23 +51,8 @@ const styles = theme => ({
 
 @withStyles(styles)
 class LoginForm extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            username: '',
-            password: ''
-        }
-    }
-    handleChange = e => {
-        this.setState({ [e.currentTarget.name]: e.currentTarget.value })
-    }
-    handleLogin = () => {
-        let { username, password } = this.state
-        this.props.login({ username, password })
-    }
     render() {
         let { classes } = this.props
-        let { username, password } = this.state
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -71,54 +64,99 @@ class LoginForm extends React.Component {
                         Đăng nhập
                     </Typography>
                     <div className={classes.form}>
-                        <TextField
-                            onChange={this.handleChange}
-                            onKeyPress={e => {
-                                if (e.key === 'Enter') this.handleLogin()
+                        <Formik
+                            initialValues={{
+                                username: '',
+                                password: ''
                             }}
-                            value={username}
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="Tên tài khoản"
-                            name="username"
-                            autoComplete="username"
-                            autoFocus
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            onKeyPress={e => {
-                                if (e.key === 'Enter') this.handleLogin()
-                            }}
-                            value={password}
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Mật khẩu"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <Button
-                            disabled={this.props.isLoggingIn}
-                            onClick={this.handleLogin}
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}>
-                            Đăng nhập ngay!
-                            {this.props.isLoggingIn ? (
-                                <CircularProgress
-                                    color="secondary"
-                                    className={classes.circularProgress}
-                                />
-                            ) : null}
-                        </Button>
+                            validationSchema={SignInSchema}
+                            onSubmit={values => {
+                                let { username, password } = values
+                                this.props.login({ username, password })
+                            }}>
+                            {({
+                                values,
+                                errors,
+                                touched,
+                                handleChange,
+                                handleBlur,
+                                handleSubmit
+                            }) => (
+                                <Form>
+                                    <TextField
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.username}
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="username"
+                                        label="Tên tài khoản"
+                                        name="username"
+                                        autoComplete="username"
+                                        autoFocus
+                                        error={
+                                            errors.username && touched.username
+                                        }
+                                    />
+                                    <FormHelperText
+                                        error={
+                                            errors.username && touched.username
+                                        }>
+                                        {errors.username && touched.username
+                                            ? errors.username
+                                            : null}
+                                    </FormHelperText>
+                                    <TextField
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.password}
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="Mật khẩu"
+                                        type="password"
+                                        id="password"
+                                        autoComplete="current-password"
+                                        error={
+                                            errors.password && touched.password
+                                        }
+                                    />
+                                    <FormHelperText
+                                        error={
+                                            errors.password && touched.password
+                                        }>
+                                        {errors.password && touched.password
+                                            ? errors.password
+                                            : null}
+                                    </FormHelperText>
+                                    <Button
+                                        disabled={Boolean(
+                                            this.props.isLoggingIn ||
+                                                errors.username ||
+                                                errors.password
+                                        )}
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.submit}>
+                                        Đăng nhập ngay!
+                                        {this.props.isLoggingIn ? (
+                                            <CircularProgress
+                                                color="secondary"
+                                                className={
+                                                    classes.circularProgress
+                                                }
+                                            />
+                                        ) : null}
+                                    </Button>
+                                </Form>
+                            )}
+                        </Formik>
                         <Grid container>
                             <Grid item xs>
                                 <Link to="/" variant="body2">

@@ -9,7 +9,23 @@ function MuiTheme() {
             primary: blue,
             secondary: red
         },
-        overrides: {}
+        overrides: {
+            MuiFormControl: {
+                root: {
+                    width: '100%'
+                },
+                marginNormal: {
+                    marginBottom: 0
+                }
+            },
+            MuiFormHelperText: {
+                root: {
+                    '&.Mui-error': {
+                        fontStyle: 'italic'
+                    }
+                }
+            }
+        }
     })
     return theme
 }

@@ -8,6 +8,9 @@ class AuthStore {
     @observable isFetchingMe = true
     @observable isLoggingIn = false
 
+    constructor(rootStore) {
+        this.rootStore = rootStore
+    }
     @action
     async fetchMe() {
         this.isFetchingMe = true
@@ -26,13 +29,22 @@ class AuthStore {
     @action
     async login({ username, password }) {
         this.isLoggingIn = true
-        const { success, data } = await userAPI.login({ username, password })
+        let { success, data } = await userAPI.login({ username, password })
         if (success) {
             saveToken(data.token)
             this.me = data.user
             this.isAuthenticated = true
+
+            this.rootStore.alert.show({
+                message: `Xin chào, ${data.user.username}!`,
+                variant: 'success'
+            })
         } else {
-            alert(JSON.stringify(data))
+            data = JSON.parse(JSON.stringify(data))
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
             this.isAuthenticated = false
             this.me = null
         }
