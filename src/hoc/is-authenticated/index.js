@@ -1,8 +1,19 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { withStyles } from '@material-ui/core/styles'
 
 const createIsAuthenticated = ({ authRequired = true }) => Component => {
+    const styles = theme => ({
+        circularProgress: {
+            width: 80,
+            height: 80,
+            position: 'absolute',
+            top: '45%',
+            left: '50%'
+        }
+    })
     @inject(({ auth }) => ({
         fetchMe: () => auth.fetchMe(),
         isFetching: auth.isFetchingMe,
@@ -15,28 +26,21 @@ const createIsAuthenticated = ({ authRequired = true }) => Component => {
         }
 
         render() {
-            if (this.props.isFetching) {
-                return <div>Loading ...</div>
+            let { classes, isAuthenticated, isFetching } = this.props
+            if (isFetching) {
+                return <CircularProgress className={classes.circularProgress} />
             }
-            if (
-                authRequired &&
-                !this.props.isFetching &&
-                !this.props.isAuthenticated
-            ) {
+            if (authRequired && !isFetching && !isAuthenticated) {
                 return <Redirect to={'/auth/login'} />
             }
-            if (
-                !authRequired &&
-                !this.props.isFetching &&
-                this.props.isAuthenticated
-            ) {
-                return <Redirect to={'/'} />
+            if (!authRequired && !isFetching && isAuthenticated) {
+                return <Redirect to="/" />
             }
             return <Component {...this.props} />
         }
     }
 
-    return Authenticated
+    return withStyles(styles)(Authenticated)
 }
 
 export default createIsAuthenticated

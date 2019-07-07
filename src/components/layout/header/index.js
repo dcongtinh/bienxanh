@@ -5,14 +5,34 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import Badge from '@material-ui/core/Badge'
 import MenuIcon from '@material-ui/icons/Menu'
-import NotificationsIcon from '@material-ui/icons/Notifications'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import PersonIcon from '@material-ui/icons/Person'
+import Divider from '@material-ui/core/Divider'
+import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
 const drawerWidth = 240
 
 const styles = theme => ({
+    root: {
+        '&:focus': {
+            backgroundColor: theme.palette.primary.main,
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                color: theme.palette.common.white
+            }
+        }
+    },
+    link: {
+        textDecoration: 'unset',
+        color: theme.palette.common.black
+    },
+
     toolbar: {
         paddingRight: 24 // keep right padding when drawer closed
     },
@@ -49,8 +69,25 @@ const styles = theme => ({
 }))
 @observer
 class Header extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            anchorEl: null
+        }
+    }
+    handleClose = () => {
+        this.setState({ anchorEl: null })
+    }
+    handleClick = e => {
+        this.setState({ anchorEl: e.currentTarget })
+    }
+    logout = () => {
+        this.handleClose()
+        this.props.logout()
+    }
     render() {
-        let { classes } = this.props
+        let { classes, title } = this.props
+        let { anchorEl } = this.state
         if (!this.props.isAuthenticated) return null
         return (
             <AppBar
@@ -77,13 +114,42 @@ class Header extends React.Component {
                         color="inherit"
                         noWrap
                         className={classes.title}>
-                        Dashboard
+                        {title}
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
+                    <IconButton
+                        elevation={0}
+                        color="inherit"
+                        aria-owns={anchorEl ? 'simple-menu' : null}
+                        aria-haspopup="true"
+                        onClick={this.handleClick}>
+                        <AccountCircleIcon />
                     </IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={this.handleClose}
+                        disableAutoFocusItem>
+                        <Link
+                            to="/dashboard/profile"
+                            className={classes.link}
+                            onClick={this.handleClose}>
+                            <MenuItem className={classes.root}>
+                                <ListItemIcon>
+                                    <PersonIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Hồ sơ" />
+                            </MenuItem>
+                        </Link>
+                        <Divider />
+                        <MenuItem
+                            className={classes.root}
+                            onClick={this.logout}>
+                            <ListItemIcon>
+                                <ExitToAppIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Đăng xuất" />
+                        </MenuItem>
+                    </Menu>
                 </Toolbar>
             </AppBar>
         )

@@ -24,20 +24,32 @@ class BaseLayout extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            title: 'Trang chủ',
             openDrawer: true
         }
     }
     toogleDrawer = () => {
         this.setState({ openDrawer: !this.state.openDrawer })
     }
+    setTitleHeader = title => {
+        this.setState({ title })
+    }
     render() {
         let { classes } = this.props
-        let { openDrawer } = this.state
+        let { openDrawer, title } = this.state
         return (
             <div style={{ display: 'flex' }}>
                 <CssBaseline />
-                <Header open={openDrawer} toogleDrawer={this.toogleDrawer} />
-                <Sidebar open={openDrawer} toogleDrawer={this.toogleDrawer} />
+                <Header
+                    open={openDrawer}
+                    toogleDrawer={this.toogleDrawer}
+                    title={title}
+                />
+                <Sidebar
+                    open={openDrawer}
+                    toogleDrawer={this.toogleDrawer}
+                    setTitleHeader={this.setTitleHeader}
+                />
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container}>

@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { Link } from 'react-router-dom'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -32,6 +33,10 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2)
+    },
+    circularProgress: {
+        width: '24px !important',
+        height: '24px !important'
     }
 }))
 
@@ -95,9 +100,14 @@ const LoginForm = props => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}>
-                        {props.isLoggingIn
-                            ? 'Đang đăng nhập ...'
-                            : 'Đăng nhập ngay!'}
+                        {props.isLoggingIn ? (
+                            <CircularProgress
+                                color="secondary"
+                                className={classes.circularProgress}
+                            />
+                        ) : (
+                            'Đăng nhập ngay!'
+                        )}
                     </Button>
                     <Grid container>
                         <Grid item xs>

@@ -1,6 +1,5 @@
 import React from 'react'
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
@@ -10,17 +9,23 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import DashboardIcon from '@material-ui/icons/Dashboard'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
-import PeopleIcon from '@material-ui/icons/People'
+import ListIcon from '@material-ui/icons/List'
 import BarChartIcon from '@material-ui/icons/BarChart'
-import LayersIcon from '@material-ui/icons/Layers'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import NotesIcon from '@material-ui/icons/Notes'
 import { inject, observer } from 'mobx-react'
-
+import { Link } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
+import listItem from './listItem'
 const drawerWidth = 240
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
     toolbar: {
         paddingRight: 24 // keep right padding when drawer closed
+    },
+    link: {
+        textDecoration: 'unset',
+        color: theme.palette.common.black
     },
     toolbarIcon: {
         display: 'flex',
@@ -55,64 +60,67 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto',
         flexDirection: 'column'
     }
-}))
+})
 
-const Sidebar = props => {
-    const classes = useStyles()
-    if (!props.isAuthenticated) return null
-    return (
-        <Drawer
-            variant="permanent"
-            classes={{
-                paper: clsx(
-                    classes.drawerPaper,
-                    !props.open && classes.drawerPaperClose
-                )
-            }}
-            open={props.open}>
-            <div className={classes.toolbarIcon}>
-                <IconButton onClick={props.toogleDrawer}>
-                    <ChevronLeftIcon />
-                </IconButton>
-            </div>
-            <Divider />
-            <List>
-                <ListItem button>
-                    <ListItemIcon>
-                        <DashboardIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Dashboard" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <ShoppingCartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Orders" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <PeopleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Customers" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <BarChartIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Reports" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <LayersIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Integrations" />
-                </ListItem>
-            </List>
-            <Divider />
-        </Drawer>
-    )
+@inject(({ auth }) => ({
+    isAuthenticated: auth.isAuthenticated
+}))
+@observer
+class Sidebar extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedIndex: 0
+        }
+    }
+    updateSelected = selectedIndex => {
+        this.setState({ selectedIndex })
+    }
+    render() {
+        let { selectedIndex } = this.state
+        let { classes, open, toogleDrawer, isAuthenticated } = this.props
+        if (!isAuthenticated) return null
+        return (
+            <Drawer
+                variant="permanent"
+                classes={{
+                    paper: clsx(
+                        classes.drawerPaper,
+                        !open && classes.drawerPaperClose
+                    )
+                }}
+                open={open}>
+                <div className={classes.toolbarIcon}>
+                    <IconButton onClick={toogleDrawer}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>
+                    {listItem.map((item, index) => {
+                        return (
+                            <Link
+                                key={index}
+                                to={item.link}
+                                className={classes.link}
+                                onClick={() => {
+                                    this.updateSelected(index)
+                                    this.props.setTitleHeader(item.title)
+                                }}>
+                                <ListItem
+                                    button
+                                    selected={selectedIndex === index}>
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText primary={item.title} />
+                                </ListItem>
+                            </Link>
+                        )
+                    })}
+                </List>
+                <Divider />
+            </Drawer>
+        )
+    }
 }
 
-export default inject(({ auth }) => ({
-    isAuthenticated: auth.isAuthenticated
-}))(observer(Sidebar))
+export default withStyles(styles)(Sidebar)
