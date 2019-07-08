@@ -5,13 +5,11 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 const createIsAuthenticated = ({ authRequired = true }) => Component => {
     const circularProgress = {
-        circularProgress: {
-            width: 80,
-            height: 80,
-            position: 'absolute',
-            top: '45%',
-            left: '50%'
-        }
+        width: 80,
+        height: 80,
+        position: 'absolute',
+        top: '45%',
+        left: '50%'
     }
 
     @inject(({ auth }) => ({

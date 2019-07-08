@@ -43,7 +43,6 @@ const LoginForm = props => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [repassword, setRePassword] = useState('')
-    const [errorPassword, setErrorPassword] = useState(false)
     const [email, setEmail] = useState('')
 
     const handleRegister = () => {
