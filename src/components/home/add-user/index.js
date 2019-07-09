@@ -54,31 +54,41 @@ const styles = theme => ({
     }
 })
 
+let initialValues = {
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    repassword: ''
+}
 class AddUserForm extends React.Component {
-    handleRegister = () => {
-        // this.props.register({ username, password, email })
-    }
     render() {
-        let { classes } = this.props
+        let { classes, isRegistering } = this.props
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
                     <div className={classes.form}>
                         <Formik
-                            initialValues={{
-                                firstname: '',
-                                lastname: '',
-                                username: '',
-                                email: '',
-                                password: '',
-                                repassword: ''
-                            }}
+                            initialValues={initialValues}
                             validationSchema={SignUpSchema}
-                            onSubmit={values => {
-                                console.log(values)
-                                // let { username, password } = values
-                                // this.props.login({ username, password })
+                            onSubmit={(values, { resetForm }) => {
+                                let {
+                                    firstname,
+                                    lastname,
+                                    username,
+                                    email,
+                                    password
+                                } = values
+                                this.props.register({
+                                    firstname,
+                                    lastname,
+                                    username,
+                                    password,
+                                    email,
+                                    callback: () => resetForm()
+                                })
                             }}>
                             {({
                                 values,
@@ -86,8 +96,7 @@ class AddUserForm extends React.Component {
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit,
-                                isSubmitting
+                                handleSubmit
                             }) => (
                                 <Form>
                                     <Grid container spacing={2}>
@@ -193,7 +202,7 @@ class AddUserForm extends React.Component {
                                         color="primary"
                                         className={classes.submit}>
                                         Đăng kí!
-                                        {isSubmitting ? (
+                                        {isRegistering ? (
                                             <CircularProgress
                                                 color="secondary"
                                                 className={

@@ -11,8 +11,10 @@ const userAPI = {
             username,
             password
         }),
-    register: ({ username, password, email }) =>
+    register: ({ firstname, lastname, username, password, email }) =>
         axios.post(c('/register'), {
+            firstname,
+            lastname,
             username,
             password,
             email

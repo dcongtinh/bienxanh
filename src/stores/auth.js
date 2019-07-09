@@ -7,6 +7,7 @@ class AuthStore {
     @observable me = null
     @observable isFetchingMe = true
     @observable isLoggingIn = false
+    @observable isRegisterinng = false
 
     constructor(rootStore) {
         this.rootStore = rootStore
@@ -52,17 +53,36 @@ class AuthStore {
     }
 
     @action
-    async register({ username, password, email }) {
+    async register({
+        firstname,
+        lastname,
+        username,
+        password,
+        email,
+        callback
+    }) {
+        this.isRegisterinng = true
         const { success, data } = await userAPI.register({
+            firstname,
+            lastname,
             username,
             password,
             email
         })
+
         if (success) {
-            alert('Register successfully!!')
+            this.rootStore.alert.show({
+                message: `Tạo tài khoản thành công!`,
+                variant: 'success'
+            })
+            callback()
         } else {
-            alert(JSON.stringify(data))
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
         }
+        this.isRegisterinng = false
     }
 
     @action
