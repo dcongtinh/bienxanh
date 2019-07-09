@@ -9,7 +9,7 @@ import { inject, observer } from 'mobx-react'
 })
 @inject(({ auth }) => ({
     login: ({ username, password }) => auth.login({ username, password }),
-    isLoggingIn: auth.isLoggingIn
+    isRequesting: auth.isRequesting
 }))
 @observer
 class LoginPage extends Component {

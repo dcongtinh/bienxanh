@@ -9,31 +9,7 @@ import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const SignUpSchema = Yup.object().shape({
-    firstname: Yup.string().required('* Bắt buộc'),
-    lastname: Yup.string().required('* Bắt buộc'),
-    username: Yup.string()
-        .min(6, '* Tên tài khoản chứa ít nhất 6 kí tự')
-        .max(50, '* Tên tài khoản chứa tối đa 50 kí tự')
-        .required('* Bắt buộc'),
-    email: Yup.string()
-        .email('* Email không hợp lệ')
-        .required('* Bắt buộc'),
-    password: Yup.string()
-        .min(8, '* Mật khẩu chứa ít nhất 8 kí tự')
-        .required('* Bắt buộc'),
-    repassword: Yup.string()
-        .min(8, '* Mật khẩu chứa ít nhất 8 kí tự')
-        .oneOf([Yup.ref('password'), null], '* Mật khẩu không khớp')
-        .required('* Bắt buộc')
-})
-
 const styles = theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white
-        }
-    },
     paper: {
         marginTop: theme.spacing(4),
         display: 'flex',
@@ -54,40 +30,41 @@ const styles = theme => ({
     }
 })
 
-let initialValues = {
-    firstname: '',
-    lastname: '',
-    username: '',
-    email: '',
-    password: '',
-    repassword: ''
-}
-class AddUserForm extends React.Component {
+const SignUpSchema = Yup.object().shape({
+    firstname: Yup.string().required('* Bắt buộc'),
+    lastname: Yup.string().required('* Bắt buộc'),
+    username: Yup.string()
+        .min(6, '* Tên tài khoản chứa ít nhất 6 kí tự')
+        .max(50, '* Tên tài khoản chứa tối đa 50 kí tự')
+        .required('* Bắt buộc'),
+    email: Yup.string()
+        .email('* Email không hợp lệ')
+        .required('* Bắt buộc')
+})
+
+class Profile extends React.Component {
     render() {
-        let { classes, isRequesting } = this.props
+        let { classes, user, isRequesting } = this.props
+        if (!user) return <div>Fetching...</div>
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
                     <div className={classes.form}>
                         <Formik
-                            initialValues={initialValues}
+                            initialValues={{
+                                firstname: user.firstname || '',
+                                lastname: user.lastname || '',
+                                username: user.username || '',
+                                email: user.email || ''
+                            }}
                             validationSchema={SignUpSchema}
-                            onSubmit={(values, { resetForm }) => {
-                                let {
-                                    firstname,
-                                    lastname,
+                            onSubmit={values => {
+                                let { username, firstname, lastname } = values
+                                this.props.updateProfile({
                                     username,
-                                    email,
-                                    password
-                                } = values
-                                this.props.register({
                                     firstname,
-                                    lastname,
-                                    username,
-                                    password,
-                                    email,
-                                    callback: () => resetForm()
+                                    lastname
                                 })
                             }}>
                             {({
@@ -140,6 +117,7 @@ class AddUserForm extends React.Component {
                                                     touched.username
                                                 }
                                                 message={errors.username}
+                                                disabled
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -154,54 +132,20 @@ class AddUserForm extends React.Component {
                                                     touched.email
                                                 }
                                                 message={errors.email}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.password}
-                                                name="password"
-                                                label="Mật khẩu"
-                                                type="password"
-                                                error={
-                                                    errors.password &&
-                                                    touched.password
-                                                }
-                                                message={errors.password}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.repassword}
-                                                name="repassword"
-                                                label="Nhập lại mật khẩu"
-                                                type="password"
-                                                error={
-                                                    errors.repassword &&
-                                                    touched.repassword
-                                                }
-                                                message={errors.repassword}
+                                                disabled
                                             />
                                         </Grid>
                                     </Grid>
                                     <Button
                                         disabled={Boolean(
-                                            errors.firstname ||
-                                                errors.lastname ||
-                                                errors.username ||
-                                                errors.email ||
-                                                errors.password ||
-                                                errors.repassword
+                                            errors.firstname || errors.lastname
                                         )}
                                         type="submit"
                                         fullWidth
                                         variant="contained"
                                         color="primary"
                                         className={classes.submit}>
-                                        Đăng kí!
+                                        Cập nhật
                                         {isRequesting ? (
                                             <CircularProgress
                                                 color="secondary"
@@ -221,4 +165,4 @@ class AddUserForm extends React.Component {
     }
 }
 
-export default withStyles(styles)(AddUserForm)
+export default withStyles(styles)(Profile)

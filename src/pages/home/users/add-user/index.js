@@ -8,7 +8,7 @@ const styles = theme => ({})
 @createIsAuthenticated({})
 @inject(({ auth, alert }) => ({
     register: object => auth.register(object),
-    isRegistering: auth.isRegistering
+    isRequesting: auth.isRequesting
 }))
 @observer
 class AddUser extends Component {

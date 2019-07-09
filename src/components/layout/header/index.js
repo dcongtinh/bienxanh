@@ -86,7 +86,7 @@ class Header extends React.Component {
         this.props.logout()
     }
     render() {
-        let { classes, title } = this.props
+        let { classes, title, me } = this.props
         let { anchorEl } = this.state
         if (!this.props.isAuthenticated) return null
         return (
@@ -130,7 +130,7 @@ class Header extends React.Component {
                         onClose={this.handleClose}
                         disableAutoFocusItem>
                         <Link
-                            to="/dashboard/profile"
+                            to={`/dashboard/profile/${me.username}`}
                             className={classes.link}
                             onClick={this.handleClose}>
                             <MenuItem className={classes.root}>

@@ -50,7 +50,7 @@ const styles = theme => ({
 @withStyles(styles)
 class LoginForm extends React.Component {
     render() {
-        let { classes } = this.props
+        let { classes, isRequesting } = this.props
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -114,7 +114,7 @@ class LoginForm extends React.Component {
                                     </Grid>
                                     <Button
                                         disabled={Boolean(
-                                            this.props.isLoggingIn ||
+                                            isRequesting ||
                                                 errors.username ||
                                                 errors.password
                                         )}
@@ -124,7 +124,7 @@ class LoginForm extends React.Component {
                                         color="primary"
                                         className={classes.submit}>
                                         Đăng nhập ngay!
-                                        {this.props.isLoggingIn ? (
+                                        {isRequesting ? (
                                             <CircularProgress
                                                 color="secondary"
                                                 className={

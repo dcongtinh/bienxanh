@@ -19,6 +19,9 @@ const userAPI = {
             password,
             email
         }),
+    getUser: ({ username }) => axios.post(c('/get-user'), { username }),
+    updateProfile: ({ username, firstname, lastname }) =>
+        axios.post(c('/update'), { username, firstname, lastname }),
     me: () => axios.get(c('/me'))
 }
 

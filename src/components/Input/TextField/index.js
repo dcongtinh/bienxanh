@@ -4,34 +4,19 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 
 export default class TextFieldCustomized extends Component {
     render() {
-        let {
-            onChange,
-            onBlur,
-            label,
-            name,
-            value,
-            type,
-            error,
-            helperText
-        } = this.props
+        let { name, error, message } = this.props
         return (
             <>
                 <TextField
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    name={name}
+                    {...this.props}
                     autoComplete={name}
                     variant="outlined"
                     required
                     fullWidth
                     id={name}
-                    label={label}
-                    error={error}
-                    type={type ? type : 'text'}
                 />
                 {error && (
-                    <FormHelperText error={error}>{helperText}</FormHelperText>
+                    <FormHelperText error={error}>{message}</FormHelperText>
                 )}
             </>
         )

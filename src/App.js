@@ -5,7 +5,8 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import MuiTheme from './MuiTheme'
 import Home from 'pages/home'
 import Profile from 'pages/home/profile'
-import AddUser from 'pages/home/add-user'
+import Users from 'pages/home/users'
+import AddUser from 'pages/home/users/add-user'
 import View from 'pages/home/view'
 import Order from 'pages/home/order'
 import Export from 'pages/home/export'
@@ -32,8 +33,15 @@ class App extends React.Component {
                         <Route path="/" exact component={Home} />
                         <Route path="/auth/login" component={Login} />
                         <Route path="/auth/register" component={Register} />
-                        <Route path="/dashboard/profile" component={Profile} />
-                        <Route path="/dashboard/add-user" component={AddUser} />
+                        <Route
+                            path="/dashboard/profile/:username"
+                            component={Profile}
+                        />
+                        <Route path="/dashboard/users" component={Users} />
+                        <Route
+                            path="/dashboard/users/add-user"
+                            component={AddUser}
+                        />
                         <Route path="/dashboard/view" component={View} />
                         <Route path="/dashboard/order" component={Order} />
                         <Route path="/dashboard/export" component={Export} />

@@ -6,8 +6,8 @@ class AuthStore {
     @observable isAuthenticated = false
     @observable me = null
     @observable isFetchingMe = true
-    @observable isLoggingIn = false
-    @observable isRegisterinng = false
+    @observable user = null
+    @observable isRequesting = false
 
     constructor(rootStore) {
         this.rootStore = rootStore
@@ -29,7 +29,7 @@ class AuthStore {
 
     @action
     async login({ username, password }) {
-        this.isLoggingIn = true
+        this.isRequesting = true
         let { success, data } = await userAPI.login({ username, password })
         if (success) {
             saveToken(data.token)
@@ -41,7 +41,6 @@ class AuthStore {
                 variant: 'success'
             })
         } else {
-            data = JSON.parse(JSON.stringify(data))
             this.rootStore.alert.show({
                 message: data.message,
                 variant: 'error'
@@ -49,7 +48,7 @@ class AuthStore {
             this.isAuthenticated = false
             this.me = null
         }
-        this.isLoggingIn = false
+        this.isRequesting = false
     }
 
     @action
@@ -61,7 +60,7 @@ class AuthStore {
         email,
         callback
     }) {
-        this.isRegisterinng = true
+        this.isRequesting = true
         const { success, data } = await userAPI.register({
             firstname,
             lastname,
@@ -82,7 +81,38 @@ class AuthStore {
                 variant: 'error'
             })
         }
-        this.isRegisterinng = false
+        this.isRequesting = false
+    }
+
+    @action
+    async fetchUser({ username }) {
+        this.isRequesting = true
+        const { success, data } = await userAPI.getUser({
+            username
+        })
+        if (success) this.user = data.user
+
+        this.isRequesting = false
+    }
+    @action
+    async updateProfile({ username, firstname, lastname }) {
+        this.isRequesting = true
+        const { success, data } = await userAPI.updateProfile({
+            username,
+            firstname,
+            lastname
+        })
+        if (success)
+            this.rootStore.alert.show({
+                message: `Cập nhật tài khoản thành công!`,
+                variant: 'success'
+            })
+        else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        this.isRequesting = false
     }
 
     @action
