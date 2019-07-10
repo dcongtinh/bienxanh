@@ -20,8 +20,10 @@ const userAPI = {
             email
         }),
     getUser: ({ username }) => axios.post(c('/get-user'), { username }),
+    getAllUser: () => axios.post(c('/get-users')),
     updateProfile: ({ username, firstname, lastname }) =>
         axios.post(c('/update'), { username, firstname, lastname }),
+    deleteUsers: ({ usernames }) => axios.post(c('/delete'), { usernames }),
     me: () => axios.get(c('/me'))
 }
 

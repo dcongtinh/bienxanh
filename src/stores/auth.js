@@ -7,6 +7,7 @@ class AuthStore {
     @observable me = null
     @observable isFetchingMe = true
     @observable user = null
+    @observable users = []
     @observable isRequesting = false
 
     constructor(rootStore) {
@@ -94,6 +95,14 @@ class AuthStore {
 
         this.isRequesting = false
     }
+
+    @action
+    async fetchAllUser() {
+        this.isRequesting = true
+        const { success, data } = await userAPI.getAllUser()
+        if (success) this.users = data.users
+        this.isRequesting = false
+    }
     @action
     async updateProfile({ username, firstname, lastname }) {
         this.isRequesting = true
@@ -115,6 +124,25 @@ class AuthStore {
         this.isRequesting = false
     }
 
+    @action
+    async deleteUsers({ usernames }) {
+        this.isRequesting = true
+        const { success, data } = await userAPI.deleteUsers({
+            usernames
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Xoá tài khoản thành công!`,
+                variant: 'success'
+            })
+            this.fetchAllUser()
+        } else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        this.isRequesting = false
+    }
     @action
     logout() {
         this.isAuthenticated = false

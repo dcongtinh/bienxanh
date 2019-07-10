@@ -5,8 +5,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 const createIsAuthenticated = ({ authRequired = true }) => Component => {
     const circularProgress = {
-        width: 80,
-        height: 80,
         position: 'absolute',
         top: '45%',
         left: '50%'
@@ -26,7 +24,7 @@ const createIsAuthenticated = ({ authRequired = true }) => Component => {
         render() {
             let { isAuthenticated, isFetching } = this.props
             if (isFetching) {
-                return <CircularProgress style={circularProgress} />
+                return <CircularProgress size={80} style={circularProgress} />
             }
             if (authRequired && !isFetching && !isAuthenticated) {
                 return <Redirect to={'/auth/login'} />

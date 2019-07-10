@@ -45,7 +45,13 @@ const SignUpSchema = Yup.object().shape({
 class Profile extends React.Component {
     render() {
         let { classes, user, isRequesting } = this.props
-        if (!user) return <div>Fetching...</div>
+        if (!user)
+            return (
+                <CircularProgress
+                    color="secondary"
+                    className={classes.circularProgress}
+                />
+            )
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />

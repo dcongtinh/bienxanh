@@ -15,7 +15,7 @@ import Profile from 'components/home/profile'
 }))
 @observer
 class ProfilePage extends Component {
-    async componentDidMount() {
+    componentDidMount() {
         this.props.fetchUser({ username: this.props.match.params.username })
     }
     render() {

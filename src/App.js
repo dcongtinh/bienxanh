@@ -37,7 +37,11 @@ class App extends React.Component {
                             path="/dashboard/profile/:username"
                             component={Profile}
                         />
-                        <Route path="/dashboard/users" component={Users} />
+                        <Route
+                            path="/dashboard/users"
+                            exact
+                            component={Users}
+                        />
                         <Route
                             path="/dashboard/users/add-user"
                             component={AddUser}
