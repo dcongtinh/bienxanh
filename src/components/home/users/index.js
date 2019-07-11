@@ -29,7 +29,7 @@ class Users extends Component {
     }
     render() {
         let { users, classes } = this.props
-        const columns = ['Họ', 'Tên', 'Tên tài khoản', 'Email']
+        const columns = ['Họ', 'Tên', 'Tài khoản', 'Email']
         let data = []
         users.forEach(user => {
             let row = []

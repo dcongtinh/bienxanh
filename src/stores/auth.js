@@ -75,7 +75,7 @@ class AuthStore {
                 message: `Tạo tài khoản thành công!`,
                 variant: 'success'
             })
-            callback()
+            if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,

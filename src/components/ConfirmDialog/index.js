@@ -6,16 +6,37 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-export default class ConfirmDialog extends Component {
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = theme => ({
+    container: {
+        overflowY: 'hidden',
+        maxHeight: '80%',
+        width: '60%'
+    }
+})
+
+class ConfirmDialog extends Component {
     render() {
-        let { open, onHide, onOK, title, cancelLabel, okLabel } = this.props
+        let {
+            open,
+            onHide,
+            onOK,
+            title,
+            cancelLabel,
+            okLabel,
+            classes
+        } = this.props
         return (
             <Dialog
                 open={open}
                 onClose={onHide}
-                maxWidth="lg"
+                classes={{
+                    paper: classes.container
+                }}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description">
+                <DialogTitle onClose={onHide}>Title</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         {title}
@@ -33,3 +54,4 @@ export default class ConfirmDialog extends Component {
         )
     }
 }
+export default withStyles(styles)(ConfirmDialog)

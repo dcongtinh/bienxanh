@@ -9,6 +9,13 @@ import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
+import FormLabel from '@material-ui/core/FormLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import Checkbox from '@material-ui/core/Checkbox'
+
 const SignUpSchema = Yup.object().shape({
     firstname: Yup.string().required('* Bắt buộc'),
     lastname: Yup.string().required('* Bắt buộc'),
@@ -66,7 +73,7 @@ class AddUserForm extends React.Component {
     render() {
         let { classes, isRequesting } = this.props
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <CssBaseline />
                 <div className={classes.paper}>
                     <div className={classes.form}>
@@ -99,118 +106,170 @@ class AddUserForm extends React.Component {
                                 handleSubmit
                             }) => (
                                 <Form>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.firstname}
-                                                name="firstname"
-                                                label="Họ"
-                                                error={
-                                                    errors.firstname &&
-                                                    touched.firstname
-                                                }
-                                                message={errors.firstname}
-                                            />
+                                    <Grid container>
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={7}
+                                            md={7}
+                                            lg={7}
+                                            container
+                                            spacing={2}>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.firstname}
+                                                    name="firstname"
+                                                    label="Họ"
+                                                    error={
+                                                        errors.firstname &&
+                                                        touched.firstname
+                                                    }
+                                                    message={errors.firstname}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.lastname}
+                                                    label="Tên"
+                                                    name="lastname"
+                                                    error={
+                                                        errors.lastname &&
+                                                        touched.lastname
+                                                    }
+                                                    message={errors.lastname}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.username}
+                                                    label="Tên tài khoản"
+                                                    name="username"
+                                                    error={
+                                                        errors.username &&
+                                                        touched.username
+                                                    }
+                                                    message={errors.username}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.email}
+                                                    label="Địa chỉ Email"
+                                                    name="email"
+                                                    error={
+                                                        errors.email &&
+                                                        touched.email
+                                                    }
+                                                    message={errors.email}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.password}
+                                                    name="password"
+                                                    label="Mật khẩu"
+                                                    type="password"
+                                                    error={
+                                                        errors.password &&
+                                                        touched.password
+                                                    }
+                                                    message={errors.password}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.repassword}
+                                                    name="repassword"
+                                                    label="Nhập lại mật khẩu"
+                                                    type="password"
+                                                    error={
+                                                        errors.repassword &&
+                                                        touched.repassword
+                                                    }
+                                                    message={errors.repassword}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.lastname}
-                                                label="Tên"
-                                                name="lastname"
-                                                error={
-                                                    errors.lastname &&
-                                                    touched.lastname
-                                                }
-                                                message={errors.lastname}
-                                            />
+                                        <Grid item xs={12} sm={5} md={5} lg={5}>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">
+                                                    Assign responsibility
+                                                </FormLabel>
+                                                <FormGroup>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                checked={true}
+                                                                value="gilad"
+                                                            />
+                                                        }
+                                                        label="Gilad Gray"
+                                                    />
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox value="jason" />
+                                                        }
+                                                        label="Jason Killian"
+                                                    />
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox value="antoine" />
+                                                        }
+                                                        label="Antoine Llorca"
+                                                    />
+                                                </FormGroup>
+                                                <FormHelperText>
+                                                    Be careful
+                                                </FormHelperText>
+                                            </FormControl>
                                         </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.username}
-                                                label="Tên tài khoản"
-                                                name="username"
-                                                error={
-                                                    errors.username &&
-                                                    touched.username
-                                                }
-                                                message={errors.username}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.email}
-                                                label="Địa chỉ Email"
-                                                name="email"
-                                                error={
-                                                    errors.email &&
-                                                    touched.email
-                                                }
-                                                message={errors.email}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.password}
-                                                name="password"
-                                                label="Mật khẩu"
-                                                type="password"
-                                                error={
-                                                    errors.password &&
-                                                    touched.password
-                                                }
-                                                message={errors.password}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.repassword}
-                                                name="repassword"
-                                                label="Nhập lại mật khẩu"
-                                                type="password"
-                                                error={
-                                                    errors.repassword &&
-                                                    touched.repassword
-                                                }
-                                                message={errors.repassword}
-                                            />
+                                        <Button
+                                            disabled={Boolean(
+                                                errors.firstname ||
+                                                    errors.lastname ||
+                                                    errors.username ||
+                                                    errors.email ||
+                                                    errors.password ||
+                                                    errors.repassword
+                                            )}
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}>
+                                            Đăng kí!
+                                            {isRequesting ? (
+                                                <CircularProgress
+                                                    color="secondary"
+                                                    className={
+                                                        classes.circularProgress
+                                                    }
+                                                />
+                                            ) : null}
+                                        </Button>
+                                    </Grid>
+                                    {/* <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            
+                                            
                                         </Grid>
                                     </Grid>
-                                    <Button
-                                        disabled={Boolean(
-                                            errors.firstname ||
-                                                errors.lastname ||
-                                                errors.username ||
-                                                errors.email ||
-                                                errors.password ||
-                                                errors.repassword
-                                        )}
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.submit}>
-                                        Đăng kí!
-                                        {isRequesting ? (
-                                            <CircularProgress
-                                                color="secondary"
-                                                className={
-                                                    classes.circularProgress
-                                                }
-                                            />
-                                        ) : null}
-                                    </Button>
+                                    <Grid item xs={6}>
+                                        <div>Data 1</div>
+                                        <div>Data 1</div>
+                                    </Grid> */}
                                 </Form>
                             )}
                         </Formik>
