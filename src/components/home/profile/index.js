@@ -54,7 +54,6 @@ class Profile extends React.Component {
             )
         return (
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
                 <div className={classes.paper}>
                     <div className={classes.form}>
                         <Formik

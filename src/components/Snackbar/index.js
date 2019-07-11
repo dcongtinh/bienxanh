@@ -12,6 +12,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent'
 import WarningIcon from '@material-ui/icons/Warning'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { Typography } from '@material-ui/core'
 const variantIcon = {
     success: CheckCircleIcon,
     warning: WarningIcon,
@@ -41,7 +42,8 @@ const useStyles = makeStyles(theme => ({
     },
     message: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        color: theme.palette.common.white
     }
 }))
 
@@ -55,10 +57,10 @@ function MySnackbarContentWrapper(props) {
             className={clsx(classes[variant], className)}
             aria-describedby="client-snackbar"
             message={
-                <span id="client-snackbar" className={classes.message}>
+                <Typography className={classes.message} variant="h6">
                     <Icon className={clsx(classes.icon, classes.iconVariant)} />
                     {message}
-                </span>
+                </Typography>
             }
             action={[
                 <IconButton

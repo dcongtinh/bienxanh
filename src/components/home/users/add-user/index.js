@@ -52,7 +52,7 @@ const styles = theme => ({
         marginTop: theme.spacing(3)
     },
     submit: {
-        margin: theme.spacing(3, 0, 2)
+        margin: theme.spacing(1)
     },
     circularProgress: {
         position: 'absolute',
@@ -106,14 +106,14 @@ class AddUserForm extends React.Component {
                                 handleSubmit
                             }) => (
                                 <Form>
-                                    <Grid container>
+                                    <Grid container spacing={2}>
                                         <Grid
                                             item
-                                            xs={12}
-                                            sm={7}
-                                            md={7}
-                                            lg={7}
                                             container
+                                            lg={8}
+                                            md={6}
+                                            xl={8}
+                                            xs={12}
                                             spacing={2}>
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
@@ -202,7 +202,7 @@ class AddUserForm extends React.Component {
                                                 />
                                             </Grid>
                                         </Grid>
-                                        <Grid item xs={12} sm={5} md={5} lg={5}>
+                                        <Grid item lg={4} md={6} xl={4} xs={12}>
                                             <FormControl component="fieldset">
                                                 <FormLabel component="legend">
                                                     Assign responsibility
@@ -245,7 +245,6 @@ class AddUserForm extends React.Component {
                                                     errors.repassword
                                             )}
                                             type="submit"
-                                            fullWidth
                                             variant="contained"
                                             color="primary"
                                             className={classes.submit}>
