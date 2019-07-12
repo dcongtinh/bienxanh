@@ -8,6 +8,11 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import FormLabel from '@material-ui/core/FormLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const styles = theme => ({
     paper: {
@@ -21,7 +26,7 @@ const styles = theme => ({
         marginTop: theme.spacing(3)
     },
     submit: {
-        margin: theme.spacing(3, 0, 2)
+        margin: theme.spacing(1)
     },
     circularProgress: {
         position: 'absolute',
@@ -43,8 +48,16 @@ const SignUpSchema = Yup.object().shape({
 })
 
 class Profile extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            siteAdmin: props.user.siteAdmin
+        }
+    }
+
     render() {
         let { classes, user, isRequesting } = this.props
+        let { siteAdmin } = this.state
         if (!user)
             return (
                 <CircularProgress
@@ -53,7 +66,8 @@ class Profile extends React.Component {
                 />
             )
         return (
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
+                <CssBaseline />
                 <div className={classes.paper}>
                     <div className={classes.form}>
                         <Formik
@@ -69,7 +83,8 @@ class Profile extends React.Component {
                                 this.props.updateProfile({
                                     username,
                                     firstname,
-                                    lastname
+                                    lastname,
+                                    siteAdmin
                                 })
                             }}>
                             {({
@@ -82,84 +97,123 @@ class Profile extends React.Component {
                             }) => (
                                 <Form>
                                     <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.firstname}
-                                                name="firstname"
-                                                label="Họ"
-                                                error={
-                                                    errors.firstname &&
-                                                    touched.firstname
-                                                }
-                                                message={errors.firstname}
-                                            />
+                                        <Grid
+                                            item
+                                            container
+                                            lg={8}
+                                            md={6}
+                                            xl={8}
+                                            xs={12}
+                                            spacing={2}>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.firstname}
+                                                    name="firstname"
+                                                    label="Họ"
+                                                    error={
+                                                        errors.firstname &&
+                                                        touched.firstname
+                                                    }
+                                                    message={errors.firstname}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.lastname}
+                                                    label="Tên"
+                                                    name="lastname"
+                                                    error={
+                                                        errors.lastname &&
+                                                        touched.lastname
+                                                    }
+                                                    message={errors.lastname}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.username}
+                                                    label="Tên tài khoản"
+                                                    name="username"
+                                                    error={
+                                                        errors.username &&
+                                                        touched.username
+                                                    }
+                                                    message={errors.username}
+                                                    disabled
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.email}
+                                                    label="Địa chỉ Email"
+                                                    name="email"
+                                                    error={
+                                                        errors.email &&
+                                                        touched.email
+                                                    }
+                                                    message={errors.email}
+                                                    disabled
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.lastname}
-                                                label="Tên"
-                                                name="lastname"
-                                                error={
-                                                    errors.lastname &&
-                                                    touched.lastname
-                                                }
-                                                message={errors.lastname}
-                                            />
+                                        <Grid item lg={4} md={6} xl={4} xs={12}>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend">
+                                                    Phân quyền
+                                                </FormLabel>
+                                                <FormGroup>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                checked={
+                                                                    siteAdmin
+                                                                }
+                                                                value="siteAdmin"
+                                                                onChange={e => {
+                                                                    this.setState(
+                                                                        {
+                                                                            siteAdmin:
+                                                                                e
+                                                                                    .target
+                                                                                    .checked
+                                                                        }
+                                                                    )
+                                                                }}
+                                                            />
+                                                        }
+                                                        label="Admin"
+                                                    />
+                                                </FormGroup>
+                                            </FormControl>
                                         </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.username}
-                                                label="Tên tài khoản"
-                                                name="username"
-                                                error={
-                                                    errors.username &&
-                                                    touched.username
-                                                }
-                                                message={errors.username}
-                                                disabled
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.email}
-                                                label="Địa chỉ Email"
-                                                name="email"
-                                                error={
-                                                    errors.email &&
-                                                    touched.email
-                                                }
-                                                message={errors.email}
-                                                disabled
-                                            />
-                                        </Grid>
+                                        <Button
+                                            disabled={Boolean(
+                                                errors.firstname ||
+                                                    errors.lastname
+                                            )}
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}>
+                                            Cập nhật
+                                            {isRequesting ? (
+                                                <CircularProgress
+                                                    color="secondary"
+                                                    className={
+                                                        classes.circularProgress
+                                                    }
+                                                />
+                                            ) : null}
+                                        </Button>
                                     </Grid>
-                                    <Button
-                                        disabled={Boolean(
-                                            errors.firstname || errors.lastname
-                                        )}
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.submit}>
-                                        Cập nhật
-                                        {isRequesting ? (
-                                            <CircularProgress
-                                                color="secondary"
-                                                className={
-                                                    classes.circularProgress
-                                                }
-                                            />
-                                        ) : null}
-                                    </Button>
                                 </Form>
                             )}
                         </Formik>

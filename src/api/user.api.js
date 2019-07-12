@@ -11,18 +11,19 @@ const userAPI = {
             username,
             password
         }),
-    register: ({ firstname, lastname, username, password, email }) =>
+    register: ({ firstname, lastname, username, password, email, siteAdmin }) =>
         axios.post(c('/register'), {
             firstname,
             lastname,
             username,
             password,
-            email
+            email,
+            siteAdmin
         }),
     getUser: ({ username }) => axios.post(c('/get-user'), { username }),
     getAllUser: () => axios.post(c('/get-users')),
-    updateProfile: ({ username, firstname, lastname }) =>
-        axios.post(c('/update'), { username, firstname, lastname }),
+    updateProfile: ({ username, firstname, lastname, siteAdmin }) =>
+        axios.post(c('/update'), { username, firstname, lastname, siteAdmin }),
     deleteUsers: ({ usernames }) => axios.post(c('/delete'), { usernames }),
     me: () => axios.get(c('/me'))
 }

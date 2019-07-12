@@ -10,8 +10,8 @@ import Profile from 'components/home/profile'
     isAuthenticated: auth.isAuthenticated,
     fetchUser: ({ username }) => auth.fetchUser({ username }),
     user: JSON.parse(JSON.stringify(auth.user)),
-    updateProfile: ({ username, firstname, lastname }) =>
-        auth.updateProfile({ username, firstname, lastname })
+    updateProfile: ({ username, firstname, lastname, siteAdmin }) =>
+        auth.updateProfile({ username, firstname, lastname, siteAdmin })
 }))
 @observer
 class ProfilePage extends Component {
@@ -19,6 +19,7 @@ class ProfilePage extends Component {
         this.props.fetchUser({ username: this.props.match.params.username })
     }
     render() {
+        if (!this.props.user) return <div>is Fetching..</div>
         return <Profile {...this.props} />
     }
 }

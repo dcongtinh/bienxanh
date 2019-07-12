@@ -49,19 +49,17 @@ export default theme => ({
         '&:hover': {
             backgroundColor: theme.palette.primary.light,
             borderLeft: `4px solid ${theme.palette.primary.main}`,
-            borderRadius: '4px',
             '& $listItemIcon': {
                 color: theme.palette.primary.main,
                 marginLeft: '-4px'
             }
         },
         '& + &': {
-            marginTop: theme.spacing.unit
+            marginTop: theme.spacing()
         }
     },
     activeListItem: {
         borderLeft: `4px solid ${theme.palette.primary.main}`,
-        borderRadius: '4px',
         backgroundColor: theme.palette.action.selected,
         '& $listItemText': {
             color: theme.palette.text.primary

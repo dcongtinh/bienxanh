@@ -13,7 +13,6 @@ import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import Checkbox from '@material-ui/core/Checkbox'
 
 const SignUpSchema = Yup.object().shape({
@@ -70,8 +69,12 @@ let initialValues = {
     repassword: ''
 }
 class AddUserForm extends React.Component {
+    state = {
+        siteAdmin: false
+    }
     render() {
         let { classes, isRequesting } = this.props
+        let { siteAdmin } = this.state
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -94,6 +97,7 @@ class AddUserForm extends React.Component {
                                     username,
                                     password,
                                     email,
+                                    siteAdmin: this.state.siteAdmin,
                                     callback: () => resetForm()
                                 })
                             }}>
@@ -205,34 +209,31 @@ class AddUserForm extends React.Component {
                                         <Grid item lg={4} md={6} xl={4} xs={12}>
                                             <FormControl component="fieldset">
                                                 <FormLabel component="legend">
-                                                    Assign responsibility
+                                                    Phân quyền
                                                 </FormLabel>
                                                 <FormGroup>
                                                     <FormControlLabel
                                                         control={
                                                             <Checkbox
-                                                                checked={true}
-                                                                value="gilad"
+                                                                checked={
+                                                                    siteAdmin
+                                                                }
+                                                                value="siteAdmin"
+                                                                onChange={e => {
+                                                                    this.setState(
+                                                                        {
+                                                                            siteAdmin:
+                                                                                e
+                                                                                    .target
+                                                                                    .checked
+                                                                        }
+                                                                    )
+                                                                }}
                                                             />
                                                         }
-                                                        label="Gilad Gray"
-                                                    />
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox value="jason" />
-                                                        }
-                                                        label="Jason Killian"
-                                                    />
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox value="antoine" />
-                                                        }
-                                                        label="Antoine Llorca"
+                                                        label="Admin"
                                                     />
                                                 </FormGroup>
-                                                <FormHelperText>
-                                                    Be careful
-                                                </FormHelperText>
                                             </FormControl>
                                         </Grid>
                                         <Button
@@ -259,16 +260,6 @@ class AddUserForm extends React.Component {
                                             ) : null}
                                         </Button>
                                     </Grid>
-                                    {/* <Grid container spacing={2}>
-                                        <Grid item xs={6}>
-                                            
-                                            
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <div>Data 1</div>
-                                        <div>Data 1</div>
-                                    </Grid> */}
                                 </Form>
                             )}
                         </Formik>

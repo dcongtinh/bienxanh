@@ -59,6 +59,7 @@ class AuthStore {
         username,
         password,
         email,
+        siteAdmin,
         callback
     }) {
         this.isRequesting = true
@@ -67,7 +68,8 @@ class AuthStore {
             lastname,
             username,
             password,
-            email
+            email,
+            siteAdmin
         })
 
         if (success) {
@@ -104,12 +106,13 @@ class AuthStore {
         this.isRequesting = false
     }
     @action
-    async updateProfile({ username, firstname, lastname }) {
+    async updateProfile({ username, firstname, lastname, siteAdmin }) {
         this.isRequesting = true
         const { success, data } = await userAPI.updateProfile({
             username,
             firstname,
-            lastname
+            lastname,
+            siteAdmin
         })
         if (success)
             this.rootStore.alert.show({
