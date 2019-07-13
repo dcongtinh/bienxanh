@@ -6,6 +6,7 @@ class AuthStore {
     @observable isAuthenticated = false
     @observable me = null
     @observable isFetchingMe = true
+    @observable hasFetched = false
     @observable user = null
     @observable users = []
     @observable isRequesting = false
@@ -19,9 +20,11 @@ class AuthStore {
         const { success, data } = await userAPI.me()
         if (success) {
             this.me = data
+            this.hasFetched = true
             this.isAuthenticated = true
         } else {
             this.me = null
+            this.hasFetched = false
             this.isAuthenticated = false
             saveToken('')
         }

@@ -1,22 +1,17 @@
-import React, { Component, Fragment } from 'react'
-
-// Externals
+import React, { Component } from 'react'
 import classNames from 'classnames'
 import compose from 'recompose/compose'
 import PropTypes from 'prop-types'
-
-// Material helpers
-import { withStyles, withWidth } from '@material-ui/core'
-
-// Material components
-import { Drawer } from '@material-ui/core'
-
-// Custom components
+import { withStyles, withWidth, Drawer } from '@material-ui/core'
 import { Sidebar, Topbar } from '../components'
-
-// Component styles
 import styles from './styles'
+import { inject, observer } from 'mobx-react'
 
+@inject(({ auth }) => ({
+    fetchMe: () => auth.fetchMe(),
+    isAuthenticated: auth.isAuthenticated
+}))
+@observer
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -42,17 +37,18 @@ class Dashboard extends Component {
     setTitleTopbar = title => {
         this.setState({ title })
     }
-
+    componentDidMount() {
+        this.props.fetchMe()
+    }
     render() {
-        const { classes, width, children } = this.props
+        const { classes, width, children, isAuthenticated } = this.props
         const { isOpen, title } = this.state
 
         const isMobile = ['xs', 'sm', 'md'].includes(width)
-        const shiftTopbar = isOpen && !isMobile
-        const shiftContent = isOpen && !isMobile
-
+        const shiftTopbar = isOpen && !isMobile && isAuthenticated
+        const shiftContent = isOpen && !isMobile && isAuthenticated
         return (
-            <Fragment>
+            <>
                 <Topbar
                     className={classNames(classes.topbar, {
                         [classes.topbarShift]: shiftTopbar
@@ -61,17 +57,20 @@ class Dashboard extends Component {
                     onToggleSidebar={this.handleToggleOpen}
                     title={title}
                 />
-                <Drawer
-                    anchor="left"
-                    classes={{ paper: classes.drawerPaper }}
-                    onClose={this.handleClose}
-                    open={isOpen}
-                    variant={isMobile ? 'temporary' : 'persistent'}>
-                    <Sidebar
-                        className={classes.sidebar}
-                        setTitleTopbar={this.setTitleTopbar}
-                    />
-                </Drawer>
+                {isAuthenticated && (
+                    <Drawer
+                        anchor="left"
+                        classes={{ paper: classes.drawerPaper }}
+                        onClose={this.handleClose}
+                        open={isOpen}
+                        variant={isMobile ? 'temporary' : 'persistent'}>
+                        <Sidebar
+                            className={classes.sidebar}
+                            setTitleTopbar={this.setTitleTopbar}
+                        />
+                    </Drawer>
+                )}
+
                 <main
                     className={classNames(classes.content, {
                         [classes.contentShift]: shiftContent
@@ -79,7 +78,7 @@ class Dashboard extends Component {
                     {children}
                     {/* <Footer /> */}
                 </main>
-            </Fragment>
+            </>
         )
     }
 }

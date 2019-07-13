@@ -24,7 +24,7 @@ export default theme => ({
     content: {
         marginTop: '64px',
         padding: theme.spacing(4),
-        backgroundColor: theme.palette.background.default,
+        // backgroundColor: theme.palette.background.default,
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen

@@ -1,15 +1,9 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-
-// Externals
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-
-// Material helpers
-import { withStyles } from '@material-ui/core'
-
-// Material components
 import {
+    withStyles,
     Divider,
     List,
     ListItem,
@@ -17,16 +11,28 @@ import {
     ListItemText,
     Typography
 } from '@material-ui/core'
-
-// Component styles
 import styles from './styles'
 import listItem from './listItem'
+import { inject, observer } from 'mobx-react'
 
+@inject(({ auth }) => ({
+    fetchMe: () => auth.fetchMe(),
+    me: JSON.parse(JSON.stringify(auth.me)),
+    logout: () => auth.logout(),
+    isAuthenticated: auth.isAuthenticated
+}))
+@observer
 class Sidebar extends Component {
+    componentDidMount = () => {
+        this.props.fetchMe()
+    }
+
     render() {
-        const { classes, className } = this.props
+        const { classes, className, me } = this.props
 
         const rootClassName = classNames(classes.root, className)
+        if (!this.props.isAuthenticated) return null
+        let { siteAdmin } = me
 
         return (
             <nav className={rootClassName}>
@@ -38,6 +44,7 @@ class Sidebar extends Component {
                 <Divider className={classes.profileDivider} />
                 <List component="div" disablePadding>
                     {listItem.map((item, index) => {
+                        if (item.access && !siteAdmin) return false
                         return (
                             <ListItem
                                 key={index}
@@ -52,7 +59,9 @@ class Sidebar extends Component {
                                     {item.icon}
                                 </ListItemIcon>
                                 <ListItemText
-                                    classes={{ primary: classes.listItemText }}
+                                    classes={{
+                                        primary: classes.listItemText
+                                    }}
                                     primary={item.title}
                                 />
                             </ListItem>

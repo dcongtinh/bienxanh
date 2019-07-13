@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { Redirect } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const createIsAuthenticated = ({ authRequired = true }) => Component => {
+const createIsSiteAdmin = ({ siteAdmin = true }) => Component => {
     const circularProgress = {
         position: 'absolute',
         top: '45%',
@@ -12,32 +12,29 @@ const createIsAuthenticated = ({ authRequired = true }) => Component => {
 
     @inject(({ auth }) => ({
         fetchMe: () => auth.fetchMe(),
-        hasFetched: auth.hasFetched,
+        me: JSON.parse(JSON.stringify(auth.me)),
         isFetching: auth.isFetchingMe,
-        isAuthenticated: auth.isAuthenticated
+        hasFetched: auth.hasFetched
     }))
     @observer
-    class Authenticated extends React.Component {
+    class SiteAdmin extends React.Component {
         async componentDidMount() {
             if (!this.props.hasFetched) this.props.fetchMe()
         }
 
         render() {
-            let { isAuthenticated, isFetching } = this.props
+            let { isFetching, me } = this.props
             if (isFetching) {
                 return <CircularProgress size={80} style={circularProgress} />
             }
-            if (authRequired && !isFetching && !isAuthenticated) {
-                return <Redirect to={'/auth/login'} />
+            if (siteAdmin && !isFetching && me.siteAdmin) {
+                return <Component {...this.props} />
             }
-            if (!authRequired && !isFetching && isAuthenticated) {
-                return <Redirect to="/" />
-            }
-            return <Component {...this.props} />
+            return <Redirect to="/" />
         }
     }
 
-    return Authenticated
+    return SiteAdmin
 }
 
-export default createIsAuthenticated
+export default createIsSiteAdmin

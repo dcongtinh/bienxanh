@@ -51,7 +51,7 @@ const styles = theme => ({
         marginTop: theme.spacing(3)
     },
     submit: {
-        margin: theme.spacing(1)
+        margin: theme.spacing(2, 0)
     },
     circularProgress: {
         position: 'absolute',
@@ -215,6 +215,7 @@ class AddUserForm extends React.Component {
                                                     <FormControlLabel
                                                         control={
                                                             <Checkbox
+                                                                color="primary"
                                                                 checked={
                                                                     siteAdmin
                                                                 }
@@ -236,30 +237,30 @@ class AddUserForm extends React.Component {
                                                 </FormGroup>
                                             </FormControl>
                                         </Grid>
-                                        <Button
-                                            disabled={Boolean(
-                                                errors.firstname ||
-                                                    errors.lastname ||
-                                                    errors.username ||
-                                                    errors.email ||
-                                                    errors.password ||
-                                                    errors.repassword
-                                            )}
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}>
-                                            Đăng kí!
-                                            {isRequesting ? (
-                                                <CircularProgress
-                                                    color="secondary"
-                                                    className={
-                                                        classes.circularProgress
-                                                    }
-                                                />
-                                            ) : null}
-                                        </Button>
                                     </Grid>
+                                    <Button
+                                        disabled={Boolean(
+                                            errors.firstname ||
+                                                errors.lastname ||
+                                                errors.username ||
+                                                errors.email ||
+                                                errors.password ||
+                                                errors.repassword
+                                        )}
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.submit}>
+                                        Đăng kí!
+                                        {isRequesting ? (
+                                            <CircularProgress
+                                                color="secondary"
+                                                className={
+                                                    classes.circularProgress
+                                                }
+                                            />
+                                        ) : null}
+                                    </Button>
                                 </Form>
                             )}
                         </Formik>

@@ -10,13 +10,20 @@ export default [
     {
         title: 'Quản lý nhân viên',
         icon: <PeopleIcon />,
-        link: '/dashboard/users'
+        link: '/dashboard/users',
+        access: true
     },
     { title: 'Nhập đơn hàng', icon: <NotesIcon />, link: '/dashboard/order' },
-    { title: 'Xem đơn hàng', icon: <ListIcon />, link: '/dashboard/view' },
+    {
+        title: 'Xem đơn hàng',
+        icon: <ListIcon />,
+        link: '/dashboard/view',
+        access: true
+    },
     {
         title: 'Xuất thống kê',
         icon: <BarChartIcon />,
-        link: '/dashboard/export'
+        link: '/dashboard/export',
+        access: true
     }
 ]

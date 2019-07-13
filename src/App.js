@@ -36,37 +36,33 @@ class App extends React.Component {
                 <Router>
                     <BaseLayout>
                         <Switch>
-                            <Redirect exact from="/" to="/dashboard" />
                             <Route path="/" exact component={Home} />
-                            <Route path="/auth/login" exact component={Login} />
-                            <Route
-                                path="/auth/register"
-                                exact
-                                component={Register}
-                            />
+                            <Route path="/dashboard" exact component={Home} />
+                            <Route path="/auth/login" component={Login} />
+                            <Route path="/auth/register" component={Register} />
                             <Route
                                 exact
                                 path="/dashboard/profile/:username"
                                 component={Profile}
                             />
                             <Route
-                                exact
                                 path="/dashboard/users"
+                                exact
                                 component={Users}
                             />
                             <Route
-                                exact
                                 path="/dashboard/users/add-user"
+                                exact
                                 component={AddUser}
                             />
                             <Route
-                                exact
                                 path="/dashboard/view"
+                                exact
                                 component={View}
                             />
                             <Route
-                                exact
                                 path="/dashboard/order"
+                                exact
                                 component={Order}
                             />
                             <Route
@@ -74,6 +70,7 @@ class App extends React.Component {
                                 path="/dashboard/export"
                                 component={Export}
                             />
+                            <Redirect from="/" to="/" />
                         </Switch>
                     </BaseLayout>
                     {open && (

@@ -26,7 +26,7 @@ const styles = theme => ({
         marginTop: theme.spacing(3)
     },
     submit: {
-        margin: theme.spacing(1)
+        margin: theme.spacing(2, 0)
     },
     circularProgress: {
         position: 'absolute',
@@ -56,7 +56,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        let { classes, user, isRequesting } = this.props
+        let { classes, user, isRequesting, me } = this.props
         let { siteAdmin } = this.state
         if (!user)
             return (
@@ -164,56 +164,63 @@ class Profile extends React.Component {
                                                 />
                                             </Grid>
                                         </Grid>
-                                        <Grid item lg={4} md={6} xl={4} xs={12}>
-                                            <FormControl component="fieldset">
-                                                <FormLabel component="legend">
-                                                    Phân quyền
-                                                </FormLabel>
-                                                <FormGroup>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox
-                                                                checked={
-                                                                    siteAdmin
-                                                                }
-                                                                value="siteAdmin"
-                                                                onChange={e => {
-                                                                    this.setState(
-                                                                        {
-                                                                            siteAdmin:
-                                                                                e
-                                                                                    .target
-                                                                                    .checked
-                                                                        }
-                                                                    )
-                                                                }}
-                                                            />
-                                                        }
-                                                        label="Admin"
-                                                    />
-                                                </FormGroup>
-                                            </FormControl>
-                                        </Grid>
-                                        <Button
-                                            disabled={Boolean(
-                                                errors.firstname ||
-                                                    errors.lastname
-                                            )}
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}>
-                                            Cập nhật
-                                            {isRequesting ? (
-                                                <CircularProgress
-                                                    color="secondary"
-                                                    className={
-                                                        classes.circularProgress
-                                                    }
-                                                />
-                                            ) : null}
-                                        </Button>
+                                        {me.siteAdmin && (
+                                            <Grid
+                                                item
+                                                lg={4}
+                                                md={6}
+                                                xl={4}
+                                                xs={12}>
+                                                <FormControl component="fieldset">
+                                                    <FormLabel component="legend">
+                                                        Phân quyền
+                                                    </FormLabel>
+                                                    <FormGroup>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox
+                                                                    color="primary"
+                                                                    checked={
+                                                                        siteAdmin
+                                                                    }
+                                                                    value="siteAdmin"
+                                                                    onChange={e => {
+                                                                        this.setState(
+                                                                            {
+                                                                                siteAdmin:
+                                                                                    e
+                                                                                        .target
+                                                                                        .checked
+                                                                            }
+                                                                        )
+                                                                    }}
+                                                                />
+                                                            }
+                                                            label="Admin"
+                                                        />
+                                                    </FormGroup>
+                                                </FormControl>
+                                            </Grid>
+                                        )}
                                     </Grid>
+                                    <Button
+                                        disabled={Boolean(
+                                            errors.firstname || errors.lastname
+                                        )}
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.submit}>
+                                        Cập nhật
+                                        {isRequesting ? (
+                                            <CircularProgress
+                                                color="secondary"
+                                                className={
+                                                    classes.circularProgress
+                                                }
+                                            />
+                                        ) : null}
+                                    </Button>
                                 </Form>
                             )}
                         </Formik>

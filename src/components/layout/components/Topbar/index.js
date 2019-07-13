@@ -6,40 +6,39 @@ import classNames from 'classnames'
 import compose from 'recompose/compose'
 import PropTypes from 'prop-types'
 
-// Material helpers
 import { withStyles } from '@material-ui/core'
-import { inject, observer } from 'mobx-react'
-// Material components
-import { IconButton, Toolbar, Typography } from '@material-ui/core'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import PersonIcon from '@material-ui/icons/Person'
-import Divider from '@material-ui/core/Divider'
+import {
+    IconButton,
+    Toolbar,
+    Typography,
+    Menu,
+    MenuItem,
+    Divider,
+    ListItemIcon,
+    ListItemText
+} from '@material-ui/core'
 import { NavLink } from 'react-router-dom'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-
-// Material icons
-import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
-
-// Component styles
+import {
+    Menu as MenuIcon,
+    Close as CloseIcon,
+    AccountCircle as AccountCircleIcon,
+    ExitToApp as ExitToAppIcon,
+    Person as PersonIcon
+} from '@material-ui/icons'
+import { inject, observer } from 'mobx-react'
 import styles from './styles'
 
 @inject(({ auth }) => ({
-    me: auth.me,
+    fetchMe: () => auth.fetchMe(),
+    me: JSON.parse(JSON.stringify(auth.me)),
     logout: () => auth.logout(),
     isAuthenticated: auth.isAuthenticated
 }))
 @observer
 class Topbar extends Component {
-    signal = true
-
     state = {
         anchorEl: null
     }
-
     handleClose = () => {
         this.setState({ anchorEl: null })
     }
@@ -50,13 +49,8 @@ class Topbar extends Component {
         this.handleClose()
         this.props.logout()
     }
-
-    componentDidMount() {
-        this.signal = true
-    }
-
-    componentWillUnmount() {
-        this.signal = false
+    componentDidMount = () => {
+        this.props.fetchMe()
     }
 
     render() {
