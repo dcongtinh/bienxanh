@@ -93,6 +93,7 @@ class AuthStore {
     @action
     async fetchUser({ username }) {
         this.isRequesting = true
+        this.user = null
         const { success, data } = await userAPI.getUser({
             username
         })

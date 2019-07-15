@@ -14,6 +14,9 @@ import Users from 'pages/home/users'
 import AddUser from 'pages/home/users/add-user'
 import View from 'pages/home/view'
 import Order from 'pages/home/order'
+import Warehouse from 'pages/home/warehouse'
+import AddWarehouse from 'pages/home/warehouse/add-warehouse'
+import UpdateWarehouse from 'pages/home/warehouse/update-warehouse'
 import Export from 'pages/home/export'
 import Login from 'pages/auth/login'
 import Register from 'pages/auth/register'
@@ -64,6 +67,21 @@ class App extends React.Component {
                                 path="/dashboard/order"
                                 exact
                                 component={Order}
+                            />
+                            <Route
+                                path="/dashboard/warehouses"
+                                exact
+                                component={Warehouse}
+                            />
+                            <Route
+                                path="/dashboard/warehouse/add"
+                                exact
+                                component={AddWarehouse}
+                            />
+                            <Route
+                                path="/dashboard/warehouse/:idWarehouse"
+                                exact
+                                component={UpdateWarehouse}
                             />
                             <Route
                                 exact

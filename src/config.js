@@ -11,7 +11,8 @@ const c = path => {
 
 export const getApi = () => {
     return {
-        auth: c('/auth')
+        auth: c('/auth'),
+        wareHouse: c('/warehouses')
     }
 }
 

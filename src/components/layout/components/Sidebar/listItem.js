@@ -21,6 +21,12 @@ export default [
         access: true
     },
     {
+        title: 'Kho',
+        icon: <ListIcon />,
+        link: '/dashboard/warehouses',
+        access: true
+    },
+    {
         title: 'Xuất thống kê',
         icon: <BarChartIcon />,
         link: '/dashboard/export',
