@@ -35,7 +35,7 @@ class Warehouse extends Component {
         wareHouses.forEach(wareHouse => {
             let row = []
             row.push(wareHouse.buyerCode)
-            row.push(wareHouse.warehouse)
+            row.push(`${wareHouse.warehouseName} (${wareHouse.warehouse})`)
             row.push(wareHouse.buyerName)
             row.push(wareHouse.buyerLegalName)
             row.push(wareHouse.buyerTaxCode)
@@ -146,11 +146,11 @@ class Warehouse extends Component {
                     okLabel="Xoá"
                     onHide={this.handleClose}
                     onOK={() => {
-                        let usernames = []
+                        let wareHousesListId = []
                         this.state.rowsSelected.forEach(index => {
-                            usernames.push(data[index][2])
+                            wareHousesListId.push(wareHouses[index]._id)
                         })
-                        this.props.deleteUsers({ usernames })
+                        this.props.deleteWareHouses({ wareHousesListId })
                         this.handleClose()
                         this.setState({ selectedRows: [] })
                     }}

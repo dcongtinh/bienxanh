@@ -8,6 +8,7 @@ const c = path => {
 const wareHouseAPI = {
     addWarehouse: ({
         warehouse,
+        warehouseName,
         buyerCode,
         buyerAddress,
         buyerLegalName,
@@ -15,6 +16,7 @@ const wareHouseAPI = {
     }) =>
         axios.post(c('/add'), {
             warehouse,
+            warehouseName,
             buyerCode,
             buyerAddress,
             buyerLegalName,
@@ -26,6 +28,7 @@ const wareHouseAPI = {
     updateWarehouse: ({
         idWarehouse,
         warehouse,
+        warehouseName,
         buyerCode,
         buyerAddress,
         buyerLegalName,
@@ -34,11 +37,14 @@ const wareHouseAPI = {
         axios.put(c('/update'), {
             idWarehouse,
             warehouse,
+            warehouseName,
             buyerCode,
             buyerAddress,
             buyerLegalName,
             buyerTaxCode
-        })
+        }),
+    deleteWareHouses: ({ wareHousesListId }) =>
+        axios.post(c('/delete'), { wareHousesListId })
 }
 
 export default wareHouseAPI

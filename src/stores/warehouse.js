@@ -14,6 +14,7 @@ class WarehouseStore {
     @action
     async addWarehouse({
         warehouse,
+        warehouseName,
         buyerCode,
         buyerAddress,
         buyerLegalName,
@@ -23,6 +24,7 @@ class WarehouseStore {
         this.isRequesting = true
         const { success, data } = await wareHouseAPI.addWarehouse({
             warehouse,
+            warehouseName,
             buyerCode,
             buyerAddress,
             buyerLegalName,
@@ -65,6 +67,7 @@ class WarehouseStore {
     async updateWarehouse({
         idWarehouse,
         warehouse,
+        warehouseName,
         buyerCode,
         buyerAddress,
         buyerLegalName,
@@ -75,6 +78,7 @@ class WarehouseStore {
         const { success, data } = await wareHouseAPI.updateWarehouse({
             idWarehouse,
             warehouse,
+            warehouseName,
             buyerCode,
             buyerAddress,
             buyerLegalName,
@@ -93,6 +97,25 @@ class WarehouseStore {
                 variant: 'error'
             })
         }
+        this.isRequesting = false
+    }
+    @action
+    async deleteWareHouses({ wareHousesListId }) {
+        this.isRequesting = true
+        const { success, data } = await wareHouseAPI.deleteWareHouses({
+            wareHousesListId
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Xoá tài khoản thành công!`,
+                variant: 'success'
+            })
+            this.fetchAllWarehouses()
+        } else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
         this.isRequesting = false
     }
 }

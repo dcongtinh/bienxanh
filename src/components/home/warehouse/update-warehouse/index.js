@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 const SignUpSchema = Yup.object().shape({
     warehouse: Yup.string().required('* Bắt buộc'),
+    warehouseName: Yup.string().required('* Bắt buộc'),
     buyerCode: Yup.string().required('* Bắt buộc'),
     buyerAddress: Yup.string().required('* Bắt buộc'),
     buyerTaxCode: Yup.string().required('* Bắt buộc'),
@@ -64,6 +65,7 @@ class UpdateWarehouse extends React.Component {
                         <Formik
                             initialValues={{
                                 warehouse: wareHouse.warehouse,
+                                warehouseName: wareHouse.warehouseName,
                                 buyerCode: wareHouse.buyerCode,
                                 buyerAddress: wareHouse.buyerAddress,
                                 buyerLegalName: wareHouse.buyerLegalName,
@@ -73,6 +75,7 @@ class UpdateWarehouse extends React.Component {
                             onSubmit={(values, { resetForm }) => {
                                 let {
                                     warehouse,
+                                    warehouseName,
                                     buyerCode,
                                     buyerAddress,
                                     buyerLegalName,
@@ -82,6 +85,7 @@ class UpdateWarehouse extends React.Component {
                                     idWarehouse: this.props.match.params
                                         .idWarehouse,
                                     warehouse,
+                                    warehouseName,
                                     buyerCode,
                                     buyerAddress,
                                     buyerLegalName,
@@ -124,6 +128,20 @@ class UpdateWarehouse extends React.Component {
                                                     touched.buyerCode
                                                 }
                                                 message={errors.buyerCode}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.warehouseName}
+                                                label="Tên kho"
+                                                name="warehouseName"
+                                                error={
+                                                    errors.warehouseName &&
+                                                    touched.warehouseName
+                                                }
+                                                message={errors.warehouseName}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
