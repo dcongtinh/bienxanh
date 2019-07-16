@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Typography from '@material-ui/core/Typography'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -12,7 +13,10 @@ const styles = theme => ({
     container: {
         overflowY: 'hidden',
         maxHeight: '80%',
-        width: '60%'
+        width: '50%'
+    },
+    dialogActions: {
+        padding: 24
     }
 })
 
@@ -36,17 +40,21 @@ class ConfirmDialog extends Component {
                 }}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description">
-                <DialogTitle onClose={onHide}>Title</DialogTitle>
+                <DialogTitle onClose={onHide} />
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {title}
+                        <Typography variant="h4">{title}</Typography>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button color="primary" onClick={onHide}>
+                <DialogActions className={classes.dialogActions}>
+                    <Button color="primary" variant="outlined" onClick={onHide}>
                         {cancelLabel}
                     </Button>
-                    <Button color="primary" autoFocus onClick={onOK}>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        autoFocus
+                        onClick={onOK}>
                         {okLabel}
                     </Button>
                 </DialogActions>

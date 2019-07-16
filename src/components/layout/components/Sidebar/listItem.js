@@ -21,6 +21,12 @@ export default [
         access: true
     },
     {
+        title: 'Hàng hoá',
+        icon: <ListIcon />,
+        link: '/dashboard/items',
+        access: true
+    },
+    {
         title: 'Kho',
         icon: <ListIcon />,
         link: '/dashboard/warehouses',

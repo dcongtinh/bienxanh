@@ -10,7 +10,7 @@ import styles from './styles'
 // Material icons
 import { ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons'
 
-class Warehouse extends Component {
+class Item extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,22 +23,13 @@ class Warehouse extends Component {
         this.setState({ openConfirm: false })
     }
     render() {
-        let { wareHouses, classes } = this.props
-        const columns = [
-            'Mã kho',
-            'Tên kho',
-            'Tên khách hàng',
-            'Tên đơn vị',
-            'Mã số thuế'
-        ]
+        let { items, classes } = this.props
+        const columns = ['Mã hàng hoá/dich vụ', 'Tên hàng hoá/dịch vụ']
         let data = []
-        wareHouses.forEach(wareHouse => {
+        items.forEach(item => {
             let row = []
-            row.push(wareHouse.buyerCode)
-            row.push(`${wareHouse.warehouseName} (${wareHouse.warehouse})`)
-            row.push(wareHouse.buyerName)
-            row.push(wareHouse.buyerLegalName)
-            row.push(wareHouse.buyerTaxCode)
+            row.push(item.itemNameCode)
+            row.push(item.itemName)
             data.push(row)
         })
 
@@ -106,7 +97,7 @@ class Warehouse extends Component {
             ),
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(
-                    `/dashboard/warehouse/${wareHouses[rowMeta.dataIndex]._id}`
+                    `/dashboard/item/${items[rowMeta.dataIndex]._id}`
                 )
             }
         }
@@ -127,7 +118,7 @@ class Warehouse extends Component {
                         size="small"
                         variant="outlined"
                         onClick={() => {
-                            this.props.history.push('/dashboard/warehouse/add')
+                            this.props.history.push('/dashboard/item/add')
                         }}>
                         <AddIcon className={classes.addIcon} />
                         Add
@@ -146,11 +137,11 @@ class Warehouse extends Component {
                     okLabel="Xoá"
                     onHide={this.handleClose}
                     onOK={() => {
-                        let wareHousesListId = []
+                        let itemsListId = []
                         this.state.rowsSelected.forEach(index => {
-                            wareHousesListId.push(wareHouses[index]._id)
+                            itemsListId.push(items[index]._id)
                         })
-                        this.props.deleteWareHouses({ wareHousesListId })
+                        this.props.deleteItems({ itemsListId })
                         this.handleClose()
                         this.setState({ selectedRows: [] })
                     }}
@@ -160,4 +151,4 @@ class Warehouse extends Component {
     }
 }
 
-export default withStyles(styles)(Warehouse)
+export default withStyles(styles)(Item)

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import { withStyles } from '@material-ui/core/styles'
-
+import OrderForm from 'components/home/order'
 const styles = theme => ({})
 
 @createIsAuthenticated({})
-class Order extends Component {
+class OrderPage extends Component {
     render() {
-        return <div>Order</div>
+        return <OrderForm {...this.props} />
     }
 }
-export default withStyles(styles)(Order)
+export default withStyles(styles)(OrderPage)
