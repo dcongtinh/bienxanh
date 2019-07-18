@@ -18,6 +18,8 @@ import Warehouse from 'pages/home/warehouse'
 import AddWarehouse from 'pages/home/warehouse/add-warehouse'
 import UpdateWarehouse from 'pages/home/warehouse/update-warehouse'
 
+import AddOrder from 'pages/home/order/add-order'
+
 import Item from 'pages/home/item'
 import AddItem from 'pages/home/item/add-item'
 import UpdateItem from 'pages/home/item/update-item'
@@ -69,9 +71,14 @@ class App extends React.Component {
                                 component={View}
                             />
                             <Route
-                                path="/dashboard/order"
+                                path="/dashboard/orders"
                                 exact
                                 component={Order}
+                            />
+                            <Route
+                                path="/dashboard/order/add"
+                                exact
+                                component={AddOrder}
                             />
                             <Route
                                 path="/dashboard/warehouses"

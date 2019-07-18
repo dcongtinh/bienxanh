@@ -13,7 +13,11 @@ export default [
         link: '/dashboard/users',
         access: true
     },
-    { title: 'Nhập đơn hàng', icon: <NotesIcon />, link: '/dashboard/order' },
+    {
+        title: 'Nhập đơn hàng',
+        icon: <NotesIcon />,
+        link: '/dashboard/order/add'
+    },
     {
         title: 'Xem đơn hàng',
         icon: <ListIcon />,
