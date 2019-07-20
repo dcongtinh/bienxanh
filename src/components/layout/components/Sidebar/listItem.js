@@ -2,8 +2,10 @@ import React from 'react'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import PeopleIcon from '@material-ui/icons/People'
 import NotesIcon from '@material-ui/icons/Notes'
+import ViewListIcon from '@material-ui/icons/ViewList'
+import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore'
 import ListIcon from '@material-ui/icons/List'
-import BarChartIcon from '@material-ui/icons/BarChart'
+// import BarChartIcon from '@material-ui/icons/BarChart'
 
 export default [
     { title: 'Trang chủ', icon: <DashboardIcon />, link: '/' },
@@ -14,20 +16,19 @@ export default [
         access: true
     },
     {
-        title: 'Nhập đơn hàng',
+        title: 'Nhập hoá đơn',
         icon: <NotesIcon />,
-        link: '/dashboard/order/add',
-        access: true
+        link: '/dashboard/order/add'
     },
     {
-        title: 'Xem đơn hàng',
-        icon: <ListIcon />,
-        link: '/dashboard/view',
+        title: 'Xem hoá đơn',
+        icon: <ViewListIcon />,
+        link: '/dashboard/orders',
         access: true
     },
     {
         title: 'Hàng hoá',
-        icon: <ListIcon />,
+        icon: <LocalGroceryStoreIcon />,
         link: '/dashboard/items',
         access: true
     },
@@ -35,12 +36,6 @@ export default [
         title: 'Kho',
         icon: <ListIcon />,
         link: '/dashboard/warehouses',
-        access: true
-    },
-    {
-        title: 'Xuất thống kê',
-        icon: <BarChartIcon />,
-        link: '/dashboard/export',
         access: true
     }
 ]

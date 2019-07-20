@@ -8,11 +8,12 @@ const c = path => {
 const orderAPI = {
     addOrder: ({ warehouse, items, owner }) =>
         axios.post(c('/add'), { warehouse, items, owner }),
-    // getAllItems: () => axios.get(c('/get-items')),
+    getAllOrders: () => axios.get(c('/get-orders')),
     getOrder: ({ idOrder }) => axios.post(c('/get-order'), { idOrder }),
     updateOrder: ({ idOrder, warehouse, items }) =>
-        axios.put(c('/update'), { idOrder, warehouse, items })
-    // deleteItems: ({ itemsListId }) => axios.post(c('/delete'), { itemsListId })
+        axios.put(c('/update'), { idOrder, warehouse, items }),
+    deleteOrders: ({ ordersListId }) =>
+        axios.post(c('/delete'), { ordersListId })
 }
 
 export default orderAPI

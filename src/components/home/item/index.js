@@ -7,8 +7,6 @@ import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import styles from './styles'
-// Material icons
-import { ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons'
 
 class Item extends Component {
     constructor(props) {
@@ -24,7 +22,7 @@ class Item extends Component {
     }
     render() {
         let { items, classes } = this.props
-        const columns = ['Mã hàng hoá/dich vụ', 'Tên hàng hoá/dịch vụ']
+        const columns = ['Mã hàng', 'Tên hàng']
         let data = []
         items.forEach(item => {
             let row = []
@@ -107,13 +105,6 @@ class Item extends Component {
                 <span className={classes.spacer} />
                 <div className={classes.row}>
                     <Button
-                        className={classes.exportButton}
-                        size="small"
-                        variant="outlined">
-                        <ArrowUpwardIcon className={classes.exportIcon} />
-                        Export
-                    </Button>
-                    <Button
                         color="primary"
                         size="small"
                         variant="outlined"
@@ -125,14 +116,14 @@ class Item extends Component {
                     </Button>
                 </div>
                 <MUIDataTable
-                    title={'Danh sách kho'}
+                    title={'Danh sách hàng'}
                     data={data}
                     columns={columns}
                     options={options}
                 />
                 <ConfirmDialog
                     open={this.state.openConfirm}
-                    title="Bạn có chắc muốn xoá kho?"
+                    title="Bạn có chắc muốn xoá hàng?"
                     cancelLabel="Huỷ"
                     okLabel="Xoá"
                     onHide={this.handleClose}

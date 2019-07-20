@@ -33,13 +33,13 @@ class OrderStore {
         }
         this.isRequesting = false
     }
-    // @action
-    // async fetchAllItems() {
-    //     this.isRequesting = true
-    //     const { success, data } = await orderAPI.getAllItems()
-    //     if (success) this.items = data.items
-    //     this.isRequesting = false
-    // }
+    @action
+    async fetchAllOrders() {
+        this.isRequesting = true
+        const { success, data } = await orderAPI.getAllOrders()
+        if (success) this.orders = data.orders
+        this.isRequesting = false
+    }
     @action
     async fetchOrder({ idOrder }) {
         this.isRequesting = true
@@ -74,25 +74,25 @@ class OrderStore {
         }
         this.isRequesting = false
     }
-    // @action
-    // async deleteItems({ itemsListId }) {
-    //     this.isRequesting = true
-    //     const { success, data } = await orderAPI.deleteItems({
-    //         itemsListId
-    //     })
-    //     if (success) {
-    //         this.rootStore.alert.show({
-    //             message: `Xoá hàng thành công!`,
-    //             variant: 'success'
-    //         })
-    //         this.fetchAllItems()
-    //     } else
-    //         this.rootStore.alert.show({
-    //             message: data.message,
-    //             variant: 'error'
-    //         })
-    //     this.isRequesting = false
-    // }
+    @action
+    async deleteOrders({ ordersListId }) {
+        this.isRequesting = true
+        const { success, data } = await orderAPI.deleteOrders({
+            ordersListId
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Xoá hoá đơn thành công!`,
+                variant: 'success'
+            })
+            this.fetchAllOrders()
+        } else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        this.isRequesting = false
+    }
 }
 
 export default OrderStore

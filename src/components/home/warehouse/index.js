@@ -7,8 +7,6 @@ import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import styles from './styles'
-// Material icons
-import { ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons'
 
 class Warehouse extends Component {
     constructor(props) {
@@ -115,13 +113,6 @@ class Warehouse extends Component {
             <>
                 <span className={classes.spacer} />
                 <div className={classes.row}>
-                    <Button
-                        className={classes.exportButton}
-                        size="small"
-                        variant="outlined">
-                        <ArrowUpwardIcon className={classes.exportIcon} />
-                        Export
-                    </Button>
                     <Button
                         color="primary"
                         size="small"

@@ -1,13 +1,24 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
-import { withStyles } from '@material-ui/core/styles'
-import OrderForm from 'components/home/order'
-const styles = theme => ({})
+import Order from 'components/home/order'
+import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
+@inject(({ order }) => ({
+    fetchAllOrders: () => order.fetchAllOrders(),
+    deleteOrders: ({ ordersListId }) => order.deleteOrders({ ordersListId }),
+    orders: JSON.parse(JSON.stringify(order.orders)),
+    isRequesting: order.isRequesting
+}))
+@observer
 class OrderPage extends Component {
+    componentDidMount() {
+        this.props.fetchAllOrders()
+    }
+
     render() {
-        return <OrderForm {...this.props} />
+        if (!this.props.orders) return <div>is Fetching...</div>
+        return <Order {...this.props} />
     }
 }
-export default withStyles(styles)(OrderPage)
+export default OrderPage

@@ -12,7 +12,6 @@ import Home from 'pages/home'
 import Profile from 'pages/home/profile'
 import Users from 'pages/home/users'
 import AddUser from 'pages/home/users/add-user'
-import View from 'pages/home/view'
 import Order from 'pages/home/order'
 import Warehouse from 'pages/home/warehouse'
 import AddWarehouse from 'pages/home/warehouse/add-warehouse'
@@ -65,11 +64,6 @@ class App extends React.Component {
                                 path="/dashboard/users/add-user"
                                 exact
                                 component={AddUser}
-                            />
-                            <Route
-                                path="/dashboard/view"
-                                exact
-                                component={View}
                             />
                             <Route
                                 path="/dashboard/orders"

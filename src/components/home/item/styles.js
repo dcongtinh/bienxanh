@@ -1,10 +1,4 @@
 export default theme => ({
-    exportButton: {
-        marginRight: theme.spacing()
-    },
-    exportIcon: {
-        marginRight: theme.spacing()
-    },
     addIcon: {
         marginRight: theme.spacing()
     },
