@@ -40,40 +40,40 @@ class OrderStore {
     //     if (success) this.items = data.items
     //     this.isRequesting = false
     // }
-    // @action
-    // async fetchItem({ idItem }) {
-    //     this.isRequesting = true
-    //     this.item = null
-    //     const { success, data } = await orderAPI.getItem({
-    //         idItem
-    //     })
-    //     if (success) this.item = data.item
-    //     this.isRequesting = false
-    // }
+    @action
+    async fetchOrder({ idOrder }) {
+        this.isRequesting = true
+        this.order = null
+        const { success, data } = await orderAPI.getOrder({
+            idOrder
+        })
+        if (success) this.order = data.order
+        this.isRequesting = false
+    }
 
-    // @action
-    // async updateItem({ idItem, itemNameCode, itemName, callback }) {
-    //     this.isRequesting = true
-    //     const { success, data } = await orderAPI.updateItem({
-    //         idItem,
-    //         itemNameCode,
-    //         itemName
-    //     })
+    @action
+    async updateOrder({ idOrder, warehouse, items }) {
+        this.isRequesting = true
+        const { success, data } = await orderAPI.updateOrder({
+            idOrder,
+            warehouse,
+            items
+        })
 
-    //     if (success) {
-    //         this.rootStore.alert.show({
-    //             message: `Cập nhật hàng  thành công!`,
-    //             variant: 'success'
-    //         })
-    //         if (callback) callback()
-    //     } else {
-    //         this.rootStore.alert.show({
-    //             message: data.message,
-    //             variant: 'error'
-    //         })
-    //     }
-    //     this.isRequesting = false
-    // }
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Cập nhật hoá đơn thành công!`,
+                variant: 'success'
+            })
+            this.fetchOrder({ idOrder })
+        } else {
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        }
+        this.isRequesting = false
+    }
     // @action
     // async deleteItems({ itemsListId }) {
     //     this.isRequesting = true

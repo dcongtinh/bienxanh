@@ -9,13 +9,9 @@ const orderAPI = {
     addOrder: ({ warehouse, items, owner }) =>
         axios.post(c('/add'), { warehouse, items, owner }),
     // getAllItems: () => axios.get(c('/get-items')),
-    getOrder: ({ idOrder }) => axios.post(c('/get-order'), { idOrder })
-    // updateItem: ({ idItem, itemNameCode, itemName }) =>
-    //     axios.put(c('/update'), {
-    //         idItem,
-    //         itemNameCode,
-    //         itemName
-    //     }),
+    getOrder: ({ idOrder }) => axios.post(c('/get-order'), { idOrder }),
+    updateOrder: ({ idOrder, warehouse, items }) =>
+        axios.put(c('/update'), { idOrder, warehouse, items })
     // deleteItems: ({ itemsListId }) => axios.post(c('/delete'), { itemsListId })
 }
 

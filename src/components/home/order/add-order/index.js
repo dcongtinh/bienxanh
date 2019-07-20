@@ -17,7 +17,6 @@ const styles = theme => ({
         }
     },
     paper: {
-        marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -205,9 +204,6 @@ class AddOrder extends React.Component {
                                                 states={this.state}
                                                 handleSelectChange={
                                                     this.handleChange
-                                                }
-                                                defaultValueItem={
-                                                    optionsItem[0].value
                                                 }
                                             />
                                         </Grid>

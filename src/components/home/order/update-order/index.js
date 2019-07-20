@@ -17,7 +17,6 @@ const styles = theme => ({
         }
     },
     paper: {
-        marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -52,8 +51,17 @@ const styles = theme => ({
 })
 
 class UpdateOrder extends React.Component {
-    state = {
-        count: 1
+    constructor(props) {
+        super(props)
+        this.state = {
+            count: Math.max(props.order.items.length, 1),
+            warehouse: props.order.warehouse._id
+        }
+        let state = {}
+        props.order.items.forEach((item, index) => {
+            state[`itemName${index}`] = item.itemName._id
+        })
+        this.state = Object.assign({}, this.state, state)
     }
     handleChange = e => {
         this.setState({
@@ -62,8 +70,10 @@ class UpdateOrder extends React.Component {
         })
     }
     render() {
-        let { count } = this.state
-        let { classes, isRequesting, wareHouses, items, me } = this.props
+        let { count, warehouse } = this.state
+        let { classes, isRequesting, wareHouses, items, order } = this.props
+        let orderItems = order.items
+        let idOrder = this.props.match.params.idOrder
         if (!wareHouses.length || !items.length) return null
         let optionsWarehouse = []
         wareHouses.forEach(warehouse => {
@@ -81,7 +91,7 @@ class UpdateOrder extends React.Component {
                 label: `${item.itemName} (${item.itemNameCode})`
             })
         })
-        for (let i = 0; i < 10; ++i)
+        for (let i = orderItems.length - 1; i < 10; ++i)
             optionsCount.push({ value: i + 1, label: i + 1 })
         let array = []
         for (let i = 0; i < count; ++i) array.push('')
@@ -90,10 +100,18 @@ class UpdateOrder extends React.Component {
             _AddOrderSchema = {}
         array.forEach((item, index) => {
             let _initialValues = {
-                [`batchNo${index}`]: '',
-                [`itemQuantity${index}`]: '',
-                [`itemPrice${index}`]: '',
-                [`itemNote${index}`]: ''
+                [`batchNo${index}`]: orderItems[index]
+                    ? orderItems[index].batchNo
+                    : '',
+                [`itemQuantity${index}`]: orderItems[index]
+                    ? orderItems[index].itemQuantity
+                    : '',
+                [`itemPrice${index}`]: orderItems[index]
+                    ? orderItems[index].itemPrice
+                    : '',
+                [`itemNote${index}`]: orderItems[index]
+                    ? orderItems[index].itemNote
+                    : ''
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
 
@@ -139,14 +157,11 @@ class UpdateOrder extends React.Component {
                                     }
                                     items.push(_item)
                                 })
-                                this.props.addOrder({
+                                // console.log(items)
+                                this.props.updateOrder({
+                                    idOrder,
                                     warehouse,
-                                    items,
-                                    owner: me._id,
-                                    callback: () => {
-                                        resetForm()
-                                        this.setState({ count: 1 })
-                                    }
+                                    items
                                 })
                             }}>
                             {({
@@ -176,7 +191,7 @@ class UpdateOrder extends React.Component {
                                                 <Select
                                                     name="warehouse"
                                                     value={
-                                                        this.state.warehouse ||
+                                                        warehouse ||
                                                         optionsWarehouse[0]
                                                             .value
                                                     }
@@ -206,9 +221,13 @@ class UpdateOrder extends React.Component {
                                                 handleSelectChange={
                                                     this.handleChange
                                                 }
-                                                defaultValueItem={
-                                                    optionsItem[0].value
+                                                isUpdateOrder
+                                                updateOrder={
+                                                    this.props.updateOrder
                                                 }
+                                                items={orderItems}
+                                                warehouse={warehouse}
+                                                idOrder={idOrder}
                                             />
                                         </Grid>
                                         <Button

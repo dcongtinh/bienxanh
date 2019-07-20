@@ -16,7 +16,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 
 const styles = theme => ({
     paper: {
-        marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'

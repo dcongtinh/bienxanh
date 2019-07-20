@@ -2,7 +2,9 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from 'components/Input/TextField'
-
+import IconButton from '@material-ui/core/IconButton'
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import ConfirmDialog from 'components/ConfirmDialog'
 import Select from 'components/Input/Select'
 const styles = theme => ({
     '@global': {
@@ -11,7 +13,6 @@ const styles = theme => ({
         }
     },
     paper: {
-        marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -50,10 +51,27 @@ const styles = theme => ({
         backgroundColor: 'white',
         top: -8,
         padding: '0 4px'
+    },
+    removeCircleIcon: {
+        position: 'absolute',
+        top: -21,
+        right: -21,
+        color: theme.palette.danger.dark
     }
 })
 class AddItemForm extends React.Component {
+    state = {
+        indexItem: null,
+        openConfirm: false
+    }
+    handleOpen = indexItem => {
+        this.setState({ openConfirm: true, indexItem })
+    }
+    handleClose = () => {
+        this.setState({ openConfirm: false })
+    }
     render() {
+        let { openConfirm } = this.state
         let {
             classes,
             array,
@@ -65,7 +83,10 @@ class AddItemForm extends React.Component {
             touched,
             options,
             states,
-            defaultValueItem
+            isUpdateOrder,
+            idOrder,
+            warehouse,
+            items
         } = this.props
         return (
             <>
@@ -79,12 +100,20 @@ class AddItemForm extends React.Component {
                             className={classes.groupOrder}>
                             <div className={classes.legend}>{`Đơn hàng ${index +
                                 1}`}</div>
+                            {isUpdateOrder && (
+                                <IconButton
+                                    className={classes.removeCircleIcon}
+                                    onClick={() => this.handleOpen(index)}>
+                                    <RemoveCircleIcon />
+                                </IconButton>
+                            )}
+
                             <Grid item xs={12}>
                                 <Select
                                     name={`itemName${index}`}
                                     value={
                                         states[`itemName${index}`] ||
-                                        defaultValueItem
+                                        options[0].value
                                     }
                                     label="Nhập tên hàng"
                                     onChange={handleSelectChange}
@@ -151,6 +180,23 @@ class AddItemForm extends React.Component {
                         </Grid>
                     )
                 })}
+                <ConfirmDialog
+                    open={openConfirm}
+                    title={`Bạn có chắc muốn xoá Đơn hàng ${this.state
+                        .indexItem + 1}?`}
+                    cancelLabel="Huỷ"
+                    okLabel="Xoá"
+                    onHide={this.handleClose}
+                    onOK={() => {
+                        items.splice(this.state.indexItem, 1)
+                        this.props.updateOrder({
+                            idOrder,
+                            warehouse,
+                            items
+                        })
+                        this.handleClose()
+                    }}
+                />
             </>
         )
     }
