@@ -26,7 +26,6 @@ class Order extends Component {
         const columns = ['Nhóm hoá đơn', 'Mã khách hàng', 'Tên khách hàng']
         let data = []
         orders.forEach(order => {
-            console.log(order)
             let row = []
             row.push(order.group)
             row.push(order.warehouse.buyerCode)
@@ -115,6 +114,7 @@ class Order extends Component {
                         className={classes.exportButton}
                         size="small"
                         variant="outlined"
+                        orders={orders}
                     />
                     <Button
                         color="primary"

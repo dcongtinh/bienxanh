@@ -98,9 +98,9 @@ class AddOrder extends React.Component {
 
             let _addOrderSchema = {
                 [`batchNo${index}`]: Yup.string().required('* Bắt buộc'),
-                [`itemQuantity${index}`]: Yup.number('Not a numbBar')
-                    .integer('Please enter a whole number')
-                    .required('* Bắt buộc'),
+                [`itemQuantity${index}`]: Yup.number('Not a numbBar').required(
+                    '* Bắt buộc'
+                ),
                 [`itemPrice${index}`]: Yup.number().required('* Bắt buộc'),
                 [`itemNote${index}`]: Yup.string()
             }
