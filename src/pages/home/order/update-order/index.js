@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import createIsSiteAdmin from 'hoc/is-admin'
-import AddOrder from 'components/home/order/add-order'
+import UpdateOrder from 'components/home/order/update-order'
 
 import { inject, observer } from 'mobx-react'
 
@@ -19,7 +19,7 @@ import { inject, observer } from 'mobx-react'
     isRequesting: order.isRequesting
 }))
 @observer
-class AddOrderPage extends Component {
+class UpdateOrderPage extends Component {
     componentDidMount = () => {
         if (!this.props.meHasFetched) this.props.fetchMe()
         this.props.fetchAllWarehouses()
@@ -29,7 +29,7 @@ class AddOrderPage extends Component {
     render() {
         let { wareHouses, items, me } = this.props
         if (!wareHouses || !items || !me) return <div>isFetching...</div>
-        return <AddOrder {...this.props} />
+        return <UpdateOrder {...this.props} />
     }
 }
-export default AddOrderPage
+export default UpdateOrderPage

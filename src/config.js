@@ -13,7 +13,8 @@ export const getApi = () => {
     return {
         auth: c('/auth'),
         wareHouse: c('/warehouses'),
-        item: c('/items')
+        item: c('/items'),
+        order: c('/orders')
     }
 }
 

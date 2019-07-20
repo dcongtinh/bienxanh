@@ -19,6 +19,7 @@ import AddWarehouse from 'pages/home/warehouse/add-warehouse'
 import UpdateWarehouse from 'pages/home/warehouse/update-warehouse'
 
 import AddOrder from 'pages/home/order/add-order'
+import UpdateOrder from 'pages/home/order/update-order'
 
 import Item from 'pages/home/item'
 import AddItem from 'pages/home/item/add-item'
@@ -79,6 +80,11 @@ class App extends React.Component {
                                 path="/dashboard/order/add"
                                 exact
                                 component={AddOrder}
+                            />
+                            <Route
+                                path="/dashboard/order/:idOrder"
+                                exact
+                                component={UpdateOrder}
                             />
                             <Route
                                 path="/dashboard/warehouses"

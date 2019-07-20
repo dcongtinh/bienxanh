@@ -4,14 +4,14 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 
 export default class TextFieldCustomized extends Component {
     render() {
-        let { name, error, message } = this.props
+        let { name, error, message, noRequired } = this.props
         return (
             <>
                 <TextField
                     {...this.props}
                     autoComplete={name}
                     variant="outlined"
-                    required
+                    required={!noRequired}
                     fullWidth
                     id={name}
                 />

@@ -16,7 +16,8 @@ export default [
     {
         title: 'Nhập đơn hàng',
         icon: <NotesIcon />,
-        link: '/dashboard/order/add'
+        link: '/dashboard/order/add',
+        access: true
     },
     {
         title: 'Xem đơn hàng',

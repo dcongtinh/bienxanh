@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import AddItemForm from './AddItemForm'
+import AddItemForm from 'components/home/order/add-order/AddItemForm'
 import Select from 'components/Input/Select'
 
 const styles = theme => ({
@@ -51,7 +51,7 @@ const styles = theme => ({
     }
 })
 
-class AddOrder extends React.Component {
+class UpdateOrder extends React.Component {
     state = {
         count: 1
     }
@@ -240,4 +240,4 @@ class AddOrder extends React.Component {
     }
 }
 
-export default withStyles(styles)(AddOrder)
+export default withStyles(styles)(UpdateOrder)
