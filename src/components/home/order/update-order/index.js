@@ -4,9 +4,12 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import TextField from 'components/Input/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import SaveIcon from '@material-ui/icons/Save'
 import AddItemForm from 'components/home/order/add-order/AddItemForm'
 import Select from 'components/Input/Select'
 
@@ -23,10 +26,16 @@ const styles = theme => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
+        position: 'relative'
     },
     submit: {
-        margin: theme.spacing(2, 0)
+        margin: theme.spacing(2, 0),
+        position: 'absolute',
+        right: 0
+    },
+    iconSubmit: {
+        marginRight: theme.spacing()
     },
     circularProgress: {
         position: 'absolute',
@@ -55,6 +64,7 @@ class UpdateOrder extends React.Component {
         super(props)
         this.state = {
             count: Math.max(props.order.items.length, 1),
+            buyerCode: props.order.warehouse.buyerCode,
             warehouse: props.order.warehouse._id
         }
         let state = {}
@@ -68,9 +78,15 @@ class UpdateOrder extends React.Component {
             [e.target.name]: e.target.value,
             [`error${e.target.name}`]: false
         })
+        if (e.target.name === 'warehouse') {
+            this.props.wareHouses.forEach(wareHouse => {
+                if (wareHouse._id === e.target.value)
+                    this.setState({ buyerCode: wareHouse.buyerCode })
+            })
+        }
     }
     render() {
-        let { count, warehouse } = this.state
+        let { count, warehouse, buyerCode } = this.state
         let { classes, isRequesting, wareHouses, items, order } = this.props
         let orderItems = order.items
         let idOrder = this.props.match.params.idOrder
@@ -117,9 +133,9 @@ class UpdateOrder extends React.Component {
 
             let _addOrderSchema = {
                 [`batchNo${index}`]: Yup.string().required('* Bắt buộc'),
-                [`itemQuantity${index}`]: Yup.number('Not a numbBar')
-                    .integer('Please enter a whole number')
-                    .required('* Bắt buộc'),
+                [`itemQuantity${index}`]: Yup.number('Not a number').required(
+                    '* Bắt buộc'
+                ),
                 [`itemPrice${index}`]: Yup.number().required('* Bắt buộc'),
                 [`itemNote${index}`]: Yup.string()
             }
@@ -128,6 +144,16 @@ class UpdateOrder extends React.Component {
                 _AddOrderSchema,
                 _addOrderSchema
             )
+        })
+        let { buyerName } = order
+        let lastIndex = buyerName.lastIndexOf('/') + 1
+        initialValues = Object.assign({}, initialValues, {
+            group: order.group,
+            buyerName: buyerName.substring(lastIndex, buyerName.length)
+        })
+        _AddOrderSchema = Object.assign({}, _AddOrderSchema, {
+            group: Yup.number().required('* Bắt buộc'),
+            buyerName: Yup.string()
         })
         let AddOrderSchema = Yup.object().shape(_AddOrderSchema)
         return (
@@ -157,10 +183,14 @@ class UpdateOrder extends React.Component {
                                     }
                                     items.push(_item)
                                 })
+                                let buyerName = `26296/WH${buyerCode}/${
+                                    values.buyerName
+                                }`
                                 // console.log(items)
                                 this.props.updateOrder({
                                     idOrder,
                                     warehouse,
+                                    buyerName,
                                     items
                                 })
                             }}>
@@ -187,7 +217,45 @@ class UpdateOrder extends React.Component {
                                 return (
                                     <Form>
                                         <Grid item container spacing={2}>
-                                            <Grid item xs={12} sm={9}>
+                                            <Grid item xs={12} sm={3}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.group}
+                                                    label="Mã hoá đơn"
+                                                    name="group"
+                                                    InputProps={{
+                                                        readOnly: true
+                                                    }}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.buyerName}
+                                                    label="Họ tên"
+                                                    name="buyerName"
+                                                    noRequired
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                {`26296/WH${buyerCode}/`}
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={3}>
+                                                <Select
+                                                    name="count"
+                                                    value={this.state.count}
+                                                    label="Số lượng đơn"
+                                                    onChange={this.handleChange}
+                                                    options={optionsCount}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
                                                 <Select
                                                     name="warehouse"
                                                     value={
@@ -198,15 +266,6 @@ class UpdateOrder extends React.Component {
                                                     label="Nhập kho"
                                                     onChange={this.handleChange}
                                                     options={optionsWarehouse}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={3}>
-                                                <Select
-                                                    name="count"
-                                                    value={this.state.count}
-                                                    label="Số lượng đơn"
-                                                    onChange={this.handleChange}
-                                                    options={optionsCount}
                                                 />
                                             </Grid>
                                             <AddItemForm
@@ -227,6 +286,7 @@ class UpdateOrder extends React.Component {
                                                 }
                                                 items={orderItems}
                                                 warehouse={warehouse}
+                                                buyerName={buyerName}
                                                 idOrder={idOrder}
                                             />
                                         </Grid>
@@ -238,7 +298,10 @@ class UpdateOrder extends React.Component {
                                             variant="contained"
                                             color="primary"
                                             className={classes.submit}>
-                                            Gửi
+                                            <SaveIcon
+                                                className={classes.iconSubmit}
+                                            />
+                                            Cập nhật
                                             {isRequesting ? (
                                                 <CircularProgress
                                                     color="secondary"

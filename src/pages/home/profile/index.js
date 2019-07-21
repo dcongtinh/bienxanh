@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import { inject, observer } from 'mobx-react'
 import Profile from 'components/home/profile'
@@ -19,7 +20,7 @@ class ProfilePage extends Component {
         this.props.fetchUser({ username: this.props.match.params.username })
     }
     render() {
-        if (!this.props.user) return <div>is Fetching..</div>
+        if (!this.props.user) return <CircularProgress />
         return <Profile {...this.props} />
     }
 }

@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import SaveIcon from '@material-ui/icons/Save'
 
 const styles = theme => ({
     paper: {
@@ -26,6 +27,9 @@ const styles = theme => ({
     },
     submit: {
         margin: theme.spacing(2, 0)
+    },
+    iconSubmit: {
+        marginRight: theme.spacing()
     },
     circularProgress: {
         position: 'absolute',
@@ -210,6 +214,9 @@ class Profile extends React.Component {
                                         variant="contained"
                                         color="primary"
                                         className={classes.submit}>
+                                        <SaveIcon
+                                            className={classes.iconSubmit}
+                                        />
                                         Cập nhật
                                         {isRequesting ? (
                                             <CircularProgress

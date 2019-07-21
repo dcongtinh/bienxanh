@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import UpdateItem from 'components/home/item/update-item'
-
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
@@ -20,7 +20,7 @@ class UpdateItemPage extends Component {
     }
 
     render() {
-        if (!this.props.item) return <div>isFetching...</div>
+        if (!this.props.item) return <CircularProgress />
         return <UpdateItem {...this.props} />
     }
 }

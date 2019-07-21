@@ -86,7 +86,8 @@ class AddItemForm extends React.Component {
             isUpdateOrder,
             idOrder,
             warehouse,
-            items
+            items,
+            buyerName
         } = this.props
         return (
             <>
@@ -141,6 +142,8 @@ class AddItemForm extends React.Component {
                                     value={values[`itemQuantity${index}`]}
                                     label="Số lượng"
                                     name={`itemQuantity${index}`}
+                                    type="number"
+                                    min="1"
                                     error={
                                         errors[`itemQuantity${index}`] &&
                                         touched[`itemQuantity${index}`]
@@ -155,6 +158,8 @@ class AddItemForm extends React.Component {
                                     value={values[`itemPrice${index}`]}
                                     label="Đơn giá"
                                     name={`itemPrice${index}`}
+                                    type="number"
+                                    pattern="\d+"
                                     error={
                                         errors[`itemPrice${index}`] &&
                                         touched[`itemPrice${index}`]
@@ -192,6 +197,7 @@ class AddItemForm extends React.Component {
                         this.props.updateOrder({
                             idOrder,
                             warehouse,
+                            buyerName,
                             items
                         })
                         this.handleClose()

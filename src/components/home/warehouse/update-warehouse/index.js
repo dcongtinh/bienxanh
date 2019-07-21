@@ -8,6 +8,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import SaveIcon from '@material-ui/icons/Save'
 
 const SignUpSchema = Yup.object().shape({
     warehouse: Yup.string().required('* Bắt buộc'),
@@ -31,10 +32,16 @@ const styles = theme => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
+        position: 'relative'
     },
     submit: {
-        margin: theme.spacing(2, 0)
+        margin: theme.spacing(2, 0),
+        position: 'absolute',
+        right: 0
+    },
+    iconSubmit: {
+        marginRight: theme.spacing()
     },
     circularProgress: {
         position: 'absolute',
@@ -200,6 +207,9 @@ class UpdateWarehouse extends React.Component {
                                         variant="contained"
                                         color="primary"
                                         className={classes.submit}>
+                                        <SaveIcon
+                                            className={classes.iconSubmit}
+                                        />
                                         Cập nhật!
                                         {isRequesting ? (
                                             <CircularProgress

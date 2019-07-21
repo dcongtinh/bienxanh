@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import createIsSiteAdmin from 'hoc/is-admin'
 import UpdateOrder from 'components/home/order/update-order'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { inject, observer } from 'mobx-react'
 
@@ -29,17 +29,7 @@ class UpdateOrderPage extends Component {
 
     render() {
         let { wareHouses, items, order } = this.props
-        if (!wareHouses || !items || !order)
-            return (
-                <CircularProgress
-                    color="secondary"
-                    style={{
-                        position: 'absolute',
-                        width: '24px !important',
-                        height: '24px !important'
-                    }}
-                />
-            )
+        if (!wareHouses || !items || !order) return <CircularProgress />
         return <UpdateOrder {...this.props} />
     }
 }

@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import SendIcon from '@material-ui/icons/Send'
 import AddItemForm from './AddItemForm'
 import Select from 'components/Input/Select'
 
@@ -23,10 +24,16 @@ const styles = theme => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
+        position: 'relative'
     },
     submit: {
-        margin: theme.spacing(2, 0)
+        margin: theme.spacing(2, 0),
+        position: 'absolute',
+        right: 0
+    },
+    iconSubmit: {
+        marginRight: theme.spacing()
     },
     circularProgress: {
         position: 'absolute',
@@ -90,7 +97,7 @@ class AddOrder extends React.Component {
         array.forEach((item, index) => {
             let _initialValues = {
                 [`batchNo${index}`]: '',
-                [`itemQuantity${index}`]: '',
+                [`itemQuantity${index}`]: 1,
                 [`itemPrice${index}`]: '',
                 [`itemNote${index}`]: ''
             }
@@ -215,6 +222,9 @@ class AddOrder extends React.Component {
                                             variant="contained"
                                             color="primary"
                                             className={classes.submit}>
+                                            <SendIcon
+                                                className={classes.iconSubmit}
+                                            />
                                             Gửi
                                             {isRequesting ? (
                                                 <CircularProgress

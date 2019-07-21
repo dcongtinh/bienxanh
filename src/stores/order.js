@@ -52,11 +52,12 @@ class OrderStore {
     }
 
     @action
-    async updateOrder({ idOrder, warehouse, items }) {
+    async updateOrder({ idOrder, warehouse, buyerName, items }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.updateOrder({
             idOrder,
             warehouse,
+            buyerName,
             items
         })
 

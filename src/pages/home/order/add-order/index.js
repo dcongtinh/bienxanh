@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import AddOrder from 'components/home/order/add-order'
-
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
@@ -26,7 +26,7 @@ class AddOrderPage extends Component {
 
     render() {
         let { wareHouses, items, me } = this.props
-        if (!wareHouses || !items || !me) return <div>isFetching...</div>
+        if (!wareHouses || !items || !me) return <CircularProgress />
         return <AddOrder {...this.props} />
     }
 }

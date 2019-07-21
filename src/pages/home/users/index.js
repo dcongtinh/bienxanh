@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import createIsAuthenticated from 'hoc/is-authenticated'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Users from 'components/home/users'
 
 @createIsAuthenticated({})
@@ -16,7 +17,7 @@ class UsersPage extends Component {
     }
 
     render() {
-        if (!this.props.users) return <div>isFetching...</div>
+        if (!this.props.users) return <CircularProgress />
         return <Users {...this.props} />
     }
 }

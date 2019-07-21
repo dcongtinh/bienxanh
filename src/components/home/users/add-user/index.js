@@ -8,7 +8,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
-
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -51,6 +51,9 @@ const styles = theme => ({
     },
     submit: {
         margin: theme.spacing(2, 0)
+    },
+    iconSubmit: {
+        marginRight: theme.spacing()
     },
     circularProgress: {
         position: 'absolute',
@@ -250,6 +253,9 @@ class AddUserForm extends React.Component {
                                         variant="contained"
                                         color="primary"
                                         className={classes.submit}>
+                                        <PersonAddIcon
+                                            className={classes.iconSubmit}
+                                        />
                                         Đăng kí!
                                         {isRequesting ? (
                                             <CircularProgress

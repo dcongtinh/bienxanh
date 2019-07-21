@@ -10,8 +10,8 @@ const orderAPI = {
         axios.post(c('/add'), { warehouse, items, owner }),
     getAllOrders: () => axios.get(c('/get-orders')),
     getOrder: ({ idOrder }) => axios.post(c('/get-order'), { idOrder }),
-    updateOrder: ({ idOrder, warehouse, items }) =>
-        axios.put(c('/update'), { idOrder, warehouse, items }),
+    updateOrder: ({ idOrder, warehouse, buyerName, items }) =>
+        axios.put(c('/update'), { idOrder, warehouse, buyerName, items }),
     deleteOrders: ({ ordersListId }) =>
         axios.post(c('/delete'), { ordersListId })
 }

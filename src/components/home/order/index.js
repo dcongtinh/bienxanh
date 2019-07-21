@@ -23,12 +23,18 @@ class Order extends Component {
     }
     render() {
         let { orders, classes } = this.props
-        const columns = ['Nhóm hoá đơn', 'Mã khách hàng', 'Tên khách hàng']
+        const columns = [
+            'Nhóm hoá đơn',
+            'Mã khách hàng',
+            'Họ tên',
+            'Tên đơn vị'
+        ]
         let data = []
         orders.forEach(order => {
             let row = []
             row.push(order.group)
             row.push(order.warehouse.buyerCode)
+            row.push(order.buyerName)
             row.push(
                 `${order.warehouse.warehouseName} (${
                     order.warehouse.warehouse
@@ -101,7 +107,7 @@ class Order extends Component {
             ),
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(
-                    `/dashboard/order/${orders[rowMeta.dataIndex]._id}`
+                    `/dashboard/orders/${orders[rowMeta.dataIndex]._id}`
                 )
             }
         }

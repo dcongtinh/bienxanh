@@ -76,7 +76,7 @@ class App extends React.Component {
                                 component={AddOrder}
                             />
                             <Route
-                                path="/dashboard/order/:idOrder"
+                                path="/dashboard/orders/:idOrder"
                                 exact
                                 component={UpdateOrder}
                             />
