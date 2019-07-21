@@ -121,7 +121,7 @@ class AddItemForm extends React.Component {
                                     options={options}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            {/* <Grid item xs={12} sm={4}>
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -134,8 +134,8 @@ class AddItemForm extends React.Component {
                                     }
                                     message={errors[`batchNo${index}`]}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
+                            </Grid> */}
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -151,7 +151,7 @@ class AddItemForm extends React.Component {
                                     message={errors[`itemQuantity${index}`]}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}

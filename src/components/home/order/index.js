@@ -7,6 +7,7 @@ import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import DownloadExcel from 'components/DownloadExcel'
+import moment from 'moment'
 import styles from './styles'
 
 class Order extends Component {
@@ -27,7 +28,9 @@ class Order extends Component {
             'Nhóm hoá đơn',
             'Mã khách hàng',
             'Họ tên',
-            'Tên đơn vị'
+            'Tên đơn vị',
+            'Ngày tạo',
+            'Cập nhật'
         ]
         let data = []
         orders.forEach(order => {
@@ -40,6 +43,8 @@ class Order extends Component {
                     order.warehouse.warehouse
                 })`
             )
+            row.push(moment(order.createdAt).format('HH:mm DD/MM/YYYY'))
+            row.push(moment(order.updatedAt).format('HH:mm DD/MM/YYYY'))
             data.push(row)
         })
 

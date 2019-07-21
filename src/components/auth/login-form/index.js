@@ -123,7 +123,7 @@ class LoginForm extends React.Component {
                                         variant="contained"
                                         color="primary"
                                         className={classes.submit}>
-                                        Đăng nhập ngay!
+                                        Đăng nhập
                                         {isRequesting ? (
                                             <CircularProgress
                                                 color="secondary"

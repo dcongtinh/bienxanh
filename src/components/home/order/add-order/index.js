@@ -96,7 +96,7 @@ class AddOrder extends React.Component {
             _AddOrderSchema = {}
         array.forEach((item, index) => {
             let _initialValues = {
-                [`batchNo${index}`]: '',
+                // [`batchNo${index}`]: '',
                 [`itemQuantity${index}`]: 1,
                 [`itemPrice${index}`]: '',
                 [`itemNote${index}`]: ''
@@ -104,7 +104,7 @@ class AddOrder extends React.Component {
             initialValues = Object.assign({}, initialValues, _initialValues)
 
             let _addOrderSchema = {
-                [`batchNo${index}`]: Yup.string().required('* Bắt buộc'),
+                // [`batchNo${index}`]: Yup.string().required('* Bắt buộc'),
                 [`itemQuantity${index}`]: Yup.number('Not a numbBar').required(
                     '* Bắt buộc'
                 ),
@@ -137,7 +137,7 @@ class AddOrder extends React.Component {
                                         itemName:
                                             this.state[`itemName${index}`] ||
                                             optionsItem[0].value,
-                                        batchNo: values[`batchNo${index}`],
+                                        // batchNo: values[`batchNo${index}`],
                                         itemQuantity:
                                             values[`itemQuantity${index}`],
                                         itemPrice: values[`itemPrice${index}`],
@@ -165,9 +165,9 @@ class AddOrder extends React.Component {
                             }) => {
                                 let disabled = false
                                 array.forEach((item, index) => {
-                                    disabled |=
-                                        errors[`batchNo${index}`] &&
-                                        touched[`batchNo${index}`]
+                                    // disabled |=
+                                    //     errors[`batchNo${index}`] &&
+                                    //     touched[`batchNo${index}`]
                                     disabled |=
                                         errors[`itemQuantity${index}`] &&
                                         touched[`itemQuantity${index}`]

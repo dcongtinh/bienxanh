@@ -138,11 +138,12 @@ export default class DownloadExcel extends Component {
                         border: styles.border
                     }
                 })
-                ///6. buyerAddress
+                ///6. buyerPhone
+                let time = moment(order.createdAt).toArray()
                 row.push({
-                    value: moment(order.createdAt)
-                        .format('DD/MM/YYYY')
-                        .toString(),
+                    value: `${time[0] % 100}${
+                        time[1] + 1 < 10 ? `0${time[1] + 1}` : time[1] + 1
+                    }${time[2]}`,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -206,7 +207,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///14. payMethod
                 row.push({
-                    value: '',
+                    value: 'CK',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -214,7 +215,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///15. payStatus
                 row.push({
-                    value: '',
+                    value: '1',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -262,7 +263,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///21. batchNo
                 row.push({
-                    value: item.batchNo,
+                    value: '',
                     style: {
                         font: styles.font,
                         border: styles.border
