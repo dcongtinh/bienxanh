@@ -203,6 +203,7 @@ class AddItemForm extends React.Component {
                         this.handleClose()
                     }}
                 />
+                <button>AddMore</button>
             </>
         )
     }

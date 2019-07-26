@@ -5,6 +5,7 @@ class OrderStore {
     @observable hasFetched = false
     @observable orders = []
     @observable order = null
+    @observable count = 0
     @observable isRequesting = false
 
     constructor(rootStore) {
@@ -34,10 +35,17 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async fetchAllOrders() {
+    async fetchAllOrders({ page = 1, itemPerPage = 10 }) {
         this.isRequesting = true
-        const { success, data } = await orderAPI.getAllOrders()
-        if (success) this.orders = data.orders
+        const { success, data } = await orderAPI.getAllOrders({
+            page,
+            itemPerPage
+        })
+        console.log('fetchAllOrders ->', success, data)
+        if (success) {
+            this.orders = [...this.orders, ...data.docs]
+            this.count = data.total
+        }
         this.isRequesting = false
     }
     @action
@@ -50,7 +58,6 @@ class OrderStore {
         if (success) this.order = data.order
         this.isRequesting = false
     }
-
     @action
     async updateOrder({ idOrder, warehouse, buyerName, items }) {
         this.isRequesting = true
