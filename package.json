@@ -64,6 +64,7 @@
         "resolve": "1.10.0",
         "sass-loader": "7.1.0",
         "semver": "6.0.0",
+        "serve": "^11.1.0",
         "style-loader": "0.23.1",
         "styled-components": "^4.3.2",
         "tempa-xlsx": "^0.0.1",
@@ -80,7 +81,9 @@
     "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
-        "test": "node scripts/test.js"
+        "test": "node scripts/test.js",
+        "serve": "serve -s build",
+        "production": "yarn build ; yarn serve"
     },
     "eslintConfig": {
         "extends": "react-app"
