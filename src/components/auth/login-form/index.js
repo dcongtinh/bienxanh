@@ -93,7 +93,7 @@ class LoginForm extends React.Component {
                                                     errors.username &&
                                                     touched.username
                                                 }
-                                                helperText={errors.username}
+                                                message={errors.username}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -108,7 +108,7 @@ class LoginForm extends React.Component {
                                                     errors.password &&
                                                     touched.password
                                                 }
-                                                helperText={errors.password}
+                                                message={errors.password}
                                             />
                                         </Grid>
                                     </Grid>

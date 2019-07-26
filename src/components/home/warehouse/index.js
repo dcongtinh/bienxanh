@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import IconButton from '@material-ui/core/IconButton'
+import EditIcon from '@material-ui/icons/Edit'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
@@ -27,7 +28,29 @@ class Warehouse extends Component {
             'Tên kho',
             'Tên khách hàng',
             'Tên đơn vị',
-            'Mã số thuế'
+            'Mã số thuế',
+            {
+                name: 'Chỉnh sửa',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <div className={classes.editOption}>
+                                <IconButton
+                                    onClick={() => {
+                                        this.props.history.push(
+                                            `/dashboard/warehouse/${
+                                                wareHouses[tableMeta.rowIndex]
+                                                    ._id
+                                            }`
+                                        )
+                                    }}>
+                                    <EditIcon />
+                                </IconButton>
+                            </div>
+                        )
+                    }
+                }
+            }
         ]
         let data = []
         wareHouses.forEach(wareHouse => {

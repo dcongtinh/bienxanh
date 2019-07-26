@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
-import { CircularProgress } from '@material-ui/core'
+import CheckBox from '@material-ui/core/CheckBox'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
@@ -49,9 +50,7 @@ class Order extends Component {
             rowsPerPage: numberOfRows
         })
     }
-    componentWillReceiveProps(nextProps) {
-        console.log('nextProps', JSON.parse(JSON.stringify(nextProps.orders)))
-    }
+
     render() {
         let { orders, count, classes } = this.props
         const columns = [
@@ -65,6 +64,11 @@ class Order extends Component {
                             value={value}
                             tableMeta={tableMeta}
                             updateValue={updateValue}
+                            updateOrder={this.props.updateOrder}
+                            idOrder={orders[tableMeta.rowIndex]._id}
+                            warehouse={orders[tableMeta.rowIndex].warehouse}
+                            items={orders[tableMeta.rowIndex].items}
+                            fetchAllOrders={this.props.fetchAllOrders}
                         />
                     )
                 }
@@ -75,9 +79,23 @@ class Order extends Component {
             {
                 name: 'Chỉnh sửa',
                 options: {
-                    customBodyRender: (value, tableMeta, updateValue) => (
-                        <div>Edit</div>
-                    )
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <div className={classes.editOption}>
+                                <IconButton
+                                    onClick={() => {
+                                        this.props.history.push(
+                                            `/dashboard/orders/${
+                                                orders[tableMeta.rowIndex]._id
+                                            }`
+                                        )
+                                    }}>
+                                    <EditIcon />
+                                </IconButton>
+                                <CheckBox />
+                            </div>
+                        )
+                    }
                 }
             }
         ]
@@ -168,9 +186,9 @@ class Order extends Component {
                 return false
             }
             // onRowClick: (rowData, rowMeta) => {
-            //     this.props.history.push(
-            //         `/dashboard/orders/${orders[rowMeta.dataIndex]._id}`
-            //     )
+            // this.props.history.push(
+            //     `/dashboard/orders/${orders[rowMeta.dataIndex]._id}`
+            // )
             // }
         }
 

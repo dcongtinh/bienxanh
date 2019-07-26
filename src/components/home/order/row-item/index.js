@@ -39,7 +39,6 @@ export default class RowItem extends Component {
     }
 
     getPrefix = value => {
-        console.log(this.props.value)
         const values = this.props.value.split('/')
         const prefix = values[0] + '/' + values[1] + '/'
         return prefix
@@ -69,8 +68,16 @@ export default class RowItem extends Component {
     }
 
     handleSave = () => {
-        console.log('Blur')
+        const { idOrder, warehouse, items } = this.props
         this.setState({ readOnly: true })
+        console.log(this.getValue())
+        this.props.updateOrder({
+            idOrder,
+            warehouse,
+            items,
+            buyerName: this.getValue()
+        })
+        // this.fe
     }
 
     handleKeyPress = e => {
@@ -93,7 +100,6 @@ export default class RowItem extends Component {
     }
 
     render() {
-        // return <div>{this.getPrefix()} - {this.props.value}</div>
         const { readOnly } = this.state
         const prefix = this.getPrefix()
         const code = this.getCode()

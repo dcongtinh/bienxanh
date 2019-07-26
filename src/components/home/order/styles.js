@@ -18,5 +18,8 @@ export default theme => ({
     },
     spacer: {
         flexGrow: 1
+    },
+    editOption: {
+        display: 'flex'
     }
 })

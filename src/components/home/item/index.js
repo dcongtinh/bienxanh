@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
@@ -22,7 +23,31 @@ class Item extends Component {
     }
     render() {
         let { items, classes } = this.props
-        const columns = ['Mã hàng', 'Tên hàng']
+        const columns = [
+            'Mã hàng',
+            'Tên hàng',
+            {
+                name: 'Chỉnh sửa',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <div className={classes.editOption}>
+                                <IconButton
+                                    onClick={() => {
+                                        this.props.history.push(
+                                            `/dashboard/item/${
+                                                items[tableMeta.rowIndex]._id
+                                            }`
+                                        )
+                                    }}>
+                                    <EditIcon />
+                                </IconButton>
+                            </div>
+                        )
+                    }
+                }
+            }
+        ]
         let data = []
         items.forEach(item => {
             let row = []

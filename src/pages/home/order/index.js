@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress'
+// import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import Order from 'components/home/order'
 import { inject, observer } from 'mobx-react'
@@ -8,8 +8,10 @@ import { inject, observer } from 'mobx-react'
 @inject(({ order }) => ({
     fetchAllOrders: props => order.fetchAllOrders(props),
     deleteOrders: ({ ordersListId }) => order.deleteOrders({ ordersListId }),
+    updateOrder: object => order.updateOrder(object),
     orders: JSON.parse(JSON.stringify(order.orders)),
     count: order.count,
+    hasFetched: order.hasFetched,
     isRequesting: order.isRequesting
 }))
 @observer

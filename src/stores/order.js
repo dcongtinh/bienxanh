@@ -73,7 +73,9 @@ class OrderStore {
                 message: `Cập nhật hoá đơn thành công!`,
                 variant: 'success'
             })
-            this.fetchOrder({ idOrder })
+            // this.fetchOrder({ idOrder })
+            this.orders = []
+            this.fetchAllOrders({})
         } else {
             this.rootStore.alert.show({
                 message: data.message,
@@ -93,7 +95,8 @@ class OrderStore {
                 message: `Xoá hoá đơn thành công!`,
                 variant: 'success'
             })
-            this.fetchAllOrders()
+            this.orders = []
+            this.fetchAllOrders({})
         } else
             this.rootStore.alert.show({
                 message: data.message,
