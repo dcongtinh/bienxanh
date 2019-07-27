@@ -189,9 +189,7 @@ class UpdateOrder extends React.Component {
                                 // console.log(items)
                                 this.props.updateOrder({
                                     idOrder,
-                                    warehouse,
-                                    buyerName,
-                                    items
+                                    data: { warehouse, buyerName, items }
                                 })
                             }}>
                             {({
@@ -236,7 +234,7 @@ class UpdateOrder extends React.Component {
                                                     value={values.buyerName}
                                                     label="Họ tên"
                                                     name="buyerName"
-                                                    noRequired
+                                                    norequired
                                                     InputProps={{
                                                         startAdornment: (
                                                             <InputAdornment position="start">

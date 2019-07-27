@@ -41,7 +41,6 @@ class OrderStore {
             page,
             itemPerPage
         })
-        console.log('fetchAllOrders ->', success, data)
         if (success) {
             this.orders = [...this.orders, ...data.docs]
             this.count = data.total
@@ -59,15 +58,11 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async updateOrder({ idOrder, warehouse, buyerName, items, payStatus }) {
-        this.isRequesting = true
-        console.log(payStatus)
+    async updateOrder({ idOrder, data: updateData }) {
+        //this.isRequesting = true
         const { success, data } = await orderAPI.updateOrder({
             idOrder,
-            warehouse,
-            buyerName,
-            items,
-            payStatus
+            data: updateData
         })
 
         if (success) {
@@ -75,16 +70,16 @@ class OrderStore {
                 message: `Cập nhật hoá đơn thành công!`,
                 variant: 'success'
             })
-            // this.fetchOrder({ idOrder })
-            this.orders = []
-            this.fetchAllOrders({})
+            this.fetchOrder({ idOrder })
+            // this.orders = []
+            // this.fetchAllOrders({})
         } else {
             this.rootStore.alert.show({
                 message: data.message,
                 variant: 'error'
             })
         }
-        this.isRequesting = false
+        //this.isRequesting = false
     }
     @action
     async deleteOrders({ ordersListId }) {

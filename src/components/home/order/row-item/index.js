@@ -7,8 +7,16 @@ import CheckIcon from '@material-ui/icons/Check'
 
 const styles = theme => ({
     closeIcon: {
-        height: 16,
-        width: 16
+        height: 20,
+        width: 20,
+        cursor: 'pointer',
+        color: theme.palette.danger.dark
+    },
+    checkIcon: {
+        height: 20,
+        width: 20,
+        cursor: 'pointer',
+        color: theme.palette.success.dark
     }
 })
 const View = styled.div`
@@ -23,21 +31,16 @@ const Edit = styled.div`
         font-size: 14px;
         width: 80px;
         border: 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #dfe3e8;
         outline: 0;
         background: transparent;
+        padding-bottom: 4px;
+        margin-top: 4px;
     }
 `
 
 const Prefix = styled.div`
     /* margin-right: 4px; */
-`
-
-const Save = styled.button`
-    border: 1px solid #0984e3;
-    border-radius: 2px;
-    color: #0984e3;
-    background: #fff;
 `
 
 class RowItem extends Component {
@@ -47,24 +50,25 @@ class RowItem extends Component {
         updateValue: PropTypes.func
     }
 
+    constructor(props) {
+        super(props)
+        let values = props.value.split('/')
+        this.state = {
+            readOnly: true,
+            prefix: values[0] + '/' + values[1] + '/',
+            code: values[2],
+            value: props.value
+        }
+    }
     getPrefix = value => {
-        const values = this.props.value.split('/')
+        const values = this.state.value.split('/')
         const prefix = values[0] + '/' + values[1] + '/'
         return prefix
     }
 
     getCode = value => {
-        const values = this.props.value.split('/')
+        const values = this.state.value.split('/')
         return values[2]
-    }
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            readOnly: true,
-            prefix: this.getPrefix(props.value),
-            code: this.getCode(props.value)
-        }
     }
 
     getValue = () => {
@@ -76,13 +80,17 @@ class RowItem extends Component {
         this.setState({ readOnly: false })
     }
 
-    handleSave = () => {
-        const { idOrder } = this.props
+    handleClose = () => {
         this.setState({ readOnly: true })
-        this.props.updateOrder({
+    }
+
+    handleSave = async () => {
+        const { idOrder } = this.props
+        await this.props.updateOrder({
             idOrder,
-            buyerName: this.getValue()
+            data: { buyerName: this.getValue() }
         })
+        this.setState({ readOnly: true })
         // this.fe
     }
 
@@ -100,33 +108,42 @@ class RowItem extends Component {
                 code: value
             },
             () => {
-                updateValue(this.getValue())
+                const value = this.getValue()
+                updateValue(value)
+                this.setState({
+                    value
+                })
             }
         )
     }
 
     render() {
+        let { classes } = this.props
         const { readOnly } = this.state
         const prefix = this.getPrefix()
         const code = this.getCode()
-        console.log('abcccc')
         if (!readOnly) {
             return (
                 <Edit>
                     <Prefix>{prefix}</Prefix>
                     <input
+                        autoFocus
                         value={code}
-                        // control={<TextField  />}
                         onChange={this.handleChangeValue}
                         onKeyPress={this.handleKeyPress}
                     />
-                    <CloseIcon size={16} />
-                    <CheckIcon />
-                    {/* <Save onClick={this.handleSave}>Lưu</Save> */}
+                    <CloseIcon
+                        className={classes.closeIcon}
+                        onClick={this.handleClose}
+                    />
+                    <CheckIcon
+                        className={classes.checkIcon}
+                        onClick={this.handleSave}
+                    />
                 </Edit>
             )
         }
-        return <View onClick={this.handleClick}>{this.props.value}</View>
+        return <View onClick={this.handleClick}>{this.state.value}</View>
     }
 }
 

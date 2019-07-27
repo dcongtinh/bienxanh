@@ -179,7 +179,7 @@ class AddItemForm extends React.Component {
                                         touched[`itemNote${index}`]
                                     }
                                     message={errors[`itemNote${index}`]}
-                                    noRequired
+                                    norequired
                                 />
                             </Grid>
                         </Grid>
@@ -196,9 +196,7 @@ class AddItemForm extends React.Component {
                         items.splice(this.state.indexItem, 1)
                         this.props.updateOrder({
                             idOrder,
-                            warehouse,
-                            buyerName,
-                            items
+                            data: { warehouse, buyerName, items }
                         })
                         this.handleClose()
                     }}

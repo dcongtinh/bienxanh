@@ -148,7 +148,9 @@ class Profile extends React.Component {
                                                         touched.username
                                                     }
                                                     message={errors.username}
-                                                    disabled
+                                                    InputProps={{
+                                                        readOnly: true
+                                                    }}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -163,7 +165,9 @@ class Profile extends React.Component {
                                                         touched.email
                                                     }
                                                     message={errors.email}
-                                                    disabled
+                                                    InputProps={{
+                                                        readOnly: true
+                                                    }}
                                                 />
                                             </Grid>
                                         </Grid>

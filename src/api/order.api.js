@@ -11,13 +11,10 @@ const orderAPI = {
     getAllOrders: ({ page = 1, itemPerPage = 10 }) =>
         axios.get(c(`/get-orders?page=${page}&itemPerPage=${itemPerPage}`)),
     getOrder: ({ idOrder }) => axios.post(c('/get-order'), { idOrder }),
-    updateOrder: ({ idOrder, warehouse, buyerName, items, payStatus }) =>
+    updateOrder: ({ idOrder, data }) =>
         axios.put(c('/update'), {
             idOrder,
-            warehouse,
-            buyerName,
-            items,
-            payStatus
+            data
         }),
     deleteOrders: ({ ordersListId }) =>
         axios.post(c('/delete'), { ordersListId })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import CircularProgress from '@material-ui/core/CircularProgress'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import Order from 'components/home/order'
 import { inject, observer } from 'mobx-react'
@@ -21,7 +21,7 @@ class OrderPage extends Component {
     }
 
     render() {
-        // if (this.props.isRequesting) return <CircularProgress />
+        if (!this.props.orders) return <CircularProgress />
         return <Order {...this.props} />
     }
 }

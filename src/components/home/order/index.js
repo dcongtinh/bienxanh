@@ -23,6 +23,7 @@ class Order extends Component {
             selectedRows: [],
             rowsSelected: [],
             rowsPerPage: 10,
+            checkedArray: [],
             page: 0
         }
     }
@@ -50,12 +51,20 @@ class Order extends Component {
             rowsPerPage: numberOfRows
         })
     }
-
+    componentWillReceiveProps = () => {
+        if (!this.state.checkedArray.length) {
+            let checkedArray = []
+            this.props.orders.forEach((order, index) => {
+                checkedArray[index] = order.payStatus
+            })
+            this.setState({ checkedArray })
+        }
+    }
     render() {
         let { orders, count, classes } = this.props
         const columns = [
-            'Nhóm hoá đơn',
-            'Mã khách hàng',
+            'Nhóm',
+            'Mã',
             {
                 name: 'Họ tên',
                 options: {
@@ -77,7 +86,8 @@ class Order extends Component {
                 name: 'Chỉnh sửa',
                 options: {
                     customBodyRender: (value, tableMeta, updateValue) => {
-                        let { payStatus } = orders[tableMeta.rowIndex]
+                        let { checkedArray } = this.state
+                        let payStatus = checkedArray[tableMeta.rowIndex]
                         return (
                             <div className={classes.editOption}>
                                 <IconButton
@@ -91,20 +101,19 @@ class Order extends Component {
                                     <EditIcon />
                                 </IconButton>
                                 <Checkbox
-                                    checked={
-                                        typeof payStatus === 'boolean'
-                                            ? payStatus
-                                            : false
-                                    }
+                                    checked={Boolean(payStatus)}
                                     onChange={() => {
+                                        checkedArray[
+                                            tableMeta.rowIndex
+                                        ] = !payStatus
                                         this.props.updateOrder({
                                             idOrder:
                                                 orders[tableMeta.rowIndex]._id,
-                                            payStatus:
-                                                typeof payStatus === 'boolean'
-                                                    ? !payStatus
-                                                    : false
+                                            data: {
+                                                payStatus: !payStatus
+                                            }
                                         })
+                                        this.setState({ checkedArray })
                                     }}
                                 />
                             </div>
@@ -205,8 +214,6 @@ class Order extends Component {
             // )
             // }
         }
-
-        // if (this.props.isRequesting) return <CircularProgress />
 
         return (
             <>

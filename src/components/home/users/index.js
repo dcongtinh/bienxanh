@@ -3,6 +3,7 @@ import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
@@ -22,7 +23,33 @@ class Users extends Component {
     }
     render() {
         let { users, classes } = this.props
-        const columns = ['Họ', 'Tên', 'Tài khoản', 'Email']
+        const columns = [
+            'Họ',
+            'Tên',
+            'Tài khoản',
+            'Email',
+            {
+                name: 'Chỉnh sửa',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <div className={classes.editOption}>
+                                <IconButton
+                                    onClick={() => {
+                                        this.props.history.push(
+                                            `/dashboard/profile/${
+                                                users[tableMeta.rowIndex]._id
+                                            }`
+                                        )
+                                    }}>
+                                    <EditIcon />
+                                </IconButton>
+                            </div>
+                        )
+                    }
+                }
+            }
+        ]
         let data = []
         users.forEach(user => {
             let row = []
