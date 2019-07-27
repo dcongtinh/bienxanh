@@ -255,7 +255,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///20. itemNote
                 row.push({
-                    value: item.itemNote,
+                    value: item.itemNote || '',
                     style: {
                         font: styles.font,
                         border: styles.border

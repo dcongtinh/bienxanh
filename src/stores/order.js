@@ -34,16 +34,25 @@ class OrderStore {
         }
         this.isRequesting = false
     }
+    // @action
+    // async fetchAllOrders({ page = 1, itemPerPage = 10 }) {
+    //     this.isRequesting = true
+    //     const { success, data } = await orderAPI.getAllOrders({
+    //         page,
+    //         itemPerPage
+    //     })
+    //     if (success) {
+    //         this.orders = [...this.orders, ...data.docs]
+    //         this.count = data.total
+    //     }
+    //     this.isRequesting = false
+    // }
     @action
-    async fetchAllOrders({ page = 1, itemPerPage = 10 }) {
+    async fetchAllOrders() {
         this.isRequesting = true
-        const { success, data } = await orderAPI.getAllOrders({
-            page,
-            itemPerPage
-        })
+        const { success, data } = await orderAPI.getAllOrders()
         if (success) {
-            this.orders = [...this.orders, ...data.docs]
-            this.count = data.total
+            this.orders = data
         }
         this.isRequesting = false
     }
@@ -93,7 +102,7 @@ class OrderStore {
                 variant: 'success'
             })
             this.orders = []
-            this.fetchAllOrders({})
+            this.fetchAllOrders()
         } else
             this.rootStore.alert.show({
                 message: data.message,

@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
-import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
-import Checkbox from '@material-ui/core/Checkbox'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
@@ -12,6 +10,7 @@ import DownloadExcel from 'components/DownloadExcel'
 import moment from 'moment'
 import styles from './styles'
 import RowItem from './row-item'
+import RowEdit from './row-edit'
 import { observer } from 'mobx-react'
 
 @observer
@@ -85,40 +84,14 @@ class Order extends Component {
             {
                 name: 'Chỉnh sửa',
                 options: {
-                    customBodyRender: (value, tableMeta, updateValue) => {
-                        let { checkedArray } = this.state
-                        let payStatus = checkedArray[tableMeta.rowIndex]
-                        return (
-                            <div className={classes.editOption}>
-                                <IconButton
-                                    onClick={() => {
-                                        this.props.history.push(
-                                            `/dashboard/orders/${
-                                                orders[tableMeta.rowIndex]._id
-                                            }`
-                                        )
-                                    }}>
-                                    <EditIcon />
-                                </IconButton>
-                                <Checkbox
-                                    checked={Boolean(payStatus)}
-                                    onChange={() => {
-                                        checkedArray[
-                                            tableMeta.rowIndex
-                                        ] = !payStatus
-                                        this.props.updateOrder({
-                                            idOrder:
-                                                orders[tableMeta.rowIndex]._id,
-                                            data: {
-                                                payStatus: !payStatus
-                                            }
-                                        })
-                                        this.setState({ checkedArray })
-                                    }}
-                                />
-                            </div>
-                        )
-                    }
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <RowEdit
+                            history={this.props.history}
+                            updateOrder={this.props.updateOrder}
+                            idOrder={orders[tableMeta.rowIndex]._id}
+                            checked={orders[tableMeta.rowIndex].payStatus}
+                        />
+                    )
                 }
             }
         ]
@@ -203,11 +176,7 @@ class Order extends Component {
                     }}>
                     <RemoveCircleIcon />
                 </IconButton>
-            ),
-            customSearch: (searchQuery, currentRow, columns) => {
-                console.log(searchQuery)
-                return false
-            }
+            )
             // onRowClick: (rowData, rowMeta) => {
             // this.props.history.push(
             //     `/dashboard/orders/${orders[rowMeta.dataIndex]._id}`

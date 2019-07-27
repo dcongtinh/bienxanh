@@ -8,8 +8,9 @@ const c = path => {
 const orderAPI = {
     addOrder: ({ warehouse, items, owner }) =>
         axios.post(c('/add'), { warehouse, items, owner }),
-    getAllOrders: ({ page = 1, itemPerPage = 10 }) =>
-        axios.get(c(`/get-orders?page=${page}&itemPerPage=${itemPerPage}`)),
+    // getAllOrders: ({ page = 1, itemPerPage = 10 }) =>
+    //     axios.get(c(`/get-orders?page=${page}&itemPerPage=${itemPerPage}`)),
+    getAllOrders: () => axios.get(c(`/get-orders`)),
     getOrder: ({ idOrder }) => axios.post(c('/get-order'), { idOrder }),
     updateOrder: ({ idOrder, data }) =>
         axios.put(c('/update'), {

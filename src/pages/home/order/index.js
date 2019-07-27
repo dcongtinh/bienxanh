@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @inject(({ order }) => ({
-    fetchAllOrders: props => order.fetchAllOrders(props),
+    fetchAllOrders: () => order.fetchAllOrders(),
     deleteOrders: ({ ordersListId }) => order.deleteOrders({ ordersListId }),
     updateOrder: object => order.updateOrder(object),
     orders: JSON.parse(JSON.stringify(order.orders)),
@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react'
 @observer
 class OrderPage extends Component {
     componentDidMount() {
-        this.props.fetchAllOrders({})
+        this.props.fetchAllOrders()
     }
 
     render() {
