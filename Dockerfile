@@ -6,15 +6,16 @@ RUN mkdir -p /opt/app
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
-# # install dependencies first, in a different location for easier app bind mounting for local development
-WORKDIR /opt
-COPY package.json package-lock.json* *.lock ./
-RUN yarn install
-ENV PATH /opt/node_modules/.bin:$PATH
-
 # copy in our source code last, as it changes the most
 WORKDIR /opt/app
 COPY . /opt/app
+
+# # install dependencies first, in a different location for easier app bind mounting for local development
+# WORKDIR /opt
+# COPY package.json package-lock.json* *.lock ./
+RUN yarn install
+
+ENV PATH /opt/node_modules/.bin:$PATH
 
 RUN ls -l
 

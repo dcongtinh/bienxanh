@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import CloseIcon from '@material-ui/icons/Close'
+import CheckIcon from '@material-ui/icons/Check'
 
+const styles = theme => ({
+    closeIcon: {
+        height: 16,
+        width: 16
+    }
+})
 const View = styled.div`
     cursor: pointer;
 `
@@ -31,7 +40,7 @@ const Save = styled.button`
     background: #fff;
 `
 
-export default class RowItem extends Component {
+class RowItem extends Component {
     static propTypes = {
         value: PropTypes.string,
         tableMeta: PropTypes.any,
@@ -68,13 +77,10 @@ export default class RowItem extends Component {
     }
 
     handleSave = () => {
-        const { idOrder, warehouse, items } = this.props
+        const { idOrder } = this.props
         this.setState({ readOnly: true })
-        console.log(this.getValue())
         this.props.updateOrder({
             idOrder,
-            warehouse,
-            items,
             buyerName: this.getValue()
         })
         // this.fe
@@ -103,6 +109,7 @@ export default class RowItem extends Component {
         const { readOnly } = this.state
         const prefix = this.getPrefix()
         const code = this.getCode()
+        console.log('abcccc')
         if (!readOnly) {
             return (
                 <Edit>
@@ -113,10 +120,14 @@ export default class RowItem extends Component {
                         onChange={this.handleChangeValue}
                         onKeyPress={this.handleKeyPress}
                     />
-                    <Save onClick={this.handleSave}>Lưu</Save>
+                    <CloseIcon size={16} />
+                    <CheckIcon />
+                    {/* <Save onClick={this.handleSave}>Lưu</Save> */}
                 </Edit>
             )
         }
         return <View onClick={this.handleClick}>{this.props.value}</View>
     }
 }
+
+export default withStyles(styles)(RowItem)

@@ -59,13 +59,15 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async updateOrder({ idOrder, warehouse, buyerName, items }) {
+    async updateOrder({ idOrder, warehouse, buyerName, items, payStatus }) {
         this.isRequesting = true
+        console.log(payStatus)
         const { success, data } = await orderAPI.updateOrder({
             idOrder,
             warehouse,
             buyerName,
-            items
+            items,
+            payStatus
         })
 
         if (success) {

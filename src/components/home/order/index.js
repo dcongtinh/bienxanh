@@ -3,7 +3,7 @@ import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
-import CheckBox from '@material-ui/core/CheckBox'
+import Checkbox from '@material-ui/core/Checkbox'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
@@ -66,9 +66,6 @@ class Order extends Component {
                             updateValue={updateValue}
                             updateOrder={this.props.updateOrder}
                             idOrder={orders[tableMeta.rowIndex]._id}
-                            warehouse={orders[tableMeta.rowIndex].warehouse}
-                            items={orders[tableMeta.rowIndex].items}
-                            fetchAllOrders={this.props.fetchAllOrders}
                         />
                     )
                 }
@@ -80,6 +77,7 @@ class Order extends Component {
                 name: 'Chỉnh sửa',
                 options: {
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        let { payStatus } = orders[tableMeta.rowIndex]
                         return (
                             <div className={classes.editOption}>
                                 <IconButton
@@ -92,7 +90,23 @@ class Order extends Component {
                                     }}>
                                     <EditIcon />
                                 </IconButton>
-                                <CheckBox />
+                                <Checkbox
+                                    checked={
+                                        typeof payStatus === 'boolean'
+                                            ? payStatus
+                                            : false
+                                    }
+                                    onChange={() => {
+                                        this.props.updateOrder({
+                                            idOrder:
+                                                orders[tableMeta.rowIndex]._id,
+                                            payStatus:
+                                                typeof payStatus === 'boolean'
+                                                    ? !payStatus
+                                                    : false
+                                        })
+                                    }}
+                                />
                             </div>
                         )
                     }
