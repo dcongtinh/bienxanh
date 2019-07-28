@@ -102,12 +102,12 @@ class App extends React.Component {
                                 component={Item}
                             />
                             <Route
-                                path="/dashboard/item/add"
+                                path="/dashboard/items/add"
                                 exact
                                 component={AddItem}
                             />
                             <Route
-                                path="/dashboard/item/:idItem"
+                                path="/dashboard/items/:idItem"
                                 exact
                                 component={UpdateItem}
                             />

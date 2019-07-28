@@ -35,7 +35,7 @@ class Item extends Component {
                                 <IconButton
                                     onClick={() => {
                                         this.props.history.push(
-                                            `/dashboard/item/${
+                                            `/dashboard/items/${
                                                 items[tableMeta.rowIndex]._id
                                             }`
                                         )
@@ -120,7 +120,7 @@ class Item extends Component {
             ),
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(
-                    `/dashboard/item/${items[rowMeta.dataIndex]._id}`
+                    `/dashboard/items/${items[rowMeta.dataIndex]._id}`
                 )
             }
         }
@@ -134,7 +134,7 @@ class Item extends Component {
                         size="small"
                         variant="outlined"
                         onClick={() => {
-                            this.props.history.push('/dashboard/item/add')
+                            this.props.history.push('/dashboard/items/add')
                         }}>
                         <AddIcon className={classes.addIcon} />
                         Add

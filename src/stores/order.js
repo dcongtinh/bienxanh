@@ -12,12 +12,13 @@ class OrderStore {
         this.rootStore = rootStore
     }
     @action
-    async addOrder({ warehouse, items, owner, callback }) {
+    async addOrder({ warehouse, items, owner, createdAt, callback }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.addOrder({
             warehouse,
             items,
-            owner
+            owner,
+            createdAt
         })
 
         if (success) {

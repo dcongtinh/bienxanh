@@ -74,8 +74,8 @@ class Order extends Component {
                     order.warehouse.warehouse
                 })`
             )
-            row.push(moment(order.createdAt).format('HH:mm DD/MM/YYYY'))
-            row.push(moment(order.updatedAt).format('HH:mm DD/MM/YYYY'))
+            row.push(moment(order.createdAt).format('DD/MM/YYYY'))
+            row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
             data.push(row)
         })
 

@@ -6,9 +6,14 @@ import { Provider } from 'mobx-react'
 import stores from 'stores'
 import * as serviceWorker from './serviceWorker'
 
+import MomentUtils from '@date-io/moment'
+import { MuiPickersUtilsProvider } from 'material-ui-pickers'
+
 ReactDOM.render(
     <Provider {...stores}>
-        <App />
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+            <App />
+        </MuiPickersUtilsProvider>
     </Provider>,
     document.getElementById('root')
 )

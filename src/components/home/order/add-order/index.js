@@ -1,3 +1,4 @@
+import 'date-fns'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -10,6 +11,8 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import SendIcon from '@material-ui/icons/Send'
 import AddItemForm from './AddItemForm'
 import Select from 'components/Input/Select'
+import { InlineDatePicker } from 'material-ui-pickers'
+import moment from 'moment'
 
 const styles = theme => ({
     '@global': {
@@ -59,7 +62,8 @@ const styles = theme => ({
 
 class AddOrder extends React.Component {
     state = {
-        count: 1
+        count: 1,
+        date: new Date()
     }
     handleChangeCount = count => {
         this.setState({ count })
@@ -69,6 +73,9 @@ class AddOrder extends React.Component {
             [e.target.name]: e.target.value,
             [`error${e.target.name}`]: false
         })
+    }
+    handleDateChange = date => {
+        this.setState({ date })
     }
     render() {
         let { count } = this.state
@@ -131,6 +138,7 @@ class AddOrder extends React.Component {
                                 let warehouse =
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
+                                let { date } = this.state
                                 let items = []
                                 array.forEach((item, index) => {
                                     let _item = {
@@ -149,6 +157,7 @@ class AddOrder extends React.Component {
                                     warehouse,
                                     items,
                                     owner: me._id,
+                                    createdAt: moment(date).format(),
                                     callback: () => {
                                         resetForm()
                                         this.setState({ count: 1 })
@@ -178,7 +187,7 @@ class AddOrder extends React.Component {
                                 return (
                                     <Form>
                                         <Grid item container spacing={2}>
-                                            <Grid item xs={12}>
+                                            <Grid item xs={12} sm={8}>
                                                 <Select
                                                     name="warehouse"
                                                     value={
@@ -189,6 +198,18 @@ class AddOrder extends React.Component {
                                                     label="Nhập kho"
                                                     onChange={this.handleChange}
                                                     options={optionsWarehouse}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={4}>
+                                                <InlineDatePicker
+                                                    name="date"
+                                                    variant="outlined"
+                                                    format="DD/MM/YYYY"
+                                                    label="Ngày nhập"
+                                                    value={this.state.date}
+                                                    onChange={
+                                                        this.handleDateChange
+                                                    }
                                                 />
                                             </Grid>
                                             <AddItemForm

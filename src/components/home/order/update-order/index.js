@@ -116,9 +116,6 @@ class UpdateOrder extends React.Component {
             _AddOrderSchema = {}
         array.forEach((item, index) => {
             let _initialValues = {
-                // [`batchNo${index}`]: orderItems[index]
-                //     ? orderItems[index].batchNo
-                //     : '',
                 [`itemQuantity${index}`]: orderItems[index]
                     ? orderItems[index].itemQuantity
                     : '',
@@ -132,7 +129,6 @@ class UpdateOrder extends React.Component {
             initialValues = Object.assign({}, initialValues, _initialValues)
 
             let _addOrderSchema = {
-                // [`batchNo${index}`]: Yup.string().required('* Bắt buộc'),
                 [`itemQuantity${index}`]: Yup.number('Not a number').required(
                     '* Bắt buộc'
                 ),

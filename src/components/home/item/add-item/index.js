@@ -9,11 +9,7 @@ import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SendIcon from '@material-ui/icons/Send'
-
-const AddItemSchema = Yup.object().shape({
-    itemNameCode: Yup.string().required('* Bắt buộc'),
-    itemName: Yup.string().required('* Bắt buộc')
-})
+import ItemPriceForm from './ItemPriceForm'
 
 const styles = theme => ({
     '@global': {
@@ -46,16 +42,45 @@ const styles = theme => ({
     }
 })
 
-let initialValues = {
-    itemNameCode: '',
-    itemName: ''
-}
 class AddItem extends React.Component {
     state = {
+        count: 1,
         siteAdmin: false
     }
+    handleChangeCount = count => {
+        this.setState({ count })
+    }
+    handleCheckbox = (name, value) => {
+        this.setState({ [name]: value })
+    }
     render() {
+        let { count } = this.state
         let { classes, isRequesting } = this.props
+        let array = []
+        for (let i = 0; i < count; ++i) array.push('')
+
+        let initialValues = {
+                itemNameCode: '',
+                itemName: ''
+            },
+            _AddItemSchema = {
+                itemNameCode: Yup.string().required('* Bắt buộc'),
+                itemName: Yup.string().required('* Bắt buộc')
+            }
+        array.forEach((item, index) => {
+            let _initialValues = {
+                [`itemPrice${index}`]: 1000
+            }
+            initialValues = Object.assign({}, initialValues, _initialValues)
+
+            let _addItemSchema = {
+                [`itemPrice${index}`]: Yup.number('Not a numbBar').required(
+                    '* Bắt buộc'
+                )
+            }
+            _AddItemSchema = Object.assign({}, _AddItemSchema, _addItemSchema)
+        })
+        let AddItemSchema = Yup.object().shape(_AddItemSchema)
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -66,9 +91,19 @@ class AddItem extends React.Component {
                             validationSchema={AddItemSchema}
                             onSubmit={(values, { resetForm }) => {
                                 let { itemNameCode, itemName } = values
+                                let itemPrices = []
+                                array.forEach((item, index) => {
+                                    itemPrices.push({
+                                        itemPrice: values[`itemPrice${index}`],
+                                        areaPrice: this.state[
+                                            `areaPrice${index}`
+                                        ]
+                                    })
+                                })
                                 this.props.addItem({
                                     itemNameCode,
                                     itemName,
+                                    itemPrices,
                                     callback: () => resetForm()
                                 })
                             }}>
@@ -79,63 +114,89 @@ class AddItem extends React.Component {
                                 handleChange,
                                 handleBlur,
                                 handleSubmit
-                            }) => (
-                                <Form>
-                                    <Grid item container spacing={2}>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.itemNameCode}
-                                                label="Mã hàng hoá/dịch vụ"
-                                                name="itemNameCode"
-                                                error={
-                                                    errors.itemNameCode &&
-                                                    touched.itemNameCode
+                            }) => {
+                                let disabled = false
+                                array.forEach((item, index) => {
+                                    disabled |=
+                                        errors[`itemPrice${index}`] &&
+                                        touched[`itemPrice${index}`]
+                                })
+                                return (
+                                    <Form>
+                                        <Grid item container spacing={2}>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.itemNameCode}
+                                                    label="Mã hàng hoá/dịch vụ"
+                                                    name="itemNameCode"
+                                                    error={
+                                                        errors.itemNameCode &&
+                                                        touched.itemNameCode
+                                                    }
+                                                    message={
+                                                        errors.itemNameCode
+                                                    }
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.itemName}
+                                                    label="Tên hàng hoá/dịch vụ"
+                                                    name="itemName"
+                                                    error={
+                                                        errors.itemName &&
+                                                        touched.itemName
+                                                    }
+                                                    message={errors.itemName}
+                                                />
+                                            </Grid>
+                                            <ItemPriceForm
+                                                array={array}
+                                                handleChange={handleChange}
+                                                handleChangeCount={
+                                                    this.handleChangeCount
                                                 }
-                                                message={errors.itemNameCode}
+                                                handleCheckbox={
+                                                    this.handleCheckbox
+                                                }
+                                                handleBlur={handleBlur}
+                                                values={values}
+                                                errors={errors}
+                                                touched={touched}
+                                                states={this.state}
                                             />
                                         </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.itemName}
-                                                label="Tên hàng hoá/dịch vụ"
-                                                name="itemName"
-                                                error={
-                                                    errors.itemName &&
-                                                    touched.itemName
-                                                }
-                                                message={errors.itemName}
+                                        <Button
+                                            disabled={Boolean(
+                                                isRequesting ||
+                                                    errors.itemNameCode ||
+                                                    errors.itemName ||
+                                                    disabled
+                                            )}
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}>
+                                            <SendIcon
+                                                className={classes.iconSubmit}
                                             />
-                                        </Grid>
-                                    </Grid>
-                                    <Button
-                                        disabled={Boolean(
-                                            isRequesting ||
-                                                errors.itemNameCode ||
-                                                errors.itemName
-                                        )}
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.submit}>
-                                        <SendIcon
-                                            className={classes.iconSubmit}
-                                        />
-                                        Gửi
-                                        {isRequesting ? (
-                                            <CircularProgress
-                                                color="secondary"
-                                                className={
-                                                    classes.circularProgress
-                                                }
-                                            />
-                                        ) : null}
-                                    </Button>
-                                </Form>
-                            )}
+                                            Gửi
+                                            {isRequesting ? (
+                                                <CircularProgress
+                                                    color="secondary"
+                                                    className={
+                                                        classes.circularProgress
+                                                    }
+                                                />
+                                            ) : null}
+                                        </Button>
+                                    </Form>
+                                )
+                            }}
                         </Formik>
                     </div>
                 </div>
