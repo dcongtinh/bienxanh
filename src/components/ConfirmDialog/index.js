@@ -12,8 +12,7 @@ import { withStyles } from '@material-ui/core/styles'
 const styles = theme => ({
     container: {
         overflowY: 'hidden',
-        maxHeight: '80%',
-        width: '50%'
+        maxHeight: '80%'
     },
     dialogActions: {
         padding: 24

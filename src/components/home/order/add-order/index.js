@@ -61,6 +61,9 @@ class AddOrder extends React.Component {
     state = {
         count: 1
     }
+    handleChangeCount = count => {
+        this.setState({ count })
+    }
     handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value,
@@ -79,16 +82,13 @@ class AddOrder extends React.Component {
             })
         })
 
-        let optionsItem = [],
-            optionsCount = []
+        let optionsItem = []
         items.forEach(item => {
             optionsItem.push({
                 value: item._id,
                 label: `${item.itemName} (${item.itemNameCode})`
             })
         })
-        for (let i = 0; i < 10; ++i)
-            optionsCount.push({ value: i + 1, label: i + 1 })
         let array = []
         for (let i = 0; i < count; ++i) array.push('')
 
@@ -178,7 +178,7 @@ class AddOrder extends React.Component {
                                 return (
                                     <Form>
                                         <Grid item container spacing={2}>
-                                            <Grid item xs={12} sm={9}>
+                                            <Grid item xs={12}>
                                                 <Select
                                                     name="warehouse"
                                                     value={
@@ -191,18 +191,12 @@ class AddOrder extends React.Component {
                                                     options={optionsWarehouse}
                                                 />
                                             </Grid>
-                                            <Grid item xs={12} sm={3}>
-                                                <Select
-                                                    name="count"
-                                                    value={this.state.count}
-                                                    label="Số lượng đơn"
-                                                    onChange={this.handleChange}
-                                                    options={optionsCount}
-                                                />
-                                            </Grid>
                                             <AddItemForm
                                                 array={array}
                                                 handleChange={handleChange}
+                                                handleChangeCount={
+                                                    this.handleChangeCount
+                                                }
                                                 handleBlur={handleBlur}
                                                 values={values}
                                                 errors={errors}

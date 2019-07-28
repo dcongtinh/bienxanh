@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles'
 import TextField from 'components/Input/TextField'
 import IconButton from '@material-ui/core/IconButton'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Select from 'components/Input/Select'
 const styles = theme => ({
@@ -57,10 +59,14 @@ const styles = theme => ({
         top: -21,
         right: -21,
         color: theme.palette.danger.dark
+    },
+    fab: {
+        marginLeft: theme.spacing(1)
     }
 })
 class AddItemForm extends React.Component {
     state = {
+        count: 1,
         indexItem: null,
         openConfirm: false
     }
@@ -70,8 +76,18 @@ class AddItemForm extends React.Component {
     handleClose = () => {
         this.setState({ openConfirm: false })
     }
+    handleAdd = () => {
+        let count = Math.min(this.state.count + 1, 10)
+        this.setState({ count })
+        this.props.handleChangeCount(count)
+    }
+    handleSub = () => {
+        let count = Math.max(this.state.count - 1, 1)
+        this.setState({ count })
+        this.props.handleChangeCount(count)
+    }
     render() {
-        let { openConfirm } = this.state
+        let { openConfirm, count } = this.state
         let {
             classes,
             array,
@@ -101,10 +117,14 @@ class AddItemForm extends React.Component {
                             className={classes.groupOrder}>
                             <div className={classes.legend}>{`Đơn hàng ${index +
                                 1}`}</div>
-                            {isUpdateOrder && (
+                            {(isUpdateOrder || count > 1) && (
                                 <IconButton
                                     className={classes.removeCircleIcon}
-                                    onClick={() => this.handleOpen(index)}>
+                                    onClick={() => {
+                                        if (isUpdateOrder)
+                                            this.handleOpen(index)
+                                        else this.handleSub()
+                                    }}>
                                     <RemoveCircleIcon />
                                 </IconButton>
                             )}
@@ -201,7 +221,14 @@ class AddItemForm extends React.Component {
                         this.handleClose()
                     }}
                 />
-                <button>AddMore</button>
+                <Fab
+                    color="primary"
+                    aria-label="Add"
+                    className={classes.fab}
+                    onClick={this.handleAdd}>
+                    <AddIcon />
+                </Fab>
+                {/* <button onClick={this.handleAdd}>AddMore</button> */}
             </>
         )
     }

@@ -21,46 +21,14 @@ class Order extends Component {
             openConfirm: false,
             selectedRows: [],
             rowsSelected: [],
-            rowsPerPage: 10,
-            checkedArray: [],
             page: 0
         }
     }
     handleClose = () => {
         this.setState({ openConfirm: false })
     }
-    handleChangePage = currentPage => {
-        if (currentPage <= this.state.page) {
-            return
-        }
-        this.setState(
-            {
-                page: currentPage
-            },
-            () => {
-                this.props.fetchAllOrders({
-                    page: currentPage + 1,
-                    itemPerPage: this.state.rowsPerPage
-                })
-            }
-        )
-    }
-    handleChangeRowPerPage = numberOfRows => {
-        this.setState({
-            rowsPerPage: numberOfRows
-        })
-    }
-    componentWillReceiveProps = () => {
-        if (!this.state.checkedArray.length) {
-            let checkedArray = []
-            this.props.orders.forEach((order, index) => {
-                checkedArray[index] = order.payStatus
-            })
-            this.setState({ checkedArray })
-        }
-    }
     render() {
-        let { orders, count, classes } = this.props
+        let { orders, classes } = this.props
         const columns = [
             'Nhóm',
             'Mã',
@@ -118,15 +86,10 @@ class Order extends Component {
         })
         rowsSelected.sort()
         const options = {
-            // page: this.state.page,
-            count: count,
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,
             rowsSelected,
-            // selectableRowsOnClick: true
-            onChangePage: this.handleChangePage,
-            onChangeRowsPerPage: this.handleChangeRowPerPage,
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
@@ -177,11 +140,6 @@ class Order extends Component {
                     <RemoveCircleIcon />
                 </IconButton>
             )
-            // onRowClick: (rowData, rowMeta) => {
-            // this.props.history.push(
-            //     `/dashboard/orders/${orders[rowMeta.dataIndex]._id}`
-            // )
-            // }
         }
 
         return (

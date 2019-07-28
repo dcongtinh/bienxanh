@@ -73,6 +73,9 @@ class UpdateOrder extends React.Component {
         })
         this.state = Object.assign({}, this.state, state)
     }
+    handleChangeCount = count => {
+        this.setState({ count })
+    }
     handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value,
@@ -99,16 +102,13 @@ class UpdateOrder extends React.Component {
             })
         })
 
-        let optionsItem = [],
-            optionsCount = []
+        let optionsItem = []
         items.forEach(item => {
             optionsItem.push({
                 value: item._id,
                 label: `${item.itemName} (${item.itemNameCode})`
             })
         })
-        for (let i = orderItems.length - 1; i < 10; ++i)
-            optionsCount.push({ value: i + 1, label: i + 1 })
         let array = []
         for (let i = 0; i < count; ++i) array.push('')
 
@@ -227,7 +227,7 @@ class UpdateOrder extends React.Component {
                                                     }}
                                                 />
                                             </Grid>
-                                            <Grid item xs={12} sm={6}>
+                                            <Grid item xs={12} sm={9}>
                                                 <TextField
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -242,15 +242,6 @@ class UpdateOrder extends React.Component {
                                                             </InputAdornment>
                                                         )
                                                     }}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={3}>
-                                                <Select
-                                                    name="count"
-                                                    value={this.state.count}
-                                                    label="Số lượng đơn"
-                                                    onChange={this.handleChange}
-                                                    options={optionsCount}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -269,6 +260,9 @@ class UpdateOrder extends React.Component {
                                             <AddItemForm
                                                 array={array}
                                                 handleChange={handleChange}
+                                                handleChangeCount={
+                                                    this.handleChangeCount
+                                                }
                                                 handleBlur={handleBlur}
                                                 values={values}
                                                 errors={errors}
