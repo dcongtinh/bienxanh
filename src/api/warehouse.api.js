@@ -11,6 +11,7 @@ const wareHouseAPI = {
         warehouseName,
         buyerCode,
         buyerAddress,
+        buyerArea,
         buyerLegalName,
         buyerTaxCode
     }) =>
@@ -19,6 +20,7 @@ const wareHouseAPI = {
             warehouseName,
             buyerCode,
             buyerAddress,
+            buyerArea,
             buyerLegalName,
             buyerTaxCode
         }),
@@ -31,6 +33,7 @@ const wareHouseAPI = {
         warehouseName,
         buyerCode,
         buyerAddress,
+        buyerArea,
         buyerLegalName,
         buyerTaxCode
     }) =>
@@ -40,6 +43,7 @@ const wareHouseAPI = {
             warehouseName,
             buyerCode,
             buyerAddress,
+            buyerArea,
             buyerLegalName,
             buyerTaxCode
         }),

@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SaveIcon from '@material-ui/icons/Save'
+import Select from 'components/Input/Select'
 
 const SignUpSchema = Yup.object().shape({
     warehouse: Yup.string().required('* Bắt buộc'),
@@ -51,8 +52,19 @@ const styles = theme => ({
 })
 
 class UpdateWarehouse extends React.Component {
-    state = {
-        siteAdmin: false
+    constructor(props) {
+        super(props)
+        this.state = {
+            siteAdmin: false,
+            buyerArea: props.wareHouse.buyerArea
+        }
+    }
+
+    handleChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value,
+            [`error${e.target.name}`]: false
+        })
     }
     render() {
         let { classes, isRequesting, wareHouse } = this.props
@@ -63,6 +75,19 @@ class UpdateWarehouse extends React.Component {
                     className={classes.circularProgress}
                 />
             )
+        let optionsArea = []
+        optionsArea.push({
+            label: 'Miền Bắc',
+            value: 'Miền Bắc'
+        })
+        optionsArea.push({
+            label: 'Miền Trung',
+            value: 'Miền Trung'
+        })
+        optionsArea.push({
+            label: 'Miền Nam',
+            value: 'Miền Nam'
+        })
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -87,6 +112,8 @@ class UpdateWarehouse extends React.Component {
                                     buyerLegalName,
                                     buyerTaxCode
                                 } = values
+                                let buyerArea =
+                                    this.state.buyerArea || optionsArea[0].value
                                 this.props.updateWarehouse({
                                     idWarehouse: this.props.match.params
                                         .idWarehouse,
@@ -94,6 +121,7 @@ class UpdateWarehouse extends React.Component {
                                     warehouseName,
                                     buyerCode,
                                     buyerAddress,
+                                    buyerArea,
                                     buyerLegalName,
                                     buyerTaxCode
                                 })
@@ -108,7 +136,7 @@ class UpdateWarehouse extends React.Component {
                             }) => (
                                 <Form>
                                     <Grid item container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -122,7 +150,7 @@ class UpdateWarehouse extends React.Component {
                                                 message={errors.warehouse}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -134,6 +162,18 @@ class UpdateWarehouse extends React.Component {
                                                     touched.buyerCode
                                                 }
                                                 message={errors.buyerCode}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={4}>
+                                            <Select
+                                                name="buyerArea"
+                                                value={
+                                                    this.state.buyerArea ||
+                                                    optionsArea[0].value
+                                                }
+                                                label="Khu vực"
+                                                onChange={this.handleChange}
+                                                options={optionsArea}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -210,7 +250,7 @@ class UpdateWarehouse extends React.Component {
                                         <SaveIcon
                                             className={classes.iconSubmit}
                                         />
-                                        Cập nhật!
+                                        Cập nhật
                                         {isRequesting ? (
                                             <CircularProgress
                                                 color="secondary"

@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SendIcon from '@material-ui/icons/Send'
+import Select from 'components/Input/Select'
 
 const SignUpSchema = Yup.object().shape({
     warehouse: Yup.string().required('* Bắt buộc'),
@@ -62,8 +63,27 @@ class AddWarehouse extends React.Component {
     state = {
         siteAdmin: false
     }
+    handleChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value,
+            [`error${e.target.name}`]: false
+        })
+    }
     render() {
         let { classes, isRequesting } = this.props
+        let optionsArea = []
+        optionsArea.push({
+            label: 'Miền Bắc',
+            value: 'Miền Bắc'
+        })
+        optionsArea.push({
+            label: 'Miền Trung',
+            value: 'Miền Trung'
+        })
+        optionsArea.push({
+            label: 'Miền Nam',
+            value: 'Miền Nam'
+        })
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -81,11 +101,14 @@ class AddWarehouse extends React.Component {
                                     buyerLegalName,
                                     buyerTaxCode
                                 } = values
+                                let buyerArea =
+                                    this.state.buyerArea || optionsArea[0].value
                                 this.props.addWarehouse({
                                     warehouse,
                                     warehouseName,
                                     buyerCode,
                                     buyerAddress,
+                                    buyerArea,
                                     buyerLegalName,
                                     buyerTaxCode,
                                     callback: () => resetForm()
@@ -101,7 +124,7 @@ class AddWarehouse extends React.Component {
                             }) => (
                                 <Form>
                                     <Grid item container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -115,7 +138,7 @@ class AddWarehouse extends React.Component {
                                                 message={errors.warehouse}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} sm={6}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -127,6 +150,18 @@ class AddWarehouse extends React.Component {
                                                     touched.buyerCode
                                                 }
                                                 message={errors.buyerCode}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={4}>
+                                            <Select
+                                                name="buyerArea"
+                                                value={
+                                                    this.state.buyerArea ||
+                                                    optionsArea[0].value
+                                                }
+                                                label="Khu vực"
+                                                onChange={this.handleChange}
+                                                options={optionsArea}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>

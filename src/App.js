@@ -87,12 +87,12 @@ class App extends React.Component {
                             />
 
                             <Route
-                                path="/dashboard/warehouse/add"
+                                path="/dashboard/warehouses/add"
                                 exact
                                 component={AddWarehouse}
                             />
                             <Route
-                                path="/dashboard/warehouse/:idWarehouse"
+                                path="/dashboard/warehouses/:idWarehouse"
                                 exact
                                 component={UpdateWarehouse}
                             />

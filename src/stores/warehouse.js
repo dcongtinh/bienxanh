@@ -17,6 +17,7 @@ class WarehouseStore {
         warehouseName,
         buyerCode,
         buyerAddress,
+        buyerArea,
         buyerLegalName,
         buyerTaxCode,
         callback
@@ -27,6 +28,7 @@ class WarehouseStore {
             warehouseName,
             buyerCode,
             buyerAddress,
+            buyerArea,
             buyerLegalName,
             buyerTaxCode
         })
@@ -70,6 +72,7 @@ class WarehouseStore {
         warehouseName,
         buyerCode,
         buyerAddress,
+        buyerArea,
         buyerLegalName,
         buyerTaxCode,
         callback
@@ -81,6 +84,7 @@ class WarehouseStore {
             warehouseName,
             buyerCode,
             buyerAddress,
+            buyerArea,
             buyerLegalName,
             buyerTaxCode
         })

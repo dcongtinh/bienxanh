@@ -127,7 +127,7 @@ class Warehouse extends Component {
             ),
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(
-                    `/dashboard/warehouse/${wareHouses[rowMeta.dataIndex]._id}`
+                    `/dashboard/warehouses/${wareHouses[rowMeta.dataIndex]._id}`
                 )
             }
         }
@@ -141,7 +141,7 @@ class Warehouse extends Component {
                         size="small"
                         variant="outlined"
                         onClick={() => {
-                            this.props.history.push('/dashboard/warehouse/add')
+                            this.props.history.push('/dashboard/warehouses/add')
                         }}>
                         <AddIcon className={classes.addIcon} />
                         Add
