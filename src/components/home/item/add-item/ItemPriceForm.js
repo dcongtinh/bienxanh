@@ -9,24 +9,13 @@ import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { InlineDatePicker } from 'material-ui-pickers'
 
 const styles = theme => ({
     '@global': {
         body: {
             backgroundColor: theme.palette.common.white
         }
-    },
-    paper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
-    },
-    submit: {
-        margin: theme.spacing(2, 0)
     },
     circularProgress: {
         position: 'absolute',
@@ -36,13 +25,6 @@ const styles = theme => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap'
-    },
-    formControl: {
-        minWidth: 120,
-        width: '100%'
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2)
     },
     groupOrder: {
         position: 'relative',
@@ -64,29 +46,50 @@ const styles = theme => ({
     },
     fab: {
         marginLeft: theme.spacing(1)
+    },
+    inlineDatePicker: {
+        width: '100%'
     }
 })
 class ItemPriceForm extends React.Component {
     state = {
         indexItem: null,
-        openConfirm: false
+        openConfirm: false,
+        openChooseWarehouse: false,
+        area: 0,
+        index: 0
     }
     handleOpen = indexItem => {
         this.setState({ openConfirm: true, indexItem })
     }
     handleClose = () => {
-        this.setState({ openConfirm: false })
+        this.setState({ openConfirm: false, openChooseWarehouse: false })
     }
     handleAdd = () => {
-        let count = Math.min(this.props.array.length + 1, 10)
+        let count = this.props.array.length + 1
         this.props.handleChangeCount(count)
     }
     handleSub = () => {
         let count = Math.max(this.props.array.length - 1, 1)
         this.props.handleChangeCount(count)
     }
+    handleChangeOption = data => {
+        let { states } = this.props
+        let { index, area } = this.state
+        if (!states.datas[index]) {
+            states.datas[index] = []
+            states.datas[index][0] = []
+            states.datas[index][1] = []
+            states.datas[index][2] = []
+        }
+
+        states.datas[index][area] = data || []
+
+        this.props.handleSelect(states.datas)
+    }
     render() {
-        let { openConfirm } = this.state
+        let { openConfirm, openChooseWarehouse, area } = this.state
+
         let {
             classes,
             array,
@@ -100,23 +103,12 @@ class ItemPriceForm extends React.Component {
             idItem,
             prices,
             itemNameCode,
-            itemName
+            itemName,
+            options
         } = this.props
-        array.forEach((item, index) => {
-            if (states[`areaPrice${index}`] === undefined) {
-                states[`areaPrice${index}`] = {
-                    0: true,
-                    1: true,
-                    2: true
-                }
-            }
-        })
         return (
             <>
                 {array.map((item, index) => {
-                    let checked0 = states[`areaPrice${index}`][0],
-                        checked1 = states[`areaPrice${index}`][1],
-                        checked2 = states[`areaPrice${index}`][2]
                     return (
                         <Grid
                             key={index}
@@ -124,8 +116,8 @@ class ItemPriceForm extends React.Component {
                             container
                             spacing={2}
                             className={classes.groupOrder}>
-                            {/* <div className={classes.legend}>{`Đơn hàng ${index +
-                                1}`}</div> */}
+                            <div className={classes.legend}>{`Đơn giá ${index +
+                                1}`}</div>
                             {(isUpdateItem || array.length > 1) && (
                                 <IconButton
                                     className={classes.removeCircleIcon}
@@ -136,7 +128,7 @@ class ItemPriceForm extends React.Component {
                                     <RemoveCircleIcon />
                                 </IconButton>
                             )}
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sm={8}>
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -152,85 +144,102 @@ class ItemPriceForm extends React.Component {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            color="primary"
-                                            checked={checked0}
-                                            value={checked0}
-                                            onChange={e => {
-                                                states[`areaPrice${index}`][0] =
-                                                    e.target.checked
-                                                this.props.handleCheckbox(
-                                                    `areaPrice${index}`,
-                                                    states[`areaPrice${index}`]
-                                                )
-                                            }}
-                                        />
+                                <InlineDatePicker
+                                    className={classes.inlineDatePicker}
+                                    name={`dateApply${index}`}
+                                    variant="outlined"
+                                    format="DD/MM/YYYY"
+                                    label="Ngày áp dụng"
+                                    value={states[`dateApply${index}`]}
+                                    onChange={date =>
+                                        this.props.handleChangeDate(
+                                            `dateApply${index}`,
+                                            date
+                                        )
                                     }
-                                    label="Miền Bắc"
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            color="primary"
-                                            checked={checked1}
-                                            value={checked1}
-                                            onChange={e => {
-                                                states[`areaPrice${index}`][1] =
-                                                    e.target.checked
-                                                this.props.handleCheckbox(
-                                                    `areaPrice${index}`,
-                                                    states[`areaPrice${index}`]
-                                                )
-                                            }}
+                            {options.map((__item__, index1) => {
+                                let label
+                                if (index1 === 0) label = 'Miền Bắc'
+                                if (index1 === 1) label = 'Miền Trung'
+                                if (index1 === 2) label = 'Miền Nam'
+                                let count = states.datas[index]
+                                    ? states.datas[index][index1].length
+                                    : 0
+                                let total = __item__.length
+                                return (
+                                    <Grid item xs={12} sm={4} key={index1}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={Boolean(
+                                                        count && count === total
+                                                    )}
+                                                    value={false}
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            openChooseWarehouse: true,
+                                                            index,
+                                                            area: index1
+                                                        })
+                                                    }}
+                                                />
+                                            }
+                                            label={`${label} (${count}/${total})`}
                                         />
-                                    }
-                                    label="Miền Trung"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            color="primary"
-                                            checked={checked2}
-                                            value={checked2}
-                                            onChange={e => {
-                                                states[`areaPrice${index}`][2] =
-                                                    e.target.checked
-                                                this.props.handleCheckbox(
-                                                    `areaPrice${index}`,
-                                                    states[`areaPrice${index}`]
-                                                )
-                                            }}
-                                        />
-                                    }
-                                    label="Miền Nam"
-                                />
-                            </Grid>
+                                    </Grid>
+                                )
+                            })}
                         </Grid>
                     )
                 })}
                 <ConfirmDialog
                     open={openConfirm}
-                    title={`Bạn có chắc muốn xoá Đơn hàng ${this.state
-                        .indexItem + 1}?`}
+                    title={
+                        prices && prices.length === 1
+                            ? `Bạn có chắc muốn xoá hàng?`
+                            : `Bạn có chắc muốn xoá Đơn giá ${this.state
+                                  .indexItem + 1}?`
+                    }
                     cancelLabel="Huỷ"
                     okLabel="Xoá"
                     onHide={this.handleClose}
                     onOK={() => {
-                        prices.splice(this.state.indexItem, 1)
+                        if (isUpdateItem && prices && prices.length === 1) {
+                            let itemsListId = []
+                            itemsListId.push(idItem)
+                            this.props.deleteItems({ itemsListId })
+                            this.props.history.push('/dashboard/items')
+                        } else {
+                            prices.splice(this.state.indexItem, 1)
 
-                        this.props.updateItem({
-                            idItem,
-                            itemNameCode,
-                            itemName,
-                            itemPrices: prices
-                        })
+                            this.props.updateItem({
+                                idItem,
+                                itemNameCode,
+                                itemName,
+                                itemPrices: prices
+                            })
+                        }
                         this.handleClose()
+                    }}
+                />
+                <ConfirmDialog
+                    open={openChooseWarehouse}
+                    title={`Chọn kho`}
+                    cancelLabel="Đóng"
+                    handleChangeOption={this.handleChangeOption}
+                    onHide={this.handleClose}
+                    select={{
+                        value: states.datas[this.state.index]
+                            ? states.datas[this.state.index][area]
+                            : [],
+                        index: this.state.index,
+                        area,
+                        options: options[area],
+                        multiple: true,
+                        placeholder: 'Search and select Warehouse'
                     }}
                 />
                 <Fab

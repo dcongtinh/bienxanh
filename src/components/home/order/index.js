@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
+import MergeTypeIcon from '@material-ui/icons/MergeType'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
@@ -124,21 +125,38 @@ class Order extends Component {
                 }
             },
             customToolbarSelect: selectedRows => (
-                <IconButton
-                    onClick={() => {
-                        let rowsSelected = []
-                        selectedRows.data.forEach(row => {
-                            rowsSelected.push(row.dataIndex)
-                        })
-                        rowsSelected.sort()
-                        this.setState({
-                            openConfirm: true,
-                            selectedRows: selectedRows.data,
-                            rowsSelected
-                        })
-                    }}>
-                    <RemoveCircleIcon />
-                </IconButton>
+                <div>
+                    <IconButton
+                        onClick={() => {
+                            let rowsSelected = []
+                            selectedRows.data.forEach(row => {
+                                rowsSelected.push(row.dataIndex)
+                            })
+                            rowsSelected.sort()
+                            this.setState({
+                                openConfirm: true,
+                                selectedRows: selectedRows.data,
+                                rowsSelected
+                            })
+                        }}>
+                        <MergeTypeIcon />
+                    </IconButton>
+                    <IconButton
+                        onClick={() => {
+                            let rowsSelected = []
+                            selectedRows.data.forEach(row => {
+                                rowsSelected.push(row.dataIndex)
+                            })
+                            rowsSelected.sort()
+                            this.setState({
+                                openConfirm: true,
+                                selectedRows: selectedRows.data,
+                                rowsSelected
+                            })
+                        }}>
+                        <RemoveCircleIcon />
+                    </IconButton>
+                </div>
             )
         }
 

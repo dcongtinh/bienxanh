@@ -8,8 +8,9 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import SaveIcon from '@material-ui/icons/Save'
+import SendIcon from '@material-ui/icons/Send'
 import ItemPriceForm from 'components/home/item/add-item/ItemPriceForm'
+import moment from 'moment'
 
 const styles = theme => ({
     '@global': {
@@ -45,42 +46,50 @@ const styles = theme => ({
 class UpdateItem extends React.Component {
     constructor(props) {
         super(props)
+        let datas = JSON.parse(JSON.stringify(props.item.itemPrices || []))
+        for (let i in datas) {
+            if (datas[i].wareHouses.length) datas[i] = datas[i].wareHouses
+            else {
+                datas[i][0] = []
+                datas[i][1] = []
+                datas[i][2] = []
+            }
+        }
         this.state = {
             count: Math.max(props.item.itemPrices.length, 1),
             itemNameCode: props.item.itemNameCode,
             itemName: props.item.itemName,
+            itemPrices: props.item.itemPrices || [],
+            datas,
             siteAdmin: false
         }
+
         let state = {}
         props.item.itemPrices.forEach((item, index) => {
-            state[`itemPrice${index}`] = item.itemPrice
-            state[`areaPrice${index}`] = item.areaPrice
+            state[`dateApply${index}`] = item.dateApply
         })
         this.state = Object.assign({}, this.state, state)
     }
     handleChangeCount = count => {
         this.setState({ count })
     }
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value,
-            [`error${e.target.name}`]: false
-        })
-    }
     handleCheckbox = (name, value) => {
         this.setState({ [name]: value })
     }
+    handleSelect = datas => {
+        this.setState({ datas })
+    }
+    handleChangeOption = data => {
+        console.log(data)
+        this.setState({ data: data || [] })
+    }
+    handleChangeDate = (name, value) => {
+        this.setState({ [name]: value })
+    }
     render() {
-        let { itemNameCode, itemName, count } = this.state
-        let { classes, isRequesting, item } = this.props
+        let { count, itemNameCode, itemName, itemPrices } = this.state
+        let { classes, item, isRequesting, wareHouses, history } = this.props
         let idItem = item._id
-        if (!item)
-            return (
-                <CircularProgress
-                    color="secondary"
-                    className={classes.circularProgress}
-                />
-            )
         let array = []
         for (let i = 0; i < count; ++i) array.push('')
 
@@ -94,7 +103,12 @@ class UpdateItem extends React.Component {
             }
         array.forEach((item, index) => {
             let _initialValues = {
-                [`itemPrice${index}`]: this.state[`itemPrice${index}`]
+                [`itemPrice${index}`]: itemPrices[index]
+                    ? itemPrices[index].itemPrice
+                    : [],
+                [`dateApply${index}`]: itemPrices[index]
+                    ? itemPrices[index].dateApply
+                    : new Date()
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
 
@@ -106,6 +120,23 @@ class UpdateItem extends React.Component {
             _AddItemSchema = Object.assign({}, _AddItemSchema, _addItemSchema)
         })
         let AddItemSchema = Yup.object().shape(_AddItemSchema)
+
+        let area = []
+        for (let i = 0; i < 3; ++i) {
+            area[i] = wareHouses.filter(warehouse => {
+                return warehouse.buyerArea === i
+            })
+        }
+        let options = []
+        for (let i = 0; i < 3; ++i) {
+            options[i] = []
+            area[i].forEach(warehouse => {
+                options[i].push({
+                    value: warehouse._id,
+                    label: warehouse.warehouseName
+                })
+            })
+        }
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -116,13 +147,28 @@ class UpdateItem extends React.Component {
                             validationSchema={AddItemSchema}
                             onSubmit={(values, { resetForm }) => {
                                 let { itemNameCode, itemName } = values
+                                let { datas } = this.state
+                                // for (let k in datas) {
+                                //     for (let i = 0; i < 3; ++i) {
+                                //         for (let j in datas[k][i]) {
+                                //             datas[k][i][j] =
+                                //                 datas[k][i][j].value
+                                //         }
+                                //     }
+                                // }
+
                                 let itemPrices = []
                                 array.forEach((item, index) => {
+                                    let date =
+                                        this.state[`dateApply${index}`] ||
+                                        new Date()
                                     itemPrices.push({
                                         itemPrice: values[`itemPrice${index}`],
-                                        areaPrice: this.state[
-                                            `areaPrice${index}`
-                                        ]
+                                        wareHouses: datas[index],
+                                        customDateApply: moment(date).format(
+                                            'DD/MM/YYYY'
+                                        ),
+                                        dateApply: date
                                     })
                                 })
                                 this.props.updateItem({
@@ -188,19 +234,28 @@ class UpdateItem extends React.Component {
                                                 handleCheckbox={
                                                     this.handleCheckbox
                                                 }
+                                                handleChangeDate={
+                                                    this.handleChangeDate
+                                                }
                                                 handleBlur={handleBlur}
                                                 values={values}
                                                 errors={errors}
                                                 touched={touched}
                                                 states={this.state}
+                                                options={options}
+                                                handleSelect={this.handleSelect}
                                                 isUpdateItem
                                                 idItem={idItem}
                                                 updateItem={
                                                     this.props.updateItem
                                                 }
-                                                prices={item.itemPrices}
+                                                prices={itemPrices}
                                                 itemNameCode={itemNameCode}
                                                 itemName={itemName}
+                                                deleteItems={
+                                                    this.props.deleteItems
+                                                }
+                                                history={history}
                                             />
                                         </Grid>
                                         <Button
@@ -214,10 +269,10 @@ class UpdateItem extends React.Component {
                                             variant="contained"
                                             color="primary"
                                             className={classes.submit}>
-                                            <SaveIcon
+                                            <SendIcon
                                                 className={classes.iconSubmit}
                                             />
-                                            Cập nhật
+                                            Gửi
                                             {isRequesting ? (
                                                 <CircularProgress
                                                     color="secondary"

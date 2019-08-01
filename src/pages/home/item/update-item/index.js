@@ -5,9 +5,12 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
-@inject(({ item }) => ({
+@inject(({ item, wareHouse }) => ({
     fetchItem: ({ idItem }) => item.fetchItem({ idItem }),
     updateItem: object => item.updateItem(object),
+    fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
+    deleteItems: ({ itemsListId }) => item.deleteItems({ itemsListId }),
+    wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
     item: JSON.parse(JSON.stringify(item.item)),
     isRequesting: item.isRequesting
 }))
@@ -17,10 +20,12 @@ class UpdateItemPage extends Component {
         this.props.fetchItem({
             idItem: this.props.match.params.idItem
         })
+        this.props.fetchAllWarehouses()
     }
 
     render() {
-        if (!this.props.item) return <CircularProgress />
+        if (!this.props.item || !this.props.wareHouses)
+            return <CircularProgress />
         return <UpdateItem {...this.props} />
     }
 }

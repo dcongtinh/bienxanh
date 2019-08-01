@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react'
     addOrder: object => order.addOrder(object),
     fetchOrder: ({ idOrder }) => order.fetchOrder({ idOrder }),
     updateOrder: object => order.updateOrder(object),
+    deleteOrders: ({ ordersListId }) => order.deleteOrders({ ordersListId }),
     order: JSON.parse(JSON.stringify(order.order)),
     isRequesting: order.isRequesting
 }))

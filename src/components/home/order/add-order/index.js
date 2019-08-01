@@ -88,7 +88,6 @@ class AddOrder extends React.Component {
                 label: `${warehouse.warehouseName} (${warehouse.warehouse})`
             })
         })
-
         let optionsItem = []
         items.forEach(item => {
             optionsItem.push({
@@ -103,19 +102,15 @@ class AddOrder extends React.Component {
             _AddOrderSchema = {}
         array.forEach((item, index) => {
             let _initialValues = {
-                // [`batchNo${index}`]: '',
                 [`itemQuantity${index}`]: 1,
-                [`itemPrice${index}`]: '',
                 [`itemNote${index}`]: ''
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
 
             let _addOrderSchema = {
-                // [`batchNo${index}`]: Yup.string().required('* Bắt buộc'),
                 [`itemQuantity${index}`]: Yup.number('Not a numbBar').required(
                     '* Bắt buộc'
                 ),
-                [`itemPrice${index}`]: Yup.number().required('* Bắt buộc'),
                 [`itemNote${index}`]: Yup.string()
             }
             _AddOrderSchema = Object.assign(
@@ -139,23 +134,49 @@ class AddOrder extends React.Component {
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
                                 let { date } = this.state
-                                let items = []
-                                array.forEach((item, index) => {
+                                let _items = []
+                                array.forEach((__item__, index) => {
+                                    let itemPrice = 100
+                                    let itemName =
+                                        this.state[`itemName${index}`] ||
+                                        optionsItem[0].value
+                                    // let itemPrice = this.state[
+                                    //     `itemPrice${index}`
+                                    // ]
+
+                                    // let item = items.filter(item => {
+                                    //     return item._id === itemName
+                                    // })
+                                    // item = item[0]
+
+                                    // let _warehouse = wareHouses.filter(
+                                    //     value => {
+                                    //         return value._id === warehouse
+                                    //     }
+                                    // )
+                                    // _warehouse = _warehouse[0]
+                                    // let optionsPrice = []
+                                    // let { buyerArea } = _warehouse
+                                    // item.itemPrices.forEach(itemPrice => {
+                                    //     if (itemPrice.areaPrice[buyerArea]) {
+                                    //         optionsPrice.push(
+                                    //             itemPrice.itemPrice
+                                    //         )
+                                    //     }
+                                    // })
+                                    // if (!itemPrice) itemPrice = optionsPrice[0]
                                     let _item = {
-                                        itemName:
-                                            this.state[`itemName${index}`] ||
-                                            optionsItem[0].value,
-                                        // batchNo: values[`batchNo${index}`],
+                                        itemName,
                                         itemQuantity:
                                             values[`itemQuantity${index}`],
-                                        itemPrice: values[`itemPrice${index}`],
+                                        itemPrice,
                                         itemNote: values[`itemNote${index}`]
                                     }
-                                    items.push(_item)
+                                    _items.push(_item)
                                 })
                                 this.props.addOrder({
                                     warehouse,
-                                    items,
+                                    items: _items,
                                     owner: me._id,
                                     createdAt: moment(date).format(),
                                     callback: () => {
@@ -173,16 +194,42 @@ class AddOrder extends React.Component {
                                 handleSubmit
                             }) => {
                                 let disabled = false
-                                array.forEach((item, index) => {
-                                    // disabled |=
-                                    //     errors[`batchNo${index}`] &&
-                                    //     touched[`batchNo${index}`]
+                                // let warehouse =
+                                //     this.state.warehouse ||
+                                //     optionsWarehouse[0].value
+                                array.forEach((__item__, index) => {
+                                    // let itemName =
+                                    //     this.state[`itemName${index}`] ||
+                                    //     optionsItem[0].value
+                                    // let itemPrice = this.state[
+                                    //     `itemPrice${index}`
+                                    // ]
+
+                                    // let item = items.filter(item => {
+                                    //     return item._id === itemName
+                                    // })
+                                    // item = item[0]
+
+                                    // let _warehouse = wareHouses.filter(
+                                    //     value => {
+                                    //         return value._id === warehouse
+                                    //     }
+                                    // )
+                                    // _warehouse = _warehouse[0]
+                                    // let optionsPrice = []
+                                    // let { buyerArea } = _warehouse
+                                    // item.itemPrices.forEach(itemPrice => {
+                                    //     if (itemPrice.areaPrice[buyerArea]) {
+                                    //         optionsPrice.push(
+                                    //             itemPrice.itemPrice
+                                    //         )
+                                    //     }
+                                    // })
+
                                     disabled |=
                                         errors[`itemQuantity${index}`] &&
                                         touched[`itemQuantity${index}`]
-                                    disabled |=
-                                        errors[`itemPrice${index}`] &&
-                                        touched[`itemPrice${index}`]
+                                    // disabled |= !optionsPrice.length
                                 })
                                 return (
                                     <Form>
@@ -222,11 +269,13 @@ class AddOrder extends React.Component {
                                                 values={values}
                                                 errors={errors}
                                                 touched={touched}
-                                                options={optionsItem}
+                                                optionsItem={optionsItem}
                                                 states={this.state}
                                                 handleSelectChange={
                                                     this.handleChange
                                                 }
+                                                items={items}
+                                                wareHouses={wareHouses}
                                             />
                                         </Grid>
                                         <Button

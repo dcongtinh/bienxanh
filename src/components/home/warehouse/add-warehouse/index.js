@@ -74,15 +74,15 @@ class AddWarehouse extends React.Component {
         let optionsArea = []
         optionsArea.push({
             label: 'Miền Bắc',
-            value: 'Miền Bắc'
+            value: 0
         })
         optionsArea.push({
             label: 'Miền Trung',
-            value: 'Miền Trung'
+            value: 1
         })
         optionsArea.push({
             label: 'Miền Nam',
-            value: 'Miền Nam'
+            value: 2
         })
         return (
             <Container component="main" maxWidth="sm">

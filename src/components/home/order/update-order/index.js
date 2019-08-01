@@ -90,7 +90,14 @@ class UpdateOrder extends React.Component {
     }
     render() {
         let { count, warehouse, buyerCode } = this.state
-        let { classes, isRequesting, wareHouses, items, order } = this.props
+        let {
+            classes,
+            isRequesting,
+            wareHouses,
+            items,
+            order,
+            history
+        } = this.props
         let orderItems = order.items
         let idOrder = this.props.match.params.idOrder
         if (!wareHouses.length || !items.length) return null
@@ -132,7 +139,6 @@ class UpdateOrder extends React.Component {
                 [`itemQuantity${index}`]: Yup.number('Not a number').required(
                     '* Bắt buộc'
                 ),
-                [`itemPrice${index}`]: Yup.number().required('* Bắt buộc'),
                 [`itemNote${index}`]: Yup.string()
             }
             _AddOrderSchema = Object.assign(
@@ -165,27 +171,56 @@ class UpdateOrder extends React.Component {
                                 let warehouse =
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
-                                let items = []
-                                array.forEach((item, index) => {
+                                let _items = []
+                                array.forEach((__item__, index) => {
+                                    let itemName =
+                                        this.state[`itemName${index}`] ||
+                                        optionsItem[0].value
+                                    let itemPrice = this.state[
+                                        `itemPrice${index}`
+                                    ]
+
+                                    let item = items.filter(item => {
+                                        return item._id === itemName
+                                    })
+                                    item = item[0]
+
+                                    let _warehouse = wareHouses.filter(
+                                        value => {
+                                            return value._id === warehouse
+                                        }
+                                    )
+                                    _warehouse = _warehouse[0]
+                                    let optionsPrice = []
+                                    let { buyerArea } = _warehouse
+                                    item.itemPrices.forEach(itemPrice => {
+                                        if (itemPrice.areaPrice[buyerArea]) {
+                                            optionsPrice.push(
+                                                itemPrice.itemPrice
+                                            )
+                                        }
+                                    })
+                                    if (!itemPrice) itemPrice = optionsPrice[0]
+
                                     let _item = {
-                                        itemName:
-                                            this.state[`itemName${index}`] ||
-                                            optionsItem[0].value,
-                                        batchNo: values[`batchNo${index}`],
+                                        itemName,
                                         itemQuantity:
                                             values[`itemQuantity${index}`],
-                                        itemPrice: values[`itemPrice${index}`],
+                                        itemPrice,
                                         itemNote: values[`itemNote${index}`]
                                     }
-                                    items.push(_item)
+                                    _items.push(_item)
                                 })
                                 let buyerName = `26296/WH${buyerCode}/${
                                     values.buyerName
                                 }`
-                                // console.log(items)
                                 this.props.updateOrder({
                                     idOrder,
-                                    data: { warehouse, buyerName, items }
+                                    data: {
+                                        warehouse,
+                                        buyerName,
+                                        items: _items
+                                    }
                                 })
                             }}>
                             {({
@@ -199,14 +234,8 @@ class UpdateOrder extends React.Component {
                                 let disabled = false
                                 array.forEach((item, index) => {
                                     disabled |=
-                                        errors[`batchNo${index}`] &&
-                                        touched[`batchNo${index}`]
-                                    disabled |=
                                         errors[`itemQuantity${index}`] &&
                                         touched[`itemQuantity${index}`]
-                                    disabled |=
-                                        errors[`itemPrice${index}`] &&
-                                        touched[`itemPrice${index}`]
                                 })
                                 return (
                                     <Form>
@@ -263,7 +292,7 @@ class UpdateOrder extends React.Component {
                                                 values={values}
                                                 errors={errors}
                                                 touched={touched}
-                                                options={optionsItem}
+                                                optionsItem={optionsItem}
                                                 states={this.state}
                                                 handleSelectChange={
                                                     this.handleChange
@@ -272,10 +301,16 @@ class UpdateOrder extends React.Component {
                                                 updateOrder={
                                                     this.props.updateOrder
                                                 }
-                                                items={orderItems}
+                                                deleteOrders={
+                                                    this.props.deleteOrders
+                                                }
+                                                items={items}
+                                                orderItems={orderItems}
                                                 warehouse={warehouse}
+                                                wareHouses={wareHouses}
                                                 buyerName={buyerName}
                                                 idOrder={idOrder}
+                                                history={history}
                                             />
                                         </Grid>
                                         <Button

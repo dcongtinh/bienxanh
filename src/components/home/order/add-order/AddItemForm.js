@@ -97,17 +97,42 @@ class AddItemForm extends React.Component {
             values,
             errors,
             touched,
-            options,
+            optionsItem,
             states,
             isUpdateOrder,
             idOrder,
             warehouse,
             items,
+            orderItems,
+            wareHouses,
             buyerName
         } = this.props
         return (
             <>
-                {array.map((item, index) => {
+                {array.map((_item, index) => {
+                    let idItem =
+                        states[`itemName${index}`] || optionsItem[0].value
+                    let idWarehouse = states.warehouse || wareHouses[0]._id
+                    let item = items.filter(item => {
+                        return item._id === idItem
+                    })
+                    item = item[0]
+
+                    let warehouse = wareHouses.filter(warehouse => {
+                        return warehouse._id === idWarehouse
+                    })
+                    warehouse = warehouse[0]
+
+                    let optionsPrice = []
+                    let { buyerArea } = warehouse
+                    item.itemPrices.forEach(itemPrice => {
+                        if (itemPrice.areaPrice[buyerArea]) {
+                            optionsPrice.push({
+                                value: itemPrice.itemPrice,
+                                label: itemPrice.itemPrice
+                            })
+                        }
+                    })
                     return (
                         <Grid
                             key={index}
@@ -129,33 +154,19 @@ class AddItemForm extends React.Component {
                                 </IconButton>
                             )}
 
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sm={9}>
                                 <Select
                                     name={`itemName${index}`}
                                     value={
                                         states[`itemName${index}`] ||
-                                        options[0].value
+                                        optionsItem[0].value
                                     }
                                     label="Nhập tên hàng"
                                     onChange={handleSelectChange}
-                                    options={options}
+                                    options={optionsItem}
                                 />
                             </Grid>
-                            {/* <Grid item xs={12} sm={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values[`batchNo${index}`]}
-                                    label="Số lô"
-                                    name={`batchNo${index}`}
-                                    error={
-                                        errors[`batchNo${index}`] &&
-                                        touched[`batchNo${index}`]
-                                    }
-                                    message={errors[`batchNo${index}`]}
-                                />
-                            </Grid> */}
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={3}>
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -171,7 +182,7 @@ class AddItemForm extends React.Component {
                                     message={errors[`itemQuantity${index}`]}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            {/* <Grid item xs={12} sm={6}>
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -186,7 +197,38 @@ class AddItemForm extends React.Component {
                                     }
                                     message={errors[`itemPrice${index}`]}
                                 />
-                            </Grid>
+                            </Grid> */}
+                            {/* <Grid item xs={12} sm={6}>
+                                <Select
+                                    name={`itemPrice${index}`}
+                                    value={
+                                        states[`itemPrice${index}`] ||
+                                        (optionsPrice[0]
+                                            ? optionsPrice[0].value
+                                            : '')
+                                    }
+                                    label="Đơn giá"
+                                    onChange={handleSelectChange}
+                                    options={optionsPrice}
+                                />
+                            </Grid> */}
+                            {/* <Grid item xs={12} sm={1}>
+                                {methodPriceInput === 'select' ? (
+                                    <IconButton
+                                        onClick={() =>
+                                            this.handleChangeMethod('text')
+                                        }>
+                                        <KeyboardIcon />
+                                    </IconButton>
+                                ) : (
+                                    <IconButton
+                                        onClick={() =>
+                                            this.handleChangeMethod('select')
+                                        }>
+                                        <ListAltIcon />
+                                    </IconButton>
+                                )}
+                            </Grid> */}
                             <Grid item xs={12}>
                                 <TextField
                                     onChange={handleChange}
@@ -207,17 +249,37 @@ class AddItemForm extends React.Component {
                 })}
                 <ConfirmDialog
                     open={openConfirm}
-                    title={`Bạn có chắc muốn xoá Đơn hàng ${this.state
-                        .indexItem + 1}?`}
+                    title={
+                        orderItems && orderItems.length === 1
+                            ? `Bạn có chắc muốn xoá hoá đơn?`
+                            : `Bạn có chắc muốn xoá Đơn hàng ${this.state
+                                  .indexItem + 1}?`
+                    }
                     cancelLabel="Huỷ"
                     okLabel="Xoá"
                     onHide={this.handleClose}
                     onOK={() => {
-                        items.splice(this.state.indexItem, 1)
-                        this.props.updateOrder({
-                            idOrder,
-                            data: { warehouse, buyerName, items }
-                        })
+                        if (
+                            isUpdateOrder &&
+                            orderItems &&
+                            orderItems.length === 1
+                        ) {
+                            let ordersListId = []
+                            ordersListId.push(idOrder)
+                            this.props.deleteOrders({ ordersListId })
+                            this.props.history.push('/dashboard/orders')
+                        } else {
+                            orderItems.splice(this.state.indexItem, 1)
+                            this.props.updateOrder({
+                                idOrder,
+                                data: {
+                                    warehouse,
+                                    buyerName,
+                                    items: orderItems
+                                }
+                            })
+                        }
+
                         this.handleClose()
                     }}
                 />
