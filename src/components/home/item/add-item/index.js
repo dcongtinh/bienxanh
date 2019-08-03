@@ -52,17 +52,11 @@ class AddItem extends React.Component {
     handleChangeCount = count => {
         this.setState({ count })
     }
-    handleCheckbox = (name, value) => {
+    handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
     handleSelect = datas => {
         this.setState({ datas })
-    }
-    handleChangeOption = data => {
-        this.setState({ data })
-    }
-    handleChangeDate = (name, value) => {
-        this.setState({ [name]: value })
     }
     render() {
         let { count } = this.state
@@ -80,7 +74,7 @@ class AddItem extends React.Component {
             }
         array.forEach((item, index) => {
             let _initialValues = {
-                [`itemPrice${index}`]: 1000,
+                // [`itemPrice${index}`]: 1000,
                 [`dateApply${index}`]: new Date()
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
@@ -204,14 +198,17 @@ class AddItem extends React.Component {
                                             <ItemPriceForm
                                                 array={array}
                                                 handleChange={handleChange}
+                                                handleChangeText={
+                                                    this.handleChange
+                                                }
                                                 handleChangeCount={
                                                     this.handleChangeCount
                                                 }
                                                 handleCheckbox={
-                                                    this.handleCheckbox
+                                                    this.handleChange
                                                 }
                                                 handleChangeDate={
-                                                    this.handleChangeDate
+                                                    this.handleChange
                                                 }
                                                 handleBlur={handleBlur}
                                                 values={values}

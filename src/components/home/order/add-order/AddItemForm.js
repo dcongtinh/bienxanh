@@ -66,6 +66,25 @@ const styles = theme => ({
         marginLeft: theme.spacing(1)
     }
 })
+
+const NumberFormatCustom = props => {
+    const { inputRef, onChange, ...other } = props
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value
+                    }
+                })
+            }}
+            thousandSeparator
+        />
+    )
+}
+
 class AddItemForm extends React.Component {
     state = {
         count: 1,
@@ -108,23 +127,6 @@ class AddItemForm extends React.Component {
             buyerName,
             prices
         } = this.props
-        const NumberFormatCustom = props => {
-            const { inputRef, onChange, ...other } = props
-            return (
-                <NumberFormat
-                    {...other}
-                    getInputRef={inputRef}
-                    onValueChange={values => {
-                        onChange({
-                            target: {
-                                value: values.value
-                            }
-                        })
-                    }}
-                    thousandSeparator
-                />
-            )
-        }
 
         return (
             <>

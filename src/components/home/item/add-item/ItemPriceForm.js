@@ -49,6 +49,26 @@ const styles = theme => ({
         marginLeft: theme.spacing(1)
     }
 })
+
+const NumberFormatCustom = props => {
+    const { inputRef, onChange, ...other } = props
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value
+                    }
+                })
+            }}
+            thousandSeparator
+        />
+    )
+}
+
 class ItemPriceForm extends React.Component {
     state = {
         indexItem: null,
@@ -104,23 +124,7 @@ class ItemPriceForm extends React.Component {
             itemName,
             options
         } = this.props
-        const NumberFormatCustom = props => {
-            const { inputRef, onChange, ...other } = props
-            return (
-                <NumberFormat
-                    {...other}
-                    getInputRef={inputRef}
-                    onValueChange={values => {
-                        onChange({
-                            target: {
-                                value: values.value
-                            }
-                        })
-                    }}
-                    thousandSeparator
-                />
-            )
-        }
+
         return (
             <>
                 {array.map((item, index) => {
