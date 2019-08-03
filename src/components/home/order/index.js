@@ -38,6 +38,7 @@ class Order extends Component {
                 options: {
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <RowItem
+                            order={orders[tableMeta.rowIndex]}
                             value={value}
                             tableMeta={tableMeta}
                             updateValue={updateValue}
@@ -48,7 +49,7 @@ class Order extends Component {
                 }
             },
             'Tên đơn vị',
-            'Ngày tạo',
+            'Ngày áp dụng',
             'Cập nhật',
             {
                 name: 'Chỉnh sửa',

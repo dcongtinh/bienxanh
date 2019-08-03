@@ -30,7 +30,8 @@ class UpdateOrderPage extends Component {
 
     render() {
         let { wareHouses, items, order } = this.props
-        if (!wareHouses || !items || !order) return <CircularProgress />
+        if (!wareHouses.length || !items.length || !order)
+            return <CircularProgress />
         return <UpdateOrder {...this.props} />
     }
 }

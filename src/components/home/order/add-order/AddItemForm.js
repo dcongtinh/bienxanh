@@ -6,8 +6,10 @@ import IconButton from '@material-ui/core/IconButton'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import NumberFormat from 'react-number-format'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Select from 'components/Input/Select'
+
 const styles = theme => ({
     '@global': {
         body: {
@@ -102,37 +104,31 @@ class AddItemForm extends React.Component {
             isUpdateOrder,
             idOrder,
             warehouse,
-            items,
             orderItems,
-            wareHouses,
-            buyerName
+            buyerName,
+            prices
         } = this.props
+        const NumberFormatCustom = props => {
+            const { inputRef, onChange, ...other } = props
+            return (
+                <NumberFormat
+                    {...other}
+                    getInputRef={inputRef}
+                    onValueChange={values => {
+                        onChange({
+                            target: {
+                                value: values.value
+                            }
+                        })
+                    }}
+                    thousandSeparator
+                />
+            )
+        }
+
         return (
             <>
                 {array.map((_item, index) => {
-                    let idItem =
-                        states[`itemName${index}`] || optionsItem[0].value
-                    let idWarehouse = states.warehouse || wareHouses[0]._id
-                    let item = items.filter(item => {
-                        return item._id === idItem
-                    })
-                    item = item[0]
-
-                    let warehouse = wareHouses.filter(warehouse => {
-                        return warehouse._id === idWarehouse
-                    })
-                    warehouse = warehouse[0]
-
-                    let optionsPrice = []
-                    let { buyerArea } = warehouse
-                    item.itemPrices.forEach(itemPrice => {
-                        if (itemPrice.areaPrice[buyerArea]) {
-                            optionsPrice.push({
-                                value: itemPrice.itemPrice,
-                                label: itemPrice.itemPrice
-                            })
-                        }
-                    })
                     return (
                         <Grid
                             key={index}
@@ -170,7 +166,7 @@ class AddItemForm extends React.Component {
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values[`itemQuantity${index}`]}
+                                    value={values[`itemQuantity${index}`] || 1}
                                     label="Số lượng"
                                     name={`itemQuantity${index}`}
                                     type="number"
@@ -182,53 +178,16 @@ class AddItemForm extends React.Component {
                                     message={errors[`itemQuantity${index}`]}
                                 />
                             </Grid>
-                            {/* <Grid item xs={12} sm={6}>
+                            <Grid item xs={12}>
                                 <TextField
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values[`itemPrice${index}`]}
+                                    value={prices[index] || 0}
                                     label="Đơn giá"
-                                    name={`itemPrice${index}`}
-                                    type="number"
-                                    pattern="\d+"
-                                    error={
-                                        errors[`itemPrice${index}`] &&
-                                        touched[`itemPrice${index}`]
-                                    }
-                                    message={errors[`itemPrice${index}`]}
+                                    InputProps={{
+                                        inputComponent: NumberFormatCustom,
+                                        readOnly: true
+                                    }}
                                 />
-                            </Grid> */}
-                            {/* <Grid item xs={12} sm={6}>
-                                <Select
-                                    name={`itemPrice${index}`}
-                                    value={
-                                        states[`itemPrice${index}`] ||
-                                        (optionsPrice[0]
-                                            ? optionsPrice[0].value
-                                            : '')
-                                    }
-                                    label="Đơn giá"
-                                    onChange={handleSelectChange}
-                                    options={optionsPrice}
-                                />
-                            </Grid> */}
-                            {/* <Grid item xs={12} sm={1}>
-                                {methodPriceInput === 'select' ? (
-                                    <IconButton
-                                        onClick={() =>
-                                            this.handleChangeMethod('text')
-                                        }>
-                                        <KeyboardIcon />
-                                    </IconButton>
-                                ) : (
-                                    <IconButton
-                                        onClick={() =>
-                                            this.handleChangeMethod('select')
-                                        }>
-                                        <ListAltIcon />
-                                    </IconButton>
-                                )}
-                            </Grid> */}
+                            </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     onChange={handleChange}

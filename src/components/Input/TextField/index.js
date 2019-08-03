@@ -14,6 +14,7 @@ export default class TextFieldCustomized extends Component {
                     required={!norequired}
                     fullWidth
                     id={name}
+                    name={name}
                 />
                 {error && (
                     <FormHelperText error={error}>{message}</FormHelperText>

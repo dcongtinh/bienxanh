@@ -52,12 +52,11 @@ class RowItem extends Component {
 
     constructor(props) {
         super(props)
-        let values = props.value.split('/')
         this.state = {
             readOnly: true,
-            prefix: values[0] + '/' + values[1] + '/',
-            code: values[2],
-            value: props.value
+            prefix: '',
+            code: '',
+            value: ''
         }
     }
     getPrefix = value => {
@@ -81,7 +80,8 @@ class RowItem extends Component {
     }
 
     handleClose = () => {
-        this.setState({ readOnly: true })
+        let value = this.props.order.buyerName
+        this.setState({ readOnly: true, value })
     }
 
     handleSave = async () => {
@@ -91,7 +91,6 @@ class RowItem extends Component {
             data: { buyerName: this.getValue() }
         })
         this.setState({ readOnly: true })
-        // this.fe
     }
 
     handleKeyPress = e => {
@@ -115,6 +114,17 @@ class RowItem extends Component {
                 })
             }
         )
+    }
+    componentDidMount = () => {
+        let values = this.props.order.buyerName.split('/')
+        this.setState({
+            prefix: values[0] + '/' + values[1] + '/',
+            code: values[2],
+            value: this.props.order.buyerName
+        })
+        window.addEventListener('keydown', e => {
+            if (e.keyCode === 27) this.handleClose()
+        })
     }
 
     render() {

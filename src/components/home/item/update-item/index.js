@@ -46,20 +46,32 @@ const styles = theme => ({
 class UpdateItem extends React.Component {
     constructor(props) {
         super(props)
-        let datas = JSON.parse(JSON.stringify(props.item.itemPrices || []))
+        let { itemPrices } = props.item
+        let _itemPrices = JSON.parse(JSON.stringify(itemPrices))
+        itemPrices.sort((a, b) => {
+            return (
+                new Date(b.dateApply).getTime() -
+                new Date(a.dateApply).getTime()
+            )
+        })
+        _itemPrices.sort((a, b) => {
+            return (
+                new Date(b.dateApply).getTime() -
+                new Date(a.dateApply).getTime()
+            )
+        })
+        let datas = _itemPrices
         for (let i in datas) {
             if (datas[i].wareHouses.length) datas[i] = datas[i].wareHouses
-            else {
-                datas[i][0] = []
-                datas[i][1] = []
-                datas[i][2] = []
-            }
+            if (!datas[i][0]) datas[i][0] = []
+            if (!datas[i][1]) datas[i][1] = []
+            if (!datas[i][2]) datas[i][2] = []
         }
         this.state = {
-            count: Math.max(props.item.itemPrices.length, 1),
+            count: Math.max(itemPrices.length, 1),
             itemNameCode: props.item.itemNameCode,
             itemName: props.item.itemName,
-            itemPrices: props.item.itemPrices || [],
+            itemPrices,
             datas,
             siteAdmin: false
         }
@@ -166,7 +178,7 @@ class UpdateItem extends React.Component {
                                         itemPrice: values[`itemPrice${index}`],
                                         wareHouses: datas[index],
                                         customDateApply: moment(date).format(
-                                            'DD/MM/YYYY'
+                                            'YYYY/MM/DD'
                                         ),
                                         dateApply: date
                                     })

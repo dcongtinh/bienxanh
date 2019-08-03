@@ -68,11 +68,16 @@ class AddOrder extends React.Component {
     handleChangeCount = count => {
         this.setState({ count })
     }
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value,
-            [`error${e.target.name}`]: false
-        })
+    handleChange = (e, callback) => {
+        this.setState(
+            {
+                [e.target.name]: e.target.value,
+                [`error${e.target.name}`]: false
+            },
+            () => {
+                if (typeof callback === 'function') callback()
+            }
+        )
     }
     handleDateChange = date => {
         this.setState({ date })
@@ -80,7 +85,6 @@ class AddOrder extends React.Component {
     render() {
         let { count } = this.state
         let { classes, isRequesting, wareHouses, items, me } = this.props
-        if (!wareHouses.length || !items.length) return null
         let optionsWarehouse = []
         wareHouses.forEach(warehouse => {
             optionsWarehouse.push({
@@ -120,6 +124,49 @@ class AddOrder extends React.Component {
             )
         })
         let AddOrderSchema = Yup.object().shape(_AddOrderSchema)
+        let pricesList = []
+        array.forEach((__item__, index) => {
+            let idItem = this.state[`itemName${index}`] || optionsItem[0].value
+            let idWarehouse = this.state.warehouse || wareHouses[0]._id
+            let item = items.filter(item => {
+                return item._id === idItem
+            })
+            item = item[0]
+            let warehouse = wareHouses.filter(warehouse => {
+                return warehouse._id === idWarehouse
+            })
+            warehouse = warehouse[0]
+            let { buyerArea } = warehouse
+            let prices = []
+            item.itemPrices.forEach(itemPrice => {
+                let match = itemPrice.wareHouses[buyerArea].filter(
+                    warehouse => {
+                        return warehouse.value === idWarehouse
+                    }
+                )
+                if (match.length)
+                    prices.push({
+                        dateApply: itemPrice.dateApply,
+                        itemPrice: itemPrice.itemPrice
+                    })
+            })
+            prices.sort((a, b) => {
+                return (
+                    new Date(b.dateApply).getTime() -
+                    new Date(a.dateApply).getTime()
+                )
+            })
+            let date = moment(this.state.date).format('YYYY/MM/DD')
+            for (let i in prices) {
+                let item = prices[i]
+                let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+                if (date >= dateApply) {
+                    var price = item.itemPrice
+                    break
+                }
+            }
+            pricesList.push(price)
+        })
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -136,40 +183,15 @@ class AddOrder extends React.Component {
                                 let { date } = this.state
                                 let _items = []
                                 array.forEach((__item__, index) => {
-                                    let itemPrice = 100
                                     let itemName =
                                         this.state[`itemName${index}`] ||
                                         optionsItem[0].value
-                                    // let itemPrice = this.state[
-                                    //     `itemPrice${index}`
-                                    // ]
 
-                                    // let item = items.filter(item => {
-                                    //     return item._id === itemName
-                                    // })
-                                    // item = item[0]
-
-                                    // let _warehouse = wareHouses.filter(
-                                    //     value => {
-                                    //         return value._id === warehouse
-                                    //     }
-                                    // )
-                                    // _warehouse = _warehouse[0]
-                                    // let optionsPrice = []
-                                    // let { buyerArea } = _warehouse
-                                    // item.itemPrices.forEach(itemPrice => {
-                                    //     if (itemPrice.areaPrice[buyerArea]) {
-                                    //         optionsPrice.push(
-                                    //             itemPrice.itemPrice
-                                    //         )
-                                    //     }
-                                    // })
-                                    // if (!itemPrice) itemPrice = optionsPrice[0]
                                     let _item = {
                                         itemName,
                                         itemQuantity:
-                                            values[`itemQuantity${index}`],
-                                        itemPrice,
+                                            values[`itemQuantity${index}`] || 1,
+                                        itemPrice: pricesList[index],
                                         itemNote: values[`itemNote${index}`]
                                     }
                                     _items.push(_item)
@@ -194,42 +216,10 @@ class AddOrder extends React.Component {
                                 handleSubmit
                             }) => {
                                 let disabled = false
-                                // let warehouse =
-                                //     this.state.warehouse ||
-                                //     optionsWarehouse[0].value
                                 array.forEach((__item__, index) => {
-                                    // let itemName =
-                                    //     this.state[`itemName${index}`] ||
-                                    //     optionsItem[0].value
-                                    // let itemPrice = this.state[
-                                    //     `itemPrice${index}`
-                                    // ]
-
-                                    // let item = items.filter(item => {
-                                    //     return item._id === itemName
-                                    // })
-                                    // item = item[0]
-
-                                    // let _warehouse = wareHouses.filter(
-                                    //     value => {
-                                    //         return value._id === warehouse
-                                    //     }
-                                    // )
-                                    // _warehouse = _warehouse[0]
-                                    // let optionsPrice = []
-                                    // let { buyerArea } = _warehouse
-                                    // item.itemPrices.forEach(itemPrice => {
-                                    //     if (itemPrice.areaPrice[buyerArea]) {
-                                    //         optionsPrice.push(
-                                    //             itemPrice.itemPrice
-                                    //         )
-                                    //     }
-                                    // })
-
                                     disabled |=
                                         errors[`itemQuantity${index}`] &&
                                         touched[`itemQuantity${index}`]
-                                    // disabled |= !optionsPrice.length
                                 })
                                 return (
                                     <Form>
@@ -257,6 +247,7 @@ class AddOrder extends React.Component {
                                                     onChange={
                                                         this.handleDateChange
                                                     }
+                                                    fullWidth
                                                 />
                                             </Grid>
                                             <AddItemForm
@@ -276,6 +267,7 @@ class AddOrder extends React.Component {
                                                 }
                                                 items={items}
                                                 wareHouses={wareHouses}
+                                                prices={pricesList}
                                             />
                                         </Grid>
                                         <Button

@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import NumberFormat from 'react-number-format'
 import { InlineDatePicker } from 'material-ui-pickers'
 
 const styles = theme => ({
@@ -46,9 +47,6 @@ const styles = theme => ({
     },
     fab: {
         marginLeft: theme.spacing(1)
-    },
-    inlineDatePicker: {
-        width: '100%'
     }
 })
 class ItemPriceForm extends React.Component {
@@ -106,6 +104,23 @@ class ItemPriceForm extends React.Component {
             itemName,
             options
         } = this.props
+        const NumberFormatCustom = props => {
+            const { inputRef, onChange, ...other } = props
+            return (
+                <NumberFormat
+                    {...other}
+                    getInputRef={inputRef}
+                    onValueChange={values => {
+                        onChange({
+                            target: {
+                                value: values.value
+                            }
+                        })
+                    }}
+                    thousandSeparator
+                />
+            )
+        }
         return (
             <>
                 {array.map((item, index) => {
@@ -140,12 +155,13 @@ class ItemPriceForm extends React.Component {
                                         touched[`itemPrice${index}`]
                                     }
                                     message={errors[`itemPrice${index}`]}
-                                    type="number"
+                                    InputProps={{
+                                        inputComponent: NumberFormatCustom
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <InlineDatePicker
-                                    className={classes.inlineDatePicker}
                                     name={`dateApply${index}`}
                                     variant="outlined"
                                     format="DD/MM/YYYY"
@@ -157,6 +173,7 @@ class ItemPriceForm extends React.Component {
                                             date
                                         )
                                     }
+                                    fullWidth
                                 />
                             </Grid>
                             {options.map((__item__, index1) => {

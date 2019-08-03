@@ -21,7 +21,7 @@ class OrderPage extends Component {
     }
 
     render() {
-        if (!this.props.orders) return <CircularProgress />
+        if (!this.props.orders.length) return <CircularProgress />
         return <Order {...this.props} />
     }
 }

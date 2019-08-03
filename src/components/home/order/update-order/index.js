@@ -6,12 +6,14 @@ import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import TextField from 'components/Input/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import SaveIcon from '@material-ui/icons/Save'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import SaveIcon from '@material-ui/icons/Save'
 import AddItemForm from 'components/home/order/add-order/AddItemForm'
 import Select from 'components/Input/Select'
+import { InlineDatePicker } from 'material-ui-pickers'
+import moment from 'moment'
 
 const styles = theme => ({
     '@global': {
@@ -64,12 +66,17 @@ class UpdateOrder extends React.Component {
         super(props)
         this.state = {
             count: Math.max(props.order.items.length, 1),
+            buyerArea: props.order.warehouse.buyerArea,
             buyerCode: props.order.warehouse.buyerCode,
-            warehouse: props.order.warehouse._id
+            warehouse: props.order.warehouse._id,
+            date: props.order.createdAt || new Date()
         }
         let state = {}
         props.order.items.forEach((item, index) => {
             state[`itemName${index}`] = item.itemName._id
+            state[`itemQuantity${index}`] = item.itemQuantity
+            state[`itemPrice${index}`] = item.itemPrice
+            state[`itemNote${index}`] = item.itemNote
         })
         this.state = Object.assign({}, this.state, state)
     }
@@ -88,19 +95,23 @@ class UpdateOrder extends React.Component {
             })
         }
     }
+    handleDateChange = date => {
+        this.setState({ date })
+    }
     render() {
-        let { count, warehouse, buyerCode } = this.state
+        let { count, buyerCode, warehouse } = this.state
         let {
             classes,
             isRequesting,
             wareHouses,
             items,
+            me,
             order,
             history
         } = this.props
+
         let orderItems = order.items
         let idOrder = this.props.match.params.idOrder
-        if (!wareHouses.length || !items.length) return null
         let optionsWarehouse = []
         wareHouses.forEach(warehouse => {
             optionsWarehouse.push({
@@ -108,7 +119,6 @@ class UpdateOrder extends React.Component {
                 label: `${warehouse.warehouseName} (${warehouse.warehouse})`
             })
         })
-
         let optionsItem = []
         items.forEach(item => {
             optionsItem.push({
@@ -123,20 +133,14 @@ class UpdateOrder extends React.Component {
             _AddOrderSchema = {}
         array.forEach((item, index) => {
             let _initialValues = {
-                [`itemQuantity${index}`]: orderItems[index]
-                    ? orderItems[index].itemQuantity
-                    : '',
-                [`itemPrice${index}`]: orderItems[index]
-                    ? orderItems[index].itemPrice
-                    : '',
-                [`itemNote${index}`]: orderItems[index]
-                    ? orderItems[index].itemNote
-                    : ''
+                [`itemQuantity${index}`]:
+                    this.state[`itemQuantity${index}`] || 1,
+                [`itemNote${index}`]: this.state[`itemNote${index}`]
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
 
             let _addOrderSchema = {
-                [`itemQuantity${index}`]: Yup.number('Not a number').required(
+                [`itemQuantity${index}`]: Yup.number('Not a numbBar').required(
                     '* Bắt buộc'
                 ),
                 [`itemNote${index}`]: Yup.string()
@@ -158,6 +162,49 @@ class UpdateOrder extends React.Component {
             buyerName: Yup.string()
         })
         let AddOrderSchema = Yup.object().shape(_AddOrderSchema)
+        let pricesList = []
+        array.forEach((__item__, index) => {
+            let idItem = this.state[`itemName${index}`] || optionsItem[0].value
+            let idWarehouse = this.state.warehouse || wareHouses[0]._id
+            let item = items.filter(item => {
+                return item._id === idItem
+            })
+            item = item[0]
+            let warehouse = wareHouses.filter(warehouse => {
+                return warehouse._id === idWarehouse
+            })
+            warehouse = warehouse[0]
+            let { buyerArea } = warehouse
+            let prices = []
+            item.itemPrices.forEach(itemPrice => {
+                let match = itemPrice.wareHouses[buyerArea].filter(
+                    warehouse => {
+                        return warehouse.value === idWarehouse
+                    }
+                )
+                if (match.length)
+                    prices.push({
+                        dateApply: itemPrice.dateApply,
+                        itemPrice: itemPrice.itemPrice
+                    })
+            })
+            prices.sort((a, b) => {
+                return (
+                    new Date(b.dateApply).getTime() -
+                    new Date(a.dateApply).getTime()
+                )
+            })
+            let date = moment(this.state.date).format('YYYY/MM/DD')
+            for (let i in prices) {
+                let item = prices[i]
+                let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+                if (date >= dateApply) {
+                    var price = item.itemPrice
+                    break
+                }
+            }
+            pricesList.push(price)
+        })
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -173,34 +220,12 @@ class UpdateOrder extends React.Component {
                                     optionsWarehouse[0].value
                                 let _items = []
                                 array.forEach((__item__, index) => {
-                                    let itemName =
-                                        this.state[`itemName${index}`] ||
-                                        optionsItem[0].value
                                     let itemPrice = this.state[
                                         `itemPrice${index}`
                                     ]
-
-                                    let item = items.filter(item => {
-                                        return item._id === itemName
-                                    })
-                                    item = item[0]
-
-                                    let _warehouse = wareHouses.filter(
-                                        value => {
-                                            return value._id === warehouse
-                                        }
-                                    )
-                                    _warehouse = _warehouse[0]
-                                    let optionsPrice = []
-                                    let { buyerArea } = _warehouse
-                                    item.itemPrices.forEach(itemPrice => {
-                                        if (itemPrice.areaPrice[buyerArea]) {
-                                            optionsPrice.push(
-                                                itemPrice.itemPrice
-                                            )
-                                        }
-                                    })
-                                    if (!itemPrice) itemPrice = optionsPrice[0]
+                                    let itemName =
+                                        this.state[`itemName${index}`] ||
+                                        optionsItem[0].value
 
                                     let _item = {
                                         itemName,
@@ -219,7 +244,8 @@ class UpdateOrder extends React.Component {
                                     data: {
                                         warehouse,
                                         buyerName,
-                                        items: _items
+                                        items: _items,
+                                        owner: me._id
                                     }
                                 })
                             }}>
@@ -232,7 +258,7 @@ class UpdateOrder extends React.Component {
                                 handleSubmit
                             }) => {
                                 let disabled = false
-                                array.forEach((item, index) => {
+                                array.forEach((__item__, index) => {
                                     disabled |=
                                         errors[`itemQuantity${index}`] &&
                                         touched[`itemQuantity${index}`]
@@ -252,7 +278,7 @@ class UpdateOrder extends React.Component {
                                                     }}
                                                 />
                                             </Grid>
-                                            <Grid item xs={12} sm={9}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -267,6 +293,20 @@ class UpdateOrder extends React.Component {
                                                             </InputAdornment>
                                                         )
                                                     }}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={3}>
+                                                <InlineDatePicker
+                                                    name="date"
+                                                    variant="outlined"
+                                                    format="DD/MM/YYYY"
+                                                    label="Ngày nhập"
+                                                    value={this.state.date}
+                                                    onChange={
+                                                        this.handleDateChange
+                                                    }
+                                                    fullWidth
+                                                    disabled
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -311,6 +351,7 @@ class UpdateOrder extends React.Component {
                                                 buyerName={buyerName}
                                                 idOrder={idOrder}
                                                 history={history}
+                                                prices={pricesList}
                                             />
                                         </Grid>
                                         <Button

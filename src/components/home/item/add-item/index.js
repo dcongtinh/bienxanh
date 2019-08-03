@@ -139,7 +139,7 @@ class AddItem extends React.Component {
                                         itemPrice: values[`itemPrice${index}`],
                                         wareHouses: datas[index],
                                         customDateApply: moment(date).format(
-                                            'DD/MM/YYYY'
+                                            'YYYY/MM/DD'
                                         ),
                                         dateApply: date
                                     })
