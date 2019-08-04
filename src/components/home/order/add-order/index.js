@@ -191,7 +191,7 @@ class AddOrder extends React.Component {
                                         itemName,
                                         itemQuantity:
                                             values[`itemQuantity${index}`] || 1,
-                                        itemPrice: pricesList[index],
+                                        itemPrice: pricesList[index] || 0,
                                         itemNote: values[`itemNote${index}`]
                                     }
                                     _items.push(_item)

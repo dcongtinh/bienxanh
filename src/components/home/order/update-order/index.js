@@ -108,7 +108,6 @@ class UpdateOrder extends React.Component {
             order,
             history
         } = this.props
-
         let orderItems = order.items
         let idOrder = this.props.match.params.idOrder
         let optionsWarehouse = []
@@ -219,9 +218,7 @@ class UpdateOrder extends React.Component {
                                     optionsWarehouse[0].value
                                 let _items = []
                                 array.forEach((__item__, index) => {
-                                    let itemPrice = this.state[
-                                        `itemPrice${index}`
-                                    ]
+                                    let itemPrice = pricesList[index] || 0
                                     let itemName =
                                         this.state[`itemName${index}`] ||
                                         optionsItem[0].value
