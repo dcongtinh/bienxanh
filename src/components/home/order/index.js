@@ -13,6 +13,7 @@ import moment from 'moment'
 import styles from './styles'
 import RowItem from './row-item'
 import RowEdit from './row-edit'
+import Tooltip from '@material-ui/core/Tooltip'
 import { observer } from 'mobx-react'
 
 @observer
@@ -61,6 +62,42 @@ class Order extends Component {
                 }
             },
             'Tên đơn vị',
+            {
+                name: 'Đơn hàng',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <div>
+                                {orders[tableMeta.rowIndex].items.map(item => {
+                                    return (
+                                        <div className={classes.items}>
+                                            {item.itemName.itemName}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    }
+                }
+            },
+            {
+                name: 'Số lượng',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <div>
+                                {orders[tableMeta.rowIndex].items.map(item => {
+                                    return (
+                                        <div className={classes.items}>
+                                            {item.itemQuantity} KG
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    }
+                }
+            },
             'Ngày áp dụng',
             'Cập nhật',
             {
@@ -88,6 +125,8 @@ class Order extends Component {
                     order.warehouse.warehouse
                 })`
             )
+            row.push('')
+            row.push('')
             row.push(moment(order.createdAt).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
             data.push(row)
@@ -163,39 +202,45 @@ class Order extends Component {
                 return (
                     <div>
                         {unMerge ? (
-                            <IconButton
-                                onClick={() => {
-                                    this.setState({
-                                        openConfirmUnMerge: true,
-                                        selectedRows: selectedRows.data,
-                                        rowsSelected
-                                    })
-                                }}>
-                                <UndoIcon />
-                            </IconButton>
+                            <Tooltip title="Huỷ hợp">
+                                <IconButton
+                                    onClick={() => {
+                                        this.setState({
+                                            openConfirmUnMerge: true,
+                                            selectedRows: selectedRows.data,
+                                            rowsSelected
+                                        })
+                                    }}>
+                                    <UndoIcon />
+                                </IconButton>
+                            </Tooltip>
                         ) : null}
                         {merge ? (
+                            <Tooltip title="Hợp">
+                                <IconButton
+                                    onClick={() => {
+                                        this.setState({
+                                            openConfirmMerge: true,
+                                            selectedRows: selectedRows.data,
+                                            rowsSelected
+                                        })
+                                    }}>
+                                    <MergeTypeIcon />
+                                </IconButton>
+                            </Tooltip>
+                        ) : null}
+                        <Tooltip title="Xoá">
                             <IconButton
                                 onClick={() => {
                                     this.setState({
-                                        openConfirmMerge: true,
+                                        openConfirmDelete: true,
                                         selectedRows: selectedRows.data,
                                         rowsSelected
                                     })
                                 }}>
-                                <MergeTypeIcon />
+                                <RemoveCircleIcon />
                             </IconButton>
-                        ) : null}
-                        <IconButton
-                            onClick={() => {
-                                this.setState({
-                                    openConfirmDelete: true,
-                                    selectedRows: selectedRows.data,
-                                    rowsSelected
-                                })
-                            }}>
-                            <RemoveCircleIcon />
-                        </IconButton>
+                        </Tooltip>
                     </div>
                 )
             }

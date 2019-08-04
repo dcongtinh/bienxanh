@@ -21,5 +21,13 @@ export default theme => ({
     },
     editOption: {
         display: 'flex'
+    },
+    items: {
+        paddingBottom: theme.spacing(),
+        marginBottom: theme.spacing(),
+        borderBottom: '1px solid ' + theme.palette.border
+    },
+    headItems: {
+        minWidth: 200
     }
 })
