@@ -256,7 +256,7 @@ class AddUserForm extends React.Component {
                                         <PersonAddIcon
                                             className={classes.iconSubmit}
                                         />
-                                        Đăng kí!
+                                        Đăng kí
                                         {isRequesting ? (
                                             <CircularProgress
                                                 color="secondary"

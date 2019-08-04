@@ -38,7 +38,8 @@ class Users extends Component {
                                     onClick={() => {
                                         this.props.history.push(
                                             `/dashboard/profile/${
-                                                users[tableMeta.rowIndex]._id
+                                                users[tableMeta.rowIndex]
+                                                    .username
                                             }`
                                         )
                                     }}>

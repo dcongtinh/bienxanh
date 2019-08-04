@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import CloseIcon from '@material-ui/icons/Close'
 import CheckIcon from '@material-ui/icons/Check'
-
+import TextField from '@material-ui/core/TextField'
 const styles = theme => ({
     closeIcon: {
         height: 20,
@@ -26,16 +26,10 @@ const View = styled.div`
 const Edit = styled.div`
     display: flex;
     align-items: center;
-    min-width: 200px;
     input {
         font-size: 14px;
-        width: 80px;
-        border: 0;
-        border-bottom: 1px solid #dfe3e8;
-        outline: 0;
-        background: transparent;
-        padding-bottom: 4px;
-        margin-top: 4px;
+        width: 60px;
+        color: #12161b;
     }
 `
 
@@ -136,20 +130,22 @@ class RowItem extends Component {
             return (
                 <Edit>
                     <Prefix>{prefix}</Prefix>
-                    <input
+                    <TextField
                         autoFocus
                         value={code}
                         onChange={this.handleChangeValue}
                         onKeyPress={this.handleKeyPress}
                     />
-                    <CloseIcon
-                        className={classes.closeIcon}
-                        onClick={this.handleClose}
-                    />
-                    <CheckIcon
-                        className={classes.checkIcon}
-                        onClick={this.handleSave}
-                    />
+                    <div>
+                        <CloseIcon
+                            className={classes.closeIcon}
+                            onClick={this.handleClose}
+                        />
+                        <CheckIcon
+                            className={classes.checkIcon}
+                            onClick={this.handleSave}
+                        />
+                    </div>
                 </Edit>
             )
         }

@@ -131,7 +131,14 @@ class ItemPriceForm extends React.Component {
             itemName,
             options
         } = this.props
-
+        array.forEach((item, index) => {
+            if (!states.datas[index]) {
+                states.datas[index] = []
+                states.datas[index][0] = []
+                states.datas[index][1] = []
+                states.datas[index][2] = []
+            }
+        })
         return (
             <>
                 {array.map((item, index) => {
@@ -281,7 +288,7 @@ class ItemPriceForm extends React.Component {
                         area,
                         options: options[area],
                         multiple: true,
-                        placeholder: 'Search and select Warehouse'
+                        placeholder: 'Tìm kiếm'
                     }}
                 />
                 <Fab

@@ -1,5 +1,6 @@
 import MuiButton from './MuiButton'
 import MuiChip from './MuiChip'
+import MUIDataTable from './MUIDataTable'
 import MuiFab from './MuiFab'
 import MuiFormHelperText from './MuiFormHelperText'
 import MuiFilledInput from './MuiFilledInput'
@@ -8,6 +9,7 @@ import MuiInputBase from './MuiInputBase'
 import MuiLinearProgress from './MuiLinearProgress'
 import MuiListItemIcon from './MuiListItemIcon'
 import MuiOutlinedInput from './MuiOutlinedInput'
+import MuiPaper from './MuiPaper'
 import MuiSvgIcon from './MuiSvgIcon'
 import MuiTab from './MuiTab'
 import MuiTableCell from './MuiTableCell'
@@ -17,6 +19,7 @@ import MuiTabs from './MuiTabs'
 export default {
     MuiButton,
     MuiChip,
+    MUIDataTable,
     MuiFab,
     MuiFormHelperText,
     MuiFilledInput,
@@ -25,6 +28,7 @@ export default {
     MuiLinearProgress,
     MuiListItemIcon,
     MuiOutlinedInput,
+    MuiPaper,
     MuiSvgIcon,
     MuiTab,
     MuiTableCell,

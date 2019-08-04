@@ -74,7 +74,7 @@ class AddItem extends React.Component {
             }
         array.forEach((item, index) => {
             let _initialValues = {
-                [`itemPrice${index}`]: 1000,
+                [`itemPrice${index}`]: '',
                 [`dateApply${index}`]: new Date()
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
