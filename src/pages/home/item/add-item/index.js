@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
+import createIsSiteAdmin from 'hoc/is-admin'
 import AddItem from 'components/home/item/add-item'
 
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
+@createIsSiteAdmin({})
 @inject(({ item, wareHouse }) => ({
     addItem: object => item.addItem(object),
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),

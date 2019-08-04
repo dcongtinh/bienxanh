@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-import styles from './styles'
+import styles from 'components/home/styles'
 
 class Warehouse extends Component {
     constructor(props) {

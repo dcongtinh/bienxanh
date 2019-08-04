@@ -7,7 +7,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-import styles from './styles'
+import styles from 'components/home/styles'
 
 class Users extends Component {
     constructor(props) {

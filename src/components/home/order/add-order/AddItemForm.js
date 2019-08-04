@@ -202,7 +202,7 @@ class AddItemForm extends React.Component {
                                         touched[`itemNote${index}`]
                                     }
                                     message={errors[`itemNote${index}`]}
-                                    norequired
+                                    norequired={true}
                                 />
                             </Grid>
                         </Grid>

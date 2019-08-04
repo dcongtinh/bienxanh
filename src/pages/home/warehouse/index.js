@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
+import createIsSiteAdmin from 'hoc/is-admin'
 import Warehouse from 'components/home/warehouse'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
+@createIsSiteAdmin({})
 @inject(({ wareHouse }) => ({
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     deleteWareHouses: ({ wareHousesListId }) =>

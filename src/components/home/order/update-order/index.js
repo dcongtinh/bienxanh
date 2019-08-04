@@ -283,7 +283,7 @@ class UpdateOrder extends React.Component {
                                                     value={values.buyerName}
                                                     label="Họ tên"
                                                     name="buyerName"
-                                                    norequired
+                                                    norequired={true}
                                                     InputProps={{
                                                         startAdornment: (
                                                             <InputAdornment position="start">

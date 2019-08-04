@@ -105,6 +105,7 @@ class Order extends Component {
                 options: {
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <RowEdit
+                            style={{ marginLeft: 16 }}
                             history={this.props.history}
                             updateOrder={this.props.updateOrder}
                             idOrder={orders[tableMeta.rowIndex]._id}

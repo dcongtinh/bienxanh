@@ -1,6 +1,7 @@
 import MuiButton from './MuiButton'
 import MuiChip from './MuiChip'
 import MUIDataTable from './MUIDataTable'
+import MUIDataTableHeadCell from './MUIDataTableHeadCell'
 import MuiFab from './MuiFab'
 import MuiFormHelperText from './MuiFormHelperText'
 import MuiFilledInput from './MuiFilledInput'
@@ -20,6 +21,7 @@ export default {
     MuiButton,
     MuiChip,
     MUIDataTable,
+    MUIDataTableHeadCell,
     MuiFab,
     MuiFormHelperText,
     MuiFilledInput,
