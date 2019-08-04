@@ -60,9 +60,7 @@ let initialValues = {
     buyerTaxCode: ''
 }
 class AddWarehouse extends React.Component {
-    state = {
-        siteAdmin: false
-    }
+    state = {}
     handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value,

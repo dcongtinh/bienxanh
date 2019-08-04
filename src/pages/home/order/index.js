@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
+import canReachAccess from 'hoc/can-reach'
 import Order from 'components/home/order'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
+@canReachAccess({ access: 'order' })
 @inject(({ order, auth }) => ({
     fetchMe: () => auth.fetchMe(),
     fetchAllOrders: () => order.fetchAllOrders(),

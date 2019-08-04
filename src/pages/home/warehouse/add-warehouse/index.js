@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
-import createIsSiteAdmin from 'hoc/is-admin'
+import canReachAccess from 'hoc/can-reach'
 import AddWarehouse from 'components/home/warehouse/add-warehouse'
 
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
-@createIsSiteAdmin({})
+@canReachAccess({ access: 'warehouse' })
 @inject(({ wareHouse }) => ({
     addWarehouse: object => wareHouse.addWarehouse(object),
     isRequesting: wareHouse.isRequesting

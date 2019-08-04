@@ -55,7 +55,6 @@ class UpdateWarehouse extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            siteAdmin: false,
             buyerArea: props.wareHouse.buyerArea
         }
     }

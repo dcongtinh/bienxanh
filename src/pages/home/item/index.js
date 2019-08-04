@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
-import createIsSiteAdmin from 'hoc/is-admin'
+import canReachAccess from 'hoc/can-reach'
 import Item from 'components/home/item'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
-@createIsSiteAdmin({})
+@canReachAccess({ access: 'item' })
 @inject(({ item }) => ({
     fetchAllItems: () => item.fetchAllItems(),
     deleteItems: ({ itemsListId }) => item.deleteItems({ itemsListId }),

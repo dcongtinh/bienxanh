@@ -70,13 +70,25 @@ let initialValues = {
     password: '',
     repassword: ''
 }
+
 class AddUserForm extends React.Component {
     state = {
-        siteAdmin: false
+        siteAdmin: false,
+        user: false,
+        order: false,
+        item: false,
+        warehouse: false
     }
+
     render() {
         let { classes, isRequesting } = this.props
-        let { siteAdmin } = this.state
+        let accesses = [
+            { value: 'siteAdmin', label: 'Admin' },
+            { value: 'user', label: 'Quản lí nhân viên' },
+            { value: 'order', label: 'Quản lí hoá đơn' },
+            { value: 'item', label: 'Quản lí hàng hoá' },
+            { value: 'warehouse', label: 'Quản lí kho' }
+        ]
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -93,13 +105,19 @@ class AddUserForm extends React.Component {
                                     email,
                                     password
                                 } = values
+                                let list = []
+                                accesses.forEach(access => {
+                                    let { value } = access
+                                    if (this.state[value]) list.push(value)
+                                })
                                 this.props.register({
                                     firstname,
                                     lastname,
                                     username,
                                     password,
                                     email,
-                                    siteAdmin: this.state.siteAdmin,
+                                    siteAdmin: this.state[`siteAdmin`],
+                                    access: list,
                                     callback: () => resetForm()
                                 })
                             }}>
@@ -214,28 +232,46 @@ class AddUserForm extends React.Component {
                                                     Phân quyền
                                                 </FormLabel>
                                                 <FormGroup>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox
-                                                                color="primary"
-                                                                checked={
-                                                                    siteAdmin
-                                                                }
-                                                                value="siteAdmin"
-                                                                onChange={e => {
-                                                                    this.setState(
-                                                                        {
-                                                                            siteAdmin:
-                                                                                e
-                                                                                    .target
-                                                                                    .checked
-                                                                        }
-                                                                    )
-                                                                }}
-                                                            />
+                                                    {accesses.map(
+                                                        (access, index) => {
+                                                            let {
+                                                                value,
+                                                                label
+                                                            } = access
+                                                            return (
+                                                                <FormControlLabel
+                                                                    key={index}
+                                                                    control={
+                                                                        <Checkbox
+                                                                            color="primary"
+                                                                            checked={
+                                                                                this
+                                                                                    .state[
+                                                                                    value
+                                                                                ]
+                                                                            }
+                                                                            value={
+                                                                                value
+                                                                            }
+                                                                            onChange={e => {
+                                                                                this.setState(
+                                                                                    {
+                                                                                        [value]:
+                                                                                            e
+                                                                                                .target
+                                                                                                .checked
+                                                                                    }
+                                                                                )
+                                                                            }}
+                                                                        />
+                                                                    }
+                                                                    label={
+                                                                        label
+                                                                    }
+                                                                />
+                                                            )
                                                         }
-                                                        label="Admin"
-                                                    />
+                                                    )}
                                                 </FormGroup>
                                             </FormControl>
                                         </Grid>

@@ -54,8 +54,8 @@ class Users extends Component {
         let data = []
         users.forEach(user => {
             let row = []
-            row.push(user.firstname || 'a')
-            row.push(user.lastname || 'a')
+            row.push(user.firstname)
+            row.push(user.lastname)
             row.push(user.username)
             row.push(user.email)
             data.push(row)

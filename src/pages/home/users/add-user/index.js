@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import createIsAuthenticated from 'hoc/is-authenticated'
-import createIsSiteAdmin from 'hoc/is-admin'
+import canReachAccess from 'hoc/can-reach'
 import { inject, observer } from 'mobx-react'
 import AddUserForm from 'components/home/users/add-user'
 
 @createIsAuthenticated({})
-@createIsSiteAdmin({})
+@canReachAccess({ access: 'user' })
 @inject(({ auth, alert }) => ({
     register: object => auth.register(object),
     isRequesting: auth.isRequesting

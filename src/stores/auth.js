@@ -63,6 +63,7 @@ class AuthStore {
         password,
         email,
         siteAdmin,
+        access,
         callback
     }) {
         this.isRequesting = true
@@ -72,9 +73,9 @@ class AuthStore {
             username,
             password,
             email,
-            siteAdmin
+            siteAdmin,
+            access
         })
-
         if (success) {
             this.rootStore.alert.show({
                 message: `Tạo tài khoản thành công!`,
@@ -110,13 +111,14 @@ class AuthStore {
         this.isRequesting = false
     }
     @action
-    async updateProfile({ username, firstname, lastname, siteAdmin }) {
+    async updateProfile({ username, firstname, lastname, siteAdmin, access }) {
         this.isRequesting = true
         const { success, data } = await userAPI.updateProfile({
             username,
             firstname,
             lastname,
-            siteAdmin
+            siteAdmin,
+            access
         })
         if (success)
             this.rootStore.alert.show({

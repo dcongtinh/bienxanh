@@ -13,29 +13,30 @@ export default [
         title: 'Quản lý nhân viên',
         icon: <PeopleIcon />,
         link: '/dashboard/users',
-        access: true
+        access: 'user'
     },
     {
         title: 'Nhập hoá đơn',
         icon: <NotesIcon />,
-        link: '/dashboard/order/add'
+        link: '/dashboard/order/add',
+        access: 'order'
     },
     {
         title: 'Xem hoá đơn',
         icon: <ViewListIcon />,
         link: '/dashboard/orders',
-        access: true
+        access: 'order'
     },
     {
         title: 'Hàng hoá',
         icon: <LocalGroceryStoreIcon />,
         link: '/dashboard/items',
-        access: true
+        access: 'item'
     },
     {
         title: 'Kho',
         icon: <ListIcon />,
         link: '/dashboard/warehouses',
-        access: true
+        access: 'warehouse'
     }
 ]

@@ -53,21 +53,26 @@ const SignUpSchema = Yup.object().shape({
 class Profile extends React.Component {
     constructor(props) {
         super(props)
+        let access = props.user.access
         this.state = {
-            siteAdmin: props.user.siteAdmin
+            siteAdmin: props.user.siteAdmin,
+            user: access.indexOf('user') !== -1,
+            order: access.indexOf('order') !== -1,
+            item: access.indexOf('item') !== -1,
+            warehouse: access.indexOf('warehouse') !== -1
         }
     }
 
     render() {
         let { classes, user, isRequesting, me } = this.props
         let { siteAdmin } = this.state
-        if (!user)
-            return (
-                <CircularProgress
-                    color="secondary"
-                    className={classes.circularProgress}
-                />
-            )
+        let accesses = [
+            { value: 'siteAdmin', label: 'Admin' },
+            { value: 'user', label: 'Quản lí nhân viên' },
+            { value: 'order', label: 'Quản lí hoá đơn' },
+            { value: 'item', label: 'Quản lí hàng hoá' },
+            { value: 'warehouse', label: 'Quản lí kho' }
+        ]
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -83,11 +88,17 @@ class Profile extends React.Component {
                             validationSchema={SignUpSchema}
                             onSubmit={values => {
                                 let { username, firstname, lastname } = values
+                                let list = []
+                                accesses.forEach(access => {
+                                    let { value } = access
+                                    if (this.state[value]) list.push(value)
+                                })
                                 this.props.updateProfile({
                                     username,
                                     firstname,
                                     lastname,
-                                    siteAdmin
+                                    siteAdmin,
+                                    access: list
                                 })
                             }}>
                             {({
@@ -171,7 +182,7 @@ class Profile extends React.Component {
                                                 />
                                             </Grid>
                                         </Grid>
-                                        {me.siteAdmin && (
+                                        {me.access.indexOf('user') !== -1 && (
                                             <Grid
                                                 item
                                                 lg={4}
@@ -183,28 +194,48 @@ class Profile extends React.Component {
                                                         Phân quyền
                                                     </FormLabel>
                                                     <FormGroup>
-                                                        <FormControlLabel
-                                                            control={
-                                                                <Checkbox
-                                                                    color="primary"
-                                                                    checked={
-                                                                        siteAdmin
-                                                                    }
-                                                                    value="siteAdmin"
-                                                                    onChange={e => {
-                                                                        this.setState(
-                                                                            {
-                                                                                siteAdmin:
-                                                                                    e
-                                                                                        .target
-                                                                                        .checked
-                                                                            }
-                                                                        )
-                                                                    }}
-                                                                />
+                                                        {accesses.map(
+                                                            (access, index) => {
+                                                                let {
+                                                                    value,
+                                                                    label
+                                                                } = access
+                                                                return (
+                                                                    <FormControlLabel
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        control={
+                                                                            <Checkbox
+                                                                                color="primary"
+                                                                                checked={
+                                                                                    this
+                                                                                        .state[
+                                                                                        value
+                                                                                    ]
+                                                                                }
+                                                                                value={
+                                                                                    value
+                                                                                }
+                                                                                onChange={e => {
+                                                                                    this.setState(
+                                                                                        {
+                                                                                            [value]:
+                                                                                                e
+                                                                                                    .target
+                                                                                                    .checked
+                                                                                        }
+                                                                                    )
+                                                                                }}
+                                                                            />
+                                                                        }
+                                                                        label={
+                                                                            label
+                                                                        }
+                                                                    />
+                                                                )
                                                             }
-                                                            label="Admin"
-                                                        />
+                                                        )}
                                                     </FormGroup>
                                                 </FormControl>
                                             </Grid>

@@ -32,7 +32,6 @@ class Sidebar extends Component {
 
         const rootClassName = classNames(classes.root, className)
         if (!this.props.isAuthenticated) return null
-        let { siteAdmin } = me
 
         return (
             <nav className={rootClassName}>
@@ -44,7 +43,7 @@ class Sidebar extends Component {
                 <Divider className={classes.profileDivider} />
                 <List component="div" disablePadding>
                     {listItem.map((item, index) => {
-                        if (item.access && !siteAdmin) return false
+                        if (me.access.indexOf(item.access) === -1) return false
                         return (
                             <ListItem
                                 key={index}

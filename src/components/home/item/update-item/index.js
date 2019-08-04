@@ -72,8 +72,7 @@ class UpdateItem extends React.Component {
             itemNameCode: props.item.itemNameCode,
             itemName: props.item.itemName,
             itemPrices,
-            datas,
-            siteAdmin: false
+            datas
         }
 
         let state = {}

@@ -46,7 +46,6 @@ const styles = theme => ({
 class AddItem extends React.Component {
     state = {
         count: 1,
-        siteAdmin: false,
         datas: []
     }
     handleChangeCount = count => {

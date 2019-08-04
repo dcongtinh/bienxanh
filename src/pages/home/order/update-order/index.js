@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
-import createIsSiteAdmin from 'hoc/is-admin'
+import canReachAccess from 'hoc/can-reach'
 import UpdateOrder from 'components/home/order/update-order'
 
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
-@createIsSiteAdmin({})
+@canReachAccess({ access: 'order' })
 @inject(({ wareHouse, item, order }) => ({
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     fetchAllItems: () => item.fetchAllItems(),
