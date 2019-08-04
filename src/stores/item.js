@@ -68,7 +68,7 @@ class WarehouseStore {
                 variant: 'success'
             })
             if (callback) callback()
-            // this.fetchItem({ idItem })
+            this.fetchItem({ idItem })
         } else {
             this.rootStore.alert.show({
                 message: data.message,

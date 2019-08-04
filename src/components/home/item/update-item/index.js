@@ -160,14 +160,6 @@ class UpdateItem extends React.Component {
                             onSubmit={(values, { resetForm }) => {
                                 let { itemNameCode, itemName } = values
                                 let { datas } = this.state
-                                // for (let k in datas) {
-                                //     for (let i = 0; i < 3; ++i) {
-                                //         for (let j in datas[k][i]) {
-                                //             datas[k][i][j] =
-                                //                 datas[k][i][j].value
-                                //         }
-                                //     }
-                                // }
 
                                 let itemPrices = []
                                 array.forEach((item, index) => {

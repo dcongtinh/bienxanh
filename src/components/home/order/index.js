@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import MergeTypeIcon from '@material-ui/icons/MergeType'
+import UndoIcon from '@material-ui/icons/Undo'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
@@ -19,17 +20,28 @@ class Order extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            openConfirm: false,
+            openConfirmDelete: false,
+            openConfirmMerge: false,
+            openConfirmUnMerge: false,
             selectedRows: [],
             rowsSelected: [],
             page: 0
         }
     }
     handleClose = () => {
-        this.setState({ openConfirm: false })
+        this.setState({
+            openConfirmDelete: false,
+            openConfirmMerge: false,
+            openConfirmUnMerge: false
+        })
     }
     render() {
-        let { orders, classes } = this.props
+        let {
+            openConfirmDelete,
+            openConfirmMerge,
+            openConfirmUnMerge
+        } = this.state
+        let { classes, orders, me } = this.props
         const columns = [
             'Nhóm',
             'Mã',
@@ -68,7 +80,7 @@ class Order extends Component {
         let data = []
         orders.forEach(order => {
             let row = []
-            row.push(order.group)
+            row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
             row.push(order.warehouse.buyerCode)
             row.push(order.buyerName)
             row.push(
@@ -125,40 +137,68 @@ class Order extends Component {
                     deleteAria: 'Delete Selected Rows'
                 }
             },
-            customToolbarSelect: selectedRows => (
-                <div>
-                    <IconButton
-                        onClick={() => {
-                            let rowsSelected = []
-                            selectedRows.data.forEach(row => {
-                                rowsSelected.push(row.dataIndex)
-                            })
-                            rowsSelected.sort()
-                            this.setState({
-                                openConfirm: true,
-                                selectedRows: selectedRows.data,
-                                rowsSelected
-                            })
-                        }}>
-                        <MergeTypeIcon />
-                    </IconButton>
-                    <IconButton
-                        onClick={() => {
-                            let rowsSelected = []
-                            selectedRows.data.forEach(row => {
-                                rowsSelected.push(row.dataIndex)
-                            })
-                            rowsSelected.sort()
-                            this.setState({
-                                openConfirm: true,
-                                selectedRows: selectedRows.data,
-                                rowsSelected
-                            })
-                        }}>
-                        <RemoveCircleIcon />
-                    </IconButton>
-                </div>
-            )
+            customToolbarSelect: selectedRows => {
+                let rowsSelected = []
+                selectedRows.data.forEach(row => {
+                    rowsSelected.push(row.dataIndex)
+                })
+                rowsSelected.sort()
+                let length = rowsSelected.length
+                let merge = length > 1
+                for (let i = 1; i < length; ++i) {
+                    let index = rowsSelected[i]
+                    let date1 = moment(orders[index - 1].createdAt).format(
+                        'DD/MM/YYYY'
+                    )
+                    let date2 = moment(orders[index].createdAt).format(
+                        'DD/MM/YYYY'
+                    )
+                    merge &=
+                        orders[index - 1].warehouse.buyerCode ===
+                            orders[index].warehouse.buyerCode && date1 === date2
+                    if (!merge) break
+                }
+                let unMerge =
+                    length === 1 && orders[rowsSelected[0]].mergeList.length
+                return (
+                    <div>
+                        {unMerge ? (
+                            <IconButton
+                                onClick={() => {
+                                    this.setState({
+                                        openConfirmUnMerge: true,
+                                        selectedRows: selectedRows.data,
+                                        rowsSelected
+                                    })
+                                }}>
+                                <UndoIcon />
+                            </IconButton>
+                        ) : null}
+                        {merge ? (
+                            <IconButton
+                                onClick={() => {
+                                    this.setState({
+                                        openConfirmMerge: true,
+                                        selectedRows: selectedRows.data,
+                                        rowsSelected
+                                    })
+                                }}>
+                                <MergeTypeIcon />
+                            </IconButton>
+                        ) : null}
+                        <IconButton
+                            onClick={() => {
+                                this.setState({
+                                    openConfirmDelete: true,
+                                    selectedRows: selectedRows.data,
+                                    rowsSelected
+                                })
+                            }}>
+                            <RemoveCircleIcon />
+                        </IconButton>
+                    </div>
+                )
+            }
         }
 
         return (
@@ -189,7 +229,101 @@ class Order extends Component {
                     options={options}
                 />
                 <ConfirmDialog
-                    open={this.state.openConfirm}
+                    open={openConfirmUnMerge}
+                    title="Bạn có chắc muốn huỷ hợp hoá đơn?"
+                    cancelLabel="Đóng"
+                    okLabel="Huỷ"
+                    onHide={this.handleClose}
+                    onOK={() => {
+                        let ordersListId = []
+                        let mergeList = []
+                        this.state.rowsSelected.forEach(index => {
+                            ordersListId.push(orders[index]._id)
+                            mergeList = mergeList.concat(
+                                orders[index].mergeList
+                            )
+                        })
+                        this.props.deleteOrders({
+                            ordersListId,
+                            callback: () =>
+                                this.props.mergeOrders({
+                                    ordersListId: mergeList,
+                                    enabled: true
+                                })
+                        })
+                        this.handleClose()
+                        this.setState({ selectedRows: [] })
+                    }}
+                />
+                <ConfirmDialog
+                    open={openConfirmMerge}
+                    title="Bạn có chắc muốn hợp các hoá đơn?"
+                    cancelLabel="Huỷ"
+                    okLabel="Đồng ý"
+                    onHide={this.handleClose}
+                    onOK={() => {
+                        let ordersListId = []
+                        let { rowsSelected } = this.state
+                        rowsSelected.forEach(index => {
+                            ordersListId.push(orders[index]._id)
+                        })
+
+                        let length = rowsSelected.length
+                        let ordersFirst = orders[rowsSelected[0]]
+                        let warehouse = ordersFirst.warehouse._id
+                        let items = ordersFirst.items
+                        let createdAt = ordersFirst.createdAt
+                        let mergeList = [] // list _id of orders was merged
+                        if (ordersFirst.mergeList) {
+                            if (ordersFirst.mergeList.length)
+                                mergeList = ordersFirst.mergeList
+                            else mergeList.push(ordersFirst._id)
+                        }
+                        for (let i = 1; i < length; ++i) {
+                            let index = rowsSelected[i]
+                            items = items.concat(orders[index].items)
+                            if (orders[index].mergeList.length)
+                                mergeList = mergeList.concat(
+                                    orders[index].mergeList
+                                )
+                            else mergeList.push(orders[index]._id)
+                        }
+                        let marks = {},
+                            _items = []
+                        items.forEach(item => {
+                            if (!marks[item.itemName._id]) {
+                                let _item = item
+                                _item.itemName = _item.itemName._id
+                                marks[_item.itemName] = true
+                                _items.push(_item)
+                            } else {
+                                _items.forEach(_item => {
+                                    if (_item.itemName === item.itemName._id) {
+                                        _item.itemQuantity += item.itemQuantity
+                                    }
+                                })
+                            }
+                        })
+                        this.props.mergeOrders({
+                            ordersListId,
+                            enabled: false,
+                            callback: () =>
+                                this.props.addOrder({
+                                    warehouse,
+                                    items: _items,
+                                    owner: me._id,
+                                    createdAt,
+                                    mergeList,
+                                    callback: () => this.props.fetchAllOrders()
+                                })
+                        })
+
+                        this.handleClose()
+                        this.setState({ selectedRows: [] })
+                    }}
+                />
+                <ConfirmDialog
+                    open={openConfirmDelete}
                     title="Bạn có chắc muốn xoá hoá đơn?"
                     cancelLabel="Huỷ"
                     okLabel="Xoá"
@@ -198,6 +332,10 @@ class Order extends Component {
                         let ordersListId = []
                         this.state.rowsSelected.forEach(index => {
                             ordersListId.push(orders[index]._id)
+                            if (orders[index].mergeList.length)
+                                ordersListId = ordersListId.concat(
+                                    orders[index].mergeList
+                                )
                         })
                         this.props.deleteOrders({ ordersListId })
                         this.handleClose()

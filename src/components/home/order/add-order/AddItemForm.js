@@ -168,7 +168,7 @@ class AddItemForm extends React.Component {
                                 <TextField
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values[`itemQuantity${index}`] || 1}
+                                    value={values[`itemQuantity${index}`]}
                                     label="Số lượng"
                                     name={`itemQuantity${index}`}
                                     type="number"
@@ -237,6 +237,11 @@ class AddItemForm extends React.Component {
                                     warehouse,
                                     buyerName,
                                     items: orderItems
+                                },
+                                callback: () => {
+                                    if (this.props.fetchOrder) {
+                                        this.props.fetchOrder({ idOrder })
+                                    }
                                 }
                             })
                         }

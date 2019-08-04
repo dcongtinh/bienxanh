@@ -12,7 +12,6 @@ import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import AddItemForm from 'components/home/order/add-order/AddItemForm'
 import Select from 'components/Input/Select'
-import { InlineDatePicker } from 'material-ui-pickers'
 import moment from 'moment'
 
 const styles = theme => ({
@@ -246,7 +245,9 @@ class UpdateOrder extends React.Component {
                                         buyerName,
                                         items: _items,
                                         owner: me._id
-                                    }
+                                    },
+                                    callback: () =>
+                                        this.props.fetchOrder({ idOrder })
                                 })
                             }}>
                             {({
@@ -296,17 +297,14 @@ class UpdateOrder extends React.Component {
                                                 />
                                             </Grid>
                                             <Grid item xs={12} sm={3}>
-                                                <InlineDatePicker
-                                                    name="date"
-                                                    variant="outlined"
-                                                    format="DD/MM/YYYY"
-                                                    label="Ngày nhập"
-                                                    value={this.state.date}
-                                                    onChange={
-                                                        this.handleDateChange
-                                                    }
-                                                    fullWidth
-                                                    disabled
+                                                <TextField
+                                                    value={moment(
+                                                        this.state.date
+                                                    ).format('DD/MM/YYYY')}
+                                                    label="Ngày áp dụng"
+                                                    InputProps={{
+                                                        readOnly: true
+                                                    }}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -340,6 +338,9 @@ class UpdateOrder extends React.Component {
                                                 isUpdateOrder
                                                 updateOrder={
                                                     this.props.updateOrder
+                                                }
+                                                fetchOrder={
+                                                    this.props.fetchOrder
                                                 }
                                                 deleteOrders={
                                                     this.props.deleteOrders

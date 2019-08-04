@@ -2,13 +2,13 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from 'components/Input/TextField'
+import { Typography } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import NumberFormat from 'react-number-format'
 import { InlineDatePicker } from 'material-ui-pickers'
 
@@ -47,6 +47,13 @@ const styles = theme => ({
     },
     fab: {
         marginLeft: theme.spacing(1)
+    },
+    checkbox: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    label: {
+        cursor: 'pointer'
     }
 })
 
@@ -191,25 +198,39 @@ class ItemPriceForm extends React.Component {
                                 let total = __item__.length
                                 return (
                                     <Grid item xs={12} sm={4} key={index1}>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={Boolean(
-                                                        count && count === total
-                                                    )}
-                                                    value={false}
-                                                    onClick={() => {
-                                                        this.setState({
-                                                            openChooseWarehouse: true,
-                                                            index,
-                                                            area: index1
-                                                        })
-                                                    }}
-                                                />
-                                            }
-                                            label={`${label} (${count}/${total})`}
-                                        />
+                                        <div className={classes.checkbox}>
+                                            <Checkbox
+                                                color="primary"
+                                                checked={Boolean(
+                                                    count && count === total
+                                                )}
+                                                value={false}
+                                                onClick={() => {
+                                                    let data
+                                                    if (
+                                                        count &&
+                                                        count === total
+                                                    )
+                                                        data = []
+                                                    else data = options[index1]
+                                                    states.datas[index][
+                                                        index1
+                                                    ] = data
+                                                    this.props.handleSelect(
+                                                        states.datas
+                                                    )
+                                                }}
+                                            />
+                                            <Typography
+                                                className={classes.label}
+                                                onClick={() => {
+                                                    this.setState({
+                                                        openChooseWarehouse: true,
+                                                        index,
+                                                        area: index1
+                                                    })
+                                                }}>{`${label} (${count}/${total})`}</Typography>
+                                        </div>
                                     </Grid>
                                 )
                             })}
@@ -270,7 +291,6 @@ class ItemPriceForm extends React.Component {
                     onClick={this.handleAdd}>
                     <AddIcon />
                 </Fab>
-                {/* <button onClick={this.handleAdd}>AddMore</button> */}
             </>
         )
     }

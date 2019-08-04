@@ -5,23 +5,32 @@ import Order from 'components/home/order'
 import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
-@inject(({ order }) => ({
+@inject(({ order, auth }) => ({
+    fetchMe: () => auth.fetchMe(),
     fetchAllOrders: () => order.fetchAllOrders(),
-    deleteOrders: ({ ordersListId }) => order.deleteOrders({ ordersListId }),
+    addOrder: object => order.addOrder(object),
+    deleteOrders: ({ ordersListId, callback }) =>
+        order.deleteOrders({ ordersListId, callback }),
+    mergeOrders: ({ ordersListId, enabled, callback }) =>
+        order.mergeOrders({ ordersListId, enabled, callback }),
     updateOrder: object => order.updateOrder(object),
     orders: JSON.parse(JSON.stringify(order.orders)),
     count: order.count,
     hasFetched: order.hasFetched,
-    isRequesting: order.isRequesting
+    isRequesting: order.isRequesting,
+    me: JSON.parse(JSON.stringify(auth.me)),
+    meHasFetched: auth.hasFetched
 }))
 @observer
 class OrderPage extends Component {
     componentDidMount() {
+        if (!this.props.meHasFetched) this.props.fetchMe()
         this.props.fetchAllOrders()
     }
 
     render() {
-        if (!this.props.orders.length) return <CircularProgress />
+        let { isRequesting, me } = this.props
+        if (isRequesting || !me) return <CircularProgress />
         return <Order {...this.props} />
     }
 }

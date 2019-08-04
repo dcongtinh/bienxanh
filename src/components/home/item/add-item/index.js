@@ -74,7 +74,7 @@ class AddItem extends React.Component {
             }
         array.forEach((item, index) => {
             let _initialValues = {
-                // [`itemPrice${index}`]: 1000,
+                [`itemPrice${index}`]: 1000,
                 [`dateApply${index}`]: new Date()
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
@@ -115,14 +115,6 @@ class AddItem extends React.Component {
                             onSubmit={(values, { resetForm }) => {
                                 let { itemNameCode, itemName } = values
                                 let { datas } = this.state
-                                // for (let k in datas) {
-                                //     for (let i = 0; i < 3; ++i) {
-                                //         for (let j in datas[k][i]) {
-                                //             datas[k][i][j] =
-                                //                 datas[k][i][j].value
-                                //         }
-                                //     }
-                                // }
 
                                 let itemPrices = []
                                 array.forEach((item, index) => {

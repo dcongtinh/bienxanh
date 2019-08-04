@@ -12,13 +12,21 @@ class OrderStore {
         this.rootStore = rootStore
     }
     @action
-    async addOrder({ warehouse, items, owner, createdAt, callback }) {
+    async addOrder({
+        warehouse,
+        items,
+        owner,
+        createdAt,
+        mergeList,
+        callback
+    }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.addOrder({
             warehouse,
             items,
             owner,
-            createdAt
+            createdAt,
+            mergeList
         })
 
         if (success) {
@@ -68,8 +76,8 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async updateOrder({ idOrder, data: updateData }) {
-        //this.isRequesting = true
+    async updateOrder({ idOrder, data: updateData, callback }) {
+        // this.isRequesting = true
         const { success, data } = await orderAPI.updateOrder({
             idOrder,
             data: updateData
@@ -80,7 +88,7 @@ class OrderStore {
                 message: `Cập nhật hoá đơn thành công!`,
                 variant: 'success'
             })
-            this.fetchOrder({ idOrder })
+            if (callback) callback()
             // this.orders = []
             // this.fetchAllOrders({})
         } else {
@@ -89,10 +97,32 @@ class OrderStore {
                 variant: 'error'
             })
         }
-        //this.isRequesting = false
+        // this.isRequesting = false
     }
     @action
-    async deleteOrders({ ordersListId }) {
+    async mergeOrders({ ordersListId, enabled, callback }) {
+        this.isRequesting = true
+        const { success, data } = await orderAPI.mergeOrders({
+            ordersListId,
+            enabled
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `${enabled ? 'Huỷ hợp' : 'Hợp'} hoá đơn thành công!`,
+                variant: 'success'
+            })
+            if (callback) callback()
+            this.orders = []
+            this.fetchAllOrders()
+        } else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        this.isRequesting = false
+    }
+    @action
+    async deleteOrders({ ordersListId, callback }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.deleteOrders({
             ordersListId
@@ -102,6 +132,7 @@ class OrderStore {
                 message: `Xoá hoá đơn thành công!`,
                 variant: 'success'
             })
+            if (callback) callback()
             this.orders = []
             this.fetchAllOrders()
         } else

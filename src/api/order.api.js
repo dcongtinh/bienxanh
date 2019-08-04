@@ -6,8 +6,14 @@ const c = path => {
 }
 
 const orderAPI = {
-    addOrder: ({ warehouse, items, owner, createdAt }) =>
-        axios.post(c('/add'), { warehouse, items, owner, createdAt }),
+    addOrder: ({ warehouse, items, owner, createdAt, mergeList }) =>
+        axios.post(c('/add'), {
+            warehouse,
+            items,
+            owner,
+            createdAt,
+            mergeList
+        }),
     // getAllOrders: ({ page = 1, itemPerPage = 10 }) =>
     //     axios.get(c(`/get-orders?page=${page}&itemPerPage=${itemPerPage}`)),
     getAllOrders: () => axios.get(c(`/get-orders`)),
@@ -17,6 +23,8 @@ const orderAPI = {
             idOrder,
             data
         }),
+    mergeOrders: ({ ordersListId, enabled }) =>
+        axios.put(c('/merge'), { ordersListId, enabled }),
     deleteOrders: ({ ordersListId }) =>
         axios.post(c('/delete'), { ordersListId })
 }
