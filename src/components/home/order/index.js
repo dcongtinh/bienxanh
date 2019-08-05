@@ -189,13 +189,6 @@ class Order extends Component {
                 let length = rowsSelected.length
                 let merge = length > 1
                 for (let i = 1; i < length; ++i) {
-                    let index = rowsSelected[i]
-                    // let date1 = moment(orders[index - 1].createdAt).format(
-                    //     'DD/MM/YYYY'
-                    // )
-                    // let date2 = moment(orders[index].createdAt).format(
-                    //     'DD/MM/YYYY'
-                    // )
                     merge &=
                         orders[rowsSelected[i - 1]].warehouse.buyerCode ===
                         orders[rowsSelected[i]].warehouse.buyerCode
@@ -289,35 +282,45 @@ class Order extends Component {
                     okLabel="Đồng ý"
                     onHide={this.handleClose}
                     onOK={() => {
-                        let ordersListId = []
-                        let mergeList = []
-                        this.state.rowsSelected.forEach(index => {
+                        let ordersListId = [],
+                            mergeList = []
+                        rowsSelected.forEach(index => {
                             ordersListId.push(orders[index]._id)
                             mergeList = mergeList.concat(
                                 orders[index].mergeList
                             )
                         })
                         if (unMerge1) {
-                            var itemsList = []
                             let ordersFirst = orders[rowsSelected[0]]
-                            let warehouse = ordersFirst.warehouse._id
-                            let items = ordersFirst.items
-                            let createdAt = ordersFirst.createdAt
+                            let arrayOrders = []
+
+                            let group = this.props.count
+                            let {
+                                warehouse,
+                                buyerName,
+                                items,
+                                createdAt,
+                                owner
+                            } = ordersFirst
+
                             items.forEach(item => {
-                                itemsList.push(item)
+                                arrayOrders.push({
+                                    group: ++group,
+                                    warehouse: warehouse._id,
+                                    buyerName,
+                                    items: [item],
+                                    createdAt,
+                                    owner: owner._id
+                                })
                             })
                             this.props.deleteOrders({
                                 ordersListId,
                                 callback: () => {
-                                    itemsList.forEach(item => {
-                                        this.props.addOrder({
-                                            warehouse,
-                                            items: [item],
-                                            owner: me._id,
-                                            createdAt
-                                        })
+                                    this.props.addOrders({
+                                        arrayOrders,
+                                        callback: () =>
+                                            this.props.fetchAllOrders()
                                     })
-                                    this.props.fetchAllOrders()
                                 }
                             })
                         } else {
@@ -350,23 +353,16 @@ class Order extends Component {
 
                         let length = rowsSelected.length
                         let ordersFirst = orders[rowsSelected[0]]
+                        let { group, items, createdAt } = ordersFirst
                         let warehouse = ordersFirst.warehouse._id
-                        let items = ordersFirst.items
-                        let createdAt = ordersFirst.createdAt
                         let mergeList = [] // list _id of orders was merged
-                        if (ordersFirst.mergeList) {
-                            if (ordersFirst.mergeList.length)
-                                mergeList = ordersFirst.mergeList
-                            else mergeList.push(ordersFirst._id)
-                        }
+                        mergeList.push(ordersFirst._id)
+
                         for (let i = 1; i < length; ++i) {
                             let index = rowsSelected[i]
                             items = items.concat(orders[index].items)
-                            if (orders[index].mergeList.length)
-                                mergeList = mergeList.concat(
-                                    orders[index].mergeList
-                                )
-                            else mergeList.push(orders[index]._id)
+                            mergeList.push(orders[index]._id)
+                            group = Math.min(group, orders[index].group)
                         }
                         let marks = {},
                             _items = []
@@ -389,6 +385,7 @@ class Order extends Component {
                             enabled: false,
                             callback: () =>
                                 this.props.addOrder({
+                                    group,
                                     warehouse,
                                     items: _items,
                                     owner: me._id,

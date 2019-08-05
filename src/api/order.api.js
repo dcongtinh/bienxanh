@@ -6,13 +6,18 @@ const c = path => {
 }
 
 const orderAPI = {
-    addOrder: ({ warehouse, items, owner, createdAt, mergeList }) =>
+    addOrder: ({ group, warehouse, items, owner, createdAt, mergeList }) =>
         axios.post(c('/add'), {
+            group,
             warehouse,
             items,
             owner,
             createdAt,
             mergeList
+        }),
+    addOrders: ({ arrayOrders }) =>
+        axios.post(c('/add-orders'), {
+            arrayOrders
         }),
     // getAllOrders: ({ page = 1, itemPerPage = 10 }) =>
     //     axios.get(c(`/get-orders?page=${page}&itemPerPage=${itemPerPage}`)),

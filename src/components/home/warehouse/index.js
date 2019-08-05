@@ -38,7 +38,7 @@ class Warehouse extends Component {
                                 <IconButton
                                     onClick={() => {
                                         this.props.history.push(
-                                            `/dashboard/warehouse/${
+                                            `/dashboard/warehouses/${
                                                 wareHouses[tableMeta.rowIndex]
                                                     ._id
                                             }`

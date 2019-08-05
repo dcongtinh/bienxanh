@@ -13,6 +13,7 @@ class OrderStore {
     }
     @action
     async addOrder({
+        group,
         warehouse,
         items,
         owner,
@@ -22,6 +23,7 @@ class OrderStore {
     }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.addOrder({
+            group,
             warehouse,
             items,
             owner,
@@ -32,6 +34,27 @@ class OrderStore {
         if (success) {
             this.rootStore.alert.show({
                 message: `Thêm hoá đơn thành công!`,
+                variant: 'success'
+            })
+            if (callback) callback()
+        } else {
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        }
+        this.isRequesting = false
+    }
+    @action
+    async addOrders({ arrayOrders, callback }) {
+        this.isRequesting = true
+        const { success, data } = await orderAPI.addOrders({
+            arrayOrders
+        })
+
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Tách hoá đơn thành công!`,
                 variant: 'success'
             })
             if (callback) callback()
@@ -61,7 +84,10 @@ class OrderStore {
         this.isRequesting = true
         const { success, data } = await orderAPI.getAllOrders()
         if (success) {
-            this.orders = data
+            this.count = data.length
+            this.orders = data.filter(order => {
+                return order.enabled
+            })
         }
         this.isRequesting = false
     }

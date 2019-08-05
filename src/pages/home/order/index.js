@@ -11,6 +11,7 @@ import { inject, observer } from 'mobx-react'
     fetchMe: () => auth.fetchMe(),
     fetchAllOrders: () => order.fetchAllOrders(),
     addOrder: object => order.addOrder(object),
+    addOrders: object => order.addOrders(object),
     deleteOrders: ({ ordersListId, callback }) =>
         order.deleteOrders({ ordersListId, callback }),
     mergeOrders: ({ ordersListId, enabled, callback }) =>
