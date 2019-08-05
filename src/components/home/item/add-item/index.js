@@ -64,11 +64,9 @@ class AddItem extends React.Component {
         for (let i = 0; i < count; ++i) array.push('')
 
         let initialValues = {
-                itemNameCode: '',
                 itemName: ''
             },
             _AddItemSchema = {
-                itemNameCode: Yup.string().required('* Bắt buộc'),
                 itemName: Yup.string().required('* Bắt buộc')
             }
         array.forEach((item, index) => {
@@ -112,7 +110,7 @@ class AddItem extends React.Component {
                             initialValues={initialValues}
                             validationSchema={AddItemSchema}
                             onSubmit={(values, { resetForm }) => {
-                                let { itemNameCode, itemName } = values
+                                let { itemName } = values
                                 let { datas } = this.state
 
                                 let itemPrices = []
@@ -130,7 +128,6 @@ class AddItem extends React.Component {
                                     })
                                 })
                                 this.props.addItem({
-                                    itemNameCode,
                                     itemName,
                                     itemPrices,
                                     callback: () => {
@@ -156,22 +153,6 @@ class AddItem extends React.Component {
                                 return (
                                     <Form>
                                         <Grid item container spacing={2}>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    value={values.itemNameCode}
-                                                    label="Mã hàng hoá/dịch vụ"
-                                                    name="itemNameCode"
-                                                    error={
-                                                        errors.itemNameCode &&
-                                                        touched.itemNameCode
-                                                    }
-                                                    message={
-                                                        errors.itemNameCode
-                                                    }
-                                                />
-                                            </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
                                                     onChange={handleChange}
@@ -213,7 +194,6 @@ class AddItem extends React.Component {
                                         <Button
                                             disabled={Boolean(
                                                 isRequesting ||
-                                                    errors.itemNameCode ||
                                                     errors.itemName ||
                                                     disabled
                                             )}

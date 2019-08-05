@@ -127,7 +127,6 @@ class ItemPriceForm extends React.Component {
             isUpdateItem,
             idItem,
             prices,
-            itemNameCode,
             itemName,
             options
         } = this.props
@@ -266,7 +265,6 @@ class ItemPriceForm extends React.Component {
 
                             this.props.updateItem({
                                 idItem,
-                                itemNameCode,
                                 itemName,
                                 itemPrices: prices
                             })

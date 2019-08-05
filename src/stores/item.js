@@ -12,10 +12,9 @@ class WarehouseStore {
         this.rootStore = rootStore
     }
     @action
-    async addItem({ itemNameCode, itemName, itemPrices, callback }) {
+    async addItem({ itemName, itemPrices, callback }) {
         this.isRequesting = true
         const { success, data } = await itemAPI.addItem({
-            itemNameCode,
             itemName,
             itemPrices
         })
@@ -53,11 +52,10 @@ class WarehouseStore {
     }
 
     @action
-    async updateItem({ idItem, itemNameCode, itemName, itemPrices, callback }) {
+    async updateItem({ idItem, itemName, itemPrices, callback }) {
         this.isRequesting = true
         const { success, data } = await itemAPI.updateItem({
             idItem,
-            itemNameCode,
             itemName,
             itemPrices
         })

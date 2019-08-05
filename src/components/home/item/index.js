@@ -24,7 +24,6 @@ class Item extends Component {
     render() {
         let { items, classes } = this.props
         const columns = [
-            'Mã hàng',
             'Tên hàng',
             {
                 name: 'Chỉnh sửa',
@@ -51,7 +50,6 @@ class Item extends Component {
         let data = []
         items.forEach(item => {
             let row = []
-            row.push(item.itemNameCode)
             row.push(item.itemName)
             data.push(row)
         })

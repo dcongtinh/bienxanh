@@ -11,15 +11,15 @@ export default theme => ({
         })
     },
     topbarShift: {
-        marginLeft: '271px',
-        width: 'calc(-271px + 100vw)'
+        marginLeft: 200,
+        width: 'calc(-200px + 100vw)'
     },
     drawerPaper: {
         zIndex: 1200,
-        width: '271px'
+        width: 200
     },
     sidebar: {
-        width: '270px'
+        width: 200
     },
     content: {
         marginTop: '64px',
@@ -31,6 +31,6 @@ export default theme => ({
         })
     },
     contentShift: {
-        marginLeft: '270px'
+        marginLeft: 200
     }
 })

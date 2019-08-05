@@ -96,7 +96,7 @@ class AddOrder extends React.Component {
         items.forEach(item => {
             optionsItem.push({
                 value: item._id,
-                label: `${item.itemName} (${item.itemNameCode})`
+                label: item.itemName
             })
         })
         let array = []
