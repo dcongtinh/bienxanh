@@ -87,8 +87,8 @@
         "yup": "^0.27.0"
     },
     "scripts": {
-        "start": "node scripts/start.js",
-        "build": "node scripts/build.js",
+        "start": "node --max-old-space-size=4096 scripts/start.js",
+        "build": "node --max-old-space-size=4096 scripts/build.js",
         "test": "node scripts/test.js",
         "serve": "serve -s build",
         "production": "yarn build ; yarn serve"
