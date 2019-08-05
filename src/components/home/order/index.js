@@ -26,6 +26,7 @@ class Order extends Component {
             openConfirmUnMerge: false,
             selectedRows: [],
             rowsSelected: [],
+            unMerge1: false,
             page: 0
         }
     }
@@ -33,14 +34,16 @@ class Order extends Component {
         this.setState({
             openConfirmDelete: false,
             openConfirmMerge: false,
-            openConfirmUnMerge: false
+            openConfirmUnMerge: false,
+            unMerge1: false
         })
     }
     render() {
         let {
             openConfirmDelete,
             openConfirmMerge,
-            openConfirmUnMerge
+            openConfirmUnMerge,
+            unMerge1
         } = this.state
         let { classes, orders, me } = this.props
         const columns = [
@@ -187,29 +190,34 @@ class Order extends Component {
                 let merge = length > 1
                 for (let i = 1; i < length; ++i) {
                     let index = rowsSelected[i]
-                    let date1 = moment(orders[index - 1].createdAt).format(
-                        'DD/MM/YYYY'
-                    )
-                    let date2 = moment(orders[index].createdAt).format(
-                        'DD/MM/YYYY'
-                    )
+                    // let date1 = moment(orders[index - 1].createdAt).format(
+                    //     'DD/MM/YYYY'
+                    // )
+                    // let date2 = moment(orders[index].createdAt).format(
+                    //     'DD/MM/YYYY'
+                    // )
                     merge &=
-                        orders[index - 1].warehouse.buyerCode ===
-                            orders[index].warehouse.buyerCode && date1 === date2
+                        orders[rowsSelected[i - 1]].warehouse.buyerCode ===
+                        orders[rowsSelected[i]].warehouse.buyerCode
                     if (!merge) break
                 }
                 let unMerge =
                     length === 1 && orders[rowsSelected[0]].mergeList.length
+                let unMerge1 =
+                    length === 1 &&
+                    !orders[rowsSelected[0]].mergeList.length &&
+                    orders[rowsSelected[0]].items.length > 1
                 return (
                     <div>
-                        {unMerge ? (
-                            <Tooltip title="Huỷ hợp">
+                        {unMerge || unMerge1 ? (
+                            <Tooltip title="Tách">
                                 <IconButton
                                     onClick={() => {
                                         this.setState({
                                             openConfirmUnMerge: true,
                                             selectedRows: selectedRows.data,
-                                            rowsSelected
+                                            rowsSelected,
+                                            unMerge1
                                         })
                                     }}>
                                     <UndoIcon />
@@ -276,9 +284,9 @@ class Order extends Component {
                 />
                 <ConfirmDialog
                     open={openConfirmUnMerge}
-                    title="Bạn có chắc muốn huỷ hợp hoá đơn?"
-                    cancelLabel="Đóng"
-                    okLabel="Huỷ"
+                    title="Bạn có chắc muốn tách hoá đơn?"
+                    cancelLabel="Huỷ"
+                    okLabel="Đồng ý"
                     onHide={this.handleClose}
                     onOK={() => {
                         let ordersListId = []
@@ -289,14 +297,40 @@ class Order extends Component {
                                 orders[index].mergeList
                             )
                         })
-                        this.props.deleteOrders({
-                            ordersListId,
-                            callback: () =>
-                                this.props.mergeOrders({
-                                    ordersListId: mergeList,
-                                    enabled: true
-                                })
-                        })
+                        if (unMerge1) {
+                            var itemsList = []
+                            let ordersFirst = orders[rowsSelected[0]]
+                            let warehouse = ordersFirst.warehouse._id
+                            let items = ordersFirst.items
+                            let createdAt = ordersFirst.createdAt
+                            items.forEach(item => {
+                                itemsList.push(item)
+                            })
+                            this.props.deleteOrders({
+                                ordersListId,
+                                callback: () => {
+                                    itemsList.forEach(item => {
+                                        this.props.addOrder({
+                                            warehouse,
+                                            items: [item],
+                                            owner: me._id,
+                                            createdAt
+                                        })
+                                    })
+                                    this.props.fetchAllOrders()
+                                }
+                            })
+                        } else {
+                            this.props.deleteOrders({
+                                ordersListId,
+                                callback: () =>
+                                    this.props.mergeOrders({
+                                        ordersListId: mergeList,
+                                        enabled: true
+                                    })
+                            })
+                        }
+
                         this.handleClose()
                         this.setState({ selectedRows: [] })
                     }}
