@@ -23,8 +23,6 @@ import UpdateOrder from 'pages/home/order/update-order'
 import Item from 'pages/home/item'
 import AddItem from 'pages/home/item/add-item'
 import UpdateItem from 'pages/home/item/update-item'
-
-import Export from 'pages/home/export'
 import Login from 'pages/auth/login'
 import Register from 'pages/auth/register'
 import BaseLayout from 'components/layout/base'
@@ -110,11 +108,6 @@ class App extends React.Component {
                                 path="/dashboard/items/:idItem"
                                 exact
                                 component={UpdateItem}
-                            />
-                            <Route
-                                exact
-                                path="/dashboard/export"
-                                component={Export}
                             />
                             <Redirect from="/" to="/" />
                         </Switch>
