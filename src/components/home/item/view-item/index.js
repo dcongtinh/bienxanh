@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
-import VisibilityIcon from '@material-ui/icons/Visibility'
+import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
-import AddIcon from '@material-ui/icons/Add'
+import DeleteIcon from '@material-ui/icons/Delete'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import styles from 'components/home/styles'
+import warehouse from 'components/home/warehouse'
+import moment from 'moment'
+import numeral from 'numeral'
 
-class Item extends Component {
+class ViewItem extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -22,31 +25,35 @@ class Item extends Component {
         this.setState({ openConfirm: false })
     }
     render() {
-        let { items, classes } = this.props
-        const columns = [
-            'Tên hàng',
-            {
-                name: 'Xem',
-                options: {
-                    customBodyRender: (value, tableMeta, updateValue) => (
-                        <IconButton
-                            onClick={() => {
-                                this.props.history.push(
-                                    `/dashboard/items/view/${
-                                        items[tableMeta.rowIndex]._id
-                                    }`
-                                )
-                            }}>
-                            <VisibilityIcon />
-                        </IconButton>
-                    )
-                }
-            }
-        ]
+        let { item, wareHouses, classes } = this.props
+        let idItem = this.props.match.params.idItem
+        let columns = ['Ngày áp dụng']
+        wareHouses.forEach(warehouse => {
+            columns.push(warehouse.warehouse)
+        })
         let data = []
-        items.forEach(item => {
+        item.itemPrices.sort((a, b) => {
+            return (
+                new Date(b.dateApply).getTime() -
+                new Date(a.dateApply).getTime()
+            )
+        })
+        item.itemPrices.forEach(item => {
             let row = []
-            row.push(item.itemName)
+            row.push(moment(item.dateApply).format('DD/MM/YYYY'))
+            wareHouses.forEach(warehouse => {
+                let { buyerArea } = warehouse
+                let check = false
+                let length = item.wareHouses[buyerArea].length
+                for (let i = 0; i < length; ++i) {
+                    if (item.wareHouses[buyerArea][i].value === warehouse._id) {
+                        check = true
+                        break
+                    }
+                }
+                if (check) row.push(numeral(item.itemPrice).format('(0,0)'))
+                else row.push('')
+            })
             data.push(row)
         })
 
@@ -111,12 +118,12 @@ class Item extends Component {
                     }}>
                     <RemoveCircleIcon />
                 </IconButton>
-            ),
-            onRowClick: (rowData, rowMeta) => {
-                this.props.history.push(
-                    `/dashboard/items/${items[rowMeta.dataIndex]._id}`
-                )
-            }
+            )
+            // onRowClick: (rowData, rowMeta) => {
+            //     this.props.history.push(
+            //         `/dashboard/items/${items[rowMeta.dataIndex]._id}`
+            //     )
+            // }
         }
 
         return (
@@ -128,19 +135,39 @@ class Item extends Component {
                         size="small"
                         variant="outlined"
                         onClick={() => {
+                            this.props.history.push(
+                                `/dashboard/items/${idItem}`
+                            )
+                        }}
+                        className={classes.actionButton}>
+                        <EditIcon className={classes.addIcon} />
+                        Cập nhật
+                    </Button>
+                    <Button
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+                        onClick={() => {
                             this.props.history.push('/dashboard/items/add')
-                        }}>
-                        <AddIcon className={classes.addIcon} />
-                        Add
+                        }}
+                        className={classes.actionButton}>
+                        <DeleteIcon className={classes.addIcon} />
+                        Xoá
                     </Button>
                 </div>
                 <MUIDataTable
-                    title={'Danh sách hàng'}
+                    title={'Giá bán'}
                     data={data}
                     columns={columns}
                     options={options}
                 />
-                <ConfirmDialog
+                {/* <MUIDataTable
+                    title={'Giá mua'}
+                    data={data}
+                    columns={columns}
+                    options={options}
+                /> */}
+                {/* <ConfirmDialog
                     open={this.state.openConfirm}
                     title="Bạn có chắc muốn xoá hàng?"
                     cancelLabel="Huỷ"
@@ -155,10 +182,10 @@ class Item extends Component {
                         this.handleClose()
                         this.setState({ selectedRows: [] })
                     }}
-                />
+                /> */}
             </>
         )
     }
 }
 
-export default withStyles(styles)(Item)
+export default withStyles(styles)(ViewItem)

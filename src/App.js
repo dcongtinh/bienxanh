@@ -21,8 +21,10 @@ import AddOrder from 'pages/home/order/add-order'
 import UpdateOrder from 'pages/home/order/update-order'
 
 import Item from 'pages/home/item'
+import ViewItem from 'pages/home/item/view-item'
 import AddItem from 'pages/home/item/add-item'
 import UpdateItem from 'pages/home/item/update-item'
+
 import Login from 'pages/auth/login'
 import Register from 'pages/auth/register'
 import BaseLayout from 'components/layout/base'
@@ -98,6 +100,11 @@ class App extends React.Component {
                                 path="/dashboard/items"
                                 exact
                                 component={Item}
+                            />
+                            <Route
+                                path="/dashboard/items/view/:idItem"
+                                exact
+                                component={ViewItem}
                             />
                             <Route
                                 path="/dashboard/items/add"

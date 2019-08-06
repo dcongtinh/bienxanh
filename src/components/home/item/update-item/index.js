@@ -146,7 +146,7 @@ class UpdateItem extends React.Component {
             })
         }
         return (
-            <Container component="main" maxWidth="sm">
+            <Container component="main">
                 <CssBaseline />
                 <div className={classes.paper}>
                     <div className={classes.form}>

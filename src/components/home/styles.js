@@ -2,6 +2,9 @@ export default theme => ({
     addIcon: {
         marginRight: theme.spacing()
     },
+    actionButton: {
+        marginLeft: theme.spacing()
+    },
     row: {
         height: '42px',
         display: 'flex',
