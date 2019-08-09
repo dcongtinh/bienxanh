@@ -38,7 +38,7 @@ const styles = {
 
 export default class DownloadExcel extends Component {
     render() {
-        let { orders } = this.props
+        let { orders, name } = this.props
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
@@ -93,7 +93,10 @@ export default class DownloadExcel extends Component {
         })
         data.push(header)
         orders.forEach((order, index1) => {
-            order.items.forEach((item, index2) => {
+            order.orders.forEach((item, index2) => {
+                let itemQuantity = item.itemQuantity || 0
+                let itemPrice = item.itemPrice || 0
+
                 ///1. itemNo
                 let row = []
                 row.push({
@@ -247,7 +250,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///19. itemName
                 row.push({
-                    value: item.itemName.itemName,
+                    value: name[item.itemName],
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -255,7 +258,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///20. itemNote
                 row.push({
-                    value: item.itemNote || '',
+                    value: order.itemNote || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -279,7 +282,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///23. itemUnit
                 row.push({
-                    value: item.itemUnit,
+                    value: 'KG',
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -288,7 +291,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///24. itemQuantity
                 row.push({
-                    value: item.itemQuantity,
+                    value: itemQuantity,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -296,7 +299,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///25. itemPrice
                 row.push({
-                    value: item.itemPrice,
+                    value: itemPrice,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -305,7 +308,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///26. amountBeforeTax
                 row.push({
-                    value: item.itemQuantity * item.itemPrice,
+                    value: itemQuantity * itemPrice,
                     style: {
                         font: styles.font,
                         border: styles.border,

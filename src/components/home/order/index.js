@@ -45,7 +45,11 @@ class Order extends Component {
             openConfirmUnMerge,
             unMerge1
         } = this.state
-        let { classes, orders, me } = this.props
+        let { classes, orders, me, items } = this.props
+        let itemName = {}
+        items.forEach(item => {
+            itemName[item._id] = item.itemName
+        })
         const columns = [
             'Nhóm',
             'Mã',
@@ -71,13 +75,15 @@ class Order extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <div>
-                                {orders[tableMeta.rowIndex].items.map(item => {
-                                    return (
-                                        <div className={classes.items}>
-                                            {item.itemName.itemName}
-                                        </div>
-                                    )
-                                })}
+                                {orders[tableMeta.rowIndex].orders.map(
+                                    order => {
+                                        return (
+                                            <div className={classes.items}>
+                                                {itemName[order.itemName]}
+                                            </div>
+                                        )
+                                    }
+                                )}
                             </div>
                         )
                     }
@@ -89,7 +95,7 @@ class Order extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <div>
-                                {orders[tableMeta.rowIndex].items.map(item => {
+                                {orders[tableMeta.rowIndex].orders.map(item => {
                                     return (
                                         <div className={classes.items}>
                                             {item.itemQuantity} KG
@@ -143,6 +149,7 @@ class Order extends Component {
         })
         rowsSelected.sort()
         const options = {
+            rowsPerPage: 100,
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,
@@ -199,7 +206,7 @@ class Order extends Component {
                 let unMerge1 =
                     length === 1 &&
                     !orders[rowsSelected[0]].mergeList.length &&
-                    orders[rowsSelected[0]].items.length > 1
+                    orders[rowsSelected[0]].orders.length > 1
                 return (
                     <div>
                         {unMerge || unMerge1 ? (
@@ -257,6 +264,7 @@ class Order extends Component {
                         size="small"
                         variant="outlined"
                         orders={orders}
+                        name={itemName}
                     />
                     <Button
                         color="primary"
@@ -298,17 +306,15 @@ class Order extends Component {
                             let {
                                 warehouse,
                                 buyerName,
-                                items,
                                 createdAt,
                                 owner
                             } = ordersFirst
-
-                            items.forEach(item => {
+                            ordersFirst.orders.forEach(order => {
                                 arrayOrders.push({
                                     group: ++group,
                                     warehouse: warehouse._id,
                                     buyerName,
-                                    items: [item],
+                                    orders: [order],
                                     createdAt,
                                     owner: owner._id
                                 })
@@ -353,28 +359,28 @@ class Order extends Component {
 
                         let length = rowsSelected.length
                         let ordersFirst = orders[rowsSelected[0]]
-                        let { group, items, createdAt } = ordersFirst
+                        let { group, createdAt } = ordersFirst
+                        let _orders = ordersFirst.orders
                         let warehouse = ordersFirst.warehouse._id
                         let mergeList = [] // list _id of orders was merged
                         mergeList.push(ordersFirst._id)
 
                         for (let i = 1; i < length; ++i) {
                             let index = rowsSelected[i]
-                            items = items.concat(orders[index].items)
+                            _orders = _orders.concat(orders[index].orders)
                             mergeList.push(orders[index]._id)
                             group = Math.min(group, orders[index].group)
                         }
                         let marks = {},
-                            _items = []
-                        items.forEach(item => {
-                            if (!marks[item.itemName._id]) {
-                                let _item = item
-                                _item.itemName = _item.itemName._id
-                                marks[_item.itemName] = true
-                                _items.push(_item)
+                            _orderList = []
+                        _orders.forEach(item => {
+                            if (!marks[item.itemName]) {
+                                marks[item.itemName] = true
+                                delete item._id
+                                _orderList.push(item)
                             } else {
-                                _items.forEach(_item => {
-                                    if (_item.itemName === item.itemName._id) {
+                                _orderList.forEach(_item => {
+                                    if (_item.itemName === item.itemName) {
                                         _item.itemQuantity += item.itemQuantity
                                     }
                                 })
@@ -387,7 +393,7 @@ class Order extends Component {
                                 this.props.addOrder({
                                     group,
                                     warehouse,
-                                    items: _items,
+                                    orders: _orderList,
                                     owner: me._id,
                                     createdAt,
                                     mergeList,

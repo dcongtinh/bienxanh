@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Checkbox from '@material-ui/core/Checkbox'
 import NumberFormat from 'react-number-format'
-import { InlineDatePicker } from 'material-ui-pickers'
+import { DatePicker } from '@material-ui/pickers'
 
 const styles = theme => ({
     '@global': {
@@ -178,9 +178,11 @@ class ItemPriceForm extends React.Component {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <InlineDatePicker
+                                <DatePicker
+                                    autoOk
                                     name={`dateApply${index}`}
-                                    variant="outlined"
+                                    variant="inline"
+                                    inputVariant="outlined"
                                     format="DD/MM/YYYY"
                                     label="Ngày áp dụng"
                                     value={states[`dateApply${index}`]}

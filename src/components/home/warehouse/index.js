@@ -70,6 +70,7 @@ class Warehouse extends Component {
         })
         rowsSelected.sort()
         const options = {
+            rowsPerPage: 100,
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,

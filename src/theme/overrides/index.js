@@ -1,3 +1,4 @@
+import MTableToolbar from './MTableToolbar'
 import MuiButton from './MuiButton'
 import MuiChip from './MuiChip'
 import MUIDataTable from './MUIDataTable'
@@ -14,10 +15,12 @@ import MuiPaper from './MuiPaper'
 import MuiSvgIcon from './MuiSvgIcon'
 import MuiTab from './MuiTab'
 import MuiTableCell from './MuiTableCell'
+import MuiTablePagination from './MuiTablePagination'
 import MuiTableRow from './MuiTableRow'
 import MuiTabs from './MuiTabs'
 
 export default {
+    MTableToolbar,
     MuiButton,
     MuiChip,
     MUIDataTable,
@@ -34,6 +37,7 @@ export default {
     MuiSvgIcon,
     MuiTab,
     MuiTableCell,
+    MuiTablePagination,
     MuiTableRow,
     MuiTabs
 }

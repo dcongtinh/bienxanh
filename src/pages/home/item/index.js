@@ -9,6 +9,8 @@ import { inject, observer } from 'mobx-react'
 @canReachAccess({ access: 'item' })
 @inject(({ item }) => ({
     fetchAllItems: () => item.fetchAllItems(),
+    addItem: object => item.addItem(object),
+    updateItem: object => item.updateItem(object),
     deleteItems: ({ itemsListId }) => item.deleteItems({ itemsListId }),
     items: JSON.parse(JSON.stringify(item.items)),
     isRequesting: item.isRequesting

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -33,7 +34,11 @@ class ConfirmDialog extends Component {
             access: 0
         }
     }
-
+    onKeyPress = e => {
+        if (e.key === 'Enter') {
+            this.props.onOK()
+        }
+    }
     handleChangeOption = data => {
         this.props.handleChangeOption(data)
     }
@@ -47,6 +52,7 @@ class ConfirmDialog extends Component {
             cancelLabel,
             okLabel,
             select,
+            input,
             classes
         } = this.props
         let { focus } = this.state
@@ -66,6 +72,15 @@ class ConfirmDialog extends Component {
                         <Typography variant="h4" gutterBottom>
                             {title}
                         </Typography>
+                        {input && (
+                            <TextField
+                                fullWidth
+                                value={input.value}
+                                onChange={input.onChange}
+                                onKeyPress={this.onKeyPress}
+                                variant="outlined"
+                            />
+                        )}
                         {select && (
                             <FormControl fullWidth style={{ height }}>
                                 <Select

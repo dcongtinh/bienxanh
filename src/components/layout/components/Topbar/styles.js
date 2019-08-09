@@ -5,7 +5,7 @@ export default theme => ({
         color: theme.palette.common.white,
         display: 'flex',
         alignItems: 'center',
-        height: '64px',
+        height: '48px',
         zIndex: theme.zIndex.appBar
     },
     toolbar: {

@@ -194,51 +194,72 @@ class UpdateItem extends React.Component {
                                 return (
                                     <Form>
                                         <Grid item container spacing={2}>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    value={values.itemName}
-                                                    label="Tên hàng hoá/dịch vụ"
-                                                    name="itemName"
-                                                    error={
-                                                        errors.itemName &&
-                                                        touched.itemName
+                                            <Grid
+                                                item
+                                                container
+                                                lg={6}
+                                                md={6}
+                                                xl={6}
+                                                xs={12}
+                                                spacing={2}>
+                                                <Grid item xs={12}>
+                                                    <TextField
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        value={values.itemName}
+                                                        label="Tên hàng hoá/dịch vụ"
+                                                        name="itemName"
+                                                        error={
+                                                            errors.itemName &&
+                                                            touched.itemName
+                                                        }
+                                                        message={
+                                                            errors.itemName
+                                                        }
+                                                    />
+                                                </Grid>
+                                                <ItemPriceForm
+                                                    array={array}
+                                                    handleChange={handleChange}
+                                                    handleChangeCount={
+                                                        this.handleChangeCount
                                                     }
-                                                    message={errors.itemName}
+                                                    handleCheckbox={
+                                                        this.handleCheckbox
+                                                    }
+                                                    handleChangeDate={
+                                                        this.handleChangeDate
+                                                    }
+                                                    handleBlur={handleBlur}
+                                                    values={values}
+                                                    errors={errors}
+                                                    touched={touched}
+                                                    states={this.state}
+                                                    options={options}
+                                                    handleSelect={
+                                                        this.handleSelect
+                                                    }
+                                                    isUpdateItem
+                                                    idItem={idItem}
+                                                    updateItem={
+                                                        this.props.updateItem
+                                                    }
+                                                    prices={itemPrices}
+                                                    itemName={itemName}
+                                                    deleteItems={
+                                                        this.props.deleteItems
+                                                    }
+                                                    history={history}
                                                 />
                                             </Grid>
-                                            <ItemPriceForm
-                                                array={array}
-                                                handleChange={handleChange}
-                                                handleChangeCount={
-                                                    this.handleChangeCount
-                                                }
-                                                handleCheckbox={
-                                                    this.handleCheckbox
-                                                }
-                                                handleChangeDate={
-                                                    this.handleChangeDate
-                                                }
-                                                handleBlur={handleBlur}
-                                                values={values}
-                                                errors={errors}
-                                                touched={touched}
-                                                states={this.state}
-                                                options={options}
-                                                handleSelect={this.handleSelect}
-                                                isUpdateItem
-                                                idItem={idItem}
-                                                updateItem={
-                                                    this.props.updateItem
-                                                }
-                                                prices={itemPrices}
-                                                itemName={itemName}
-                                                deleteItems={
-                                                    this.props.deleteItems
-                                                }
-                                                history={history}
-                                            />
+                                            <Grid
+                                                item
+                                                lg={6}
+                                                md={6}
+                                                xl={6}
+                                                xs={12}>
+                                                abc
+                                            </Grid>
                                         </Grid>
                                         <Button
                                             disabled={Boolean(

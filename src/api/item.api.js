@@ -6,18 +6,16 @@ const c = path => {
 }
 
 const itemAPI = {
-    addItem: ({ itemName, itemPrices }) =>
+    addItem: ({ itemName }) =>
         axios.post(c('/add'), {
-            itemName,
-            itemPrices
+            itemName
         }),
     getAllItems: () => axios.get(c('/get-items')),
     getItem: ({ idItem }) => axios.post(c('/get-item'), { idItem }),
-    updateItem: ({ idItem, itemName, itemPrices }) =>
+    updateItem: ({ idItem, data }) =>
         axios.put(c('/update'), {
             idItem,
-            itemName,
-            itemPrices
+            data
         }),
     deleteItems: ({ itemsListId }) => axios.post(c('/delete'), { itemsListId })
 }

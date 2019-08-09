@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @canReachAccess({ access: 'order' })
-@inject(({ order, auth }) => ({
+@inject(({ order, item, auth }) => ({
     fetchMe: () => auth.fetchMe(),
     fetchAllOrders: () => order.fetchAllOrders(),
     addOrder: object => order.addOrder(object),
@@ -22,18 +22,21 @@ import { inject, observer } from 'mobx-react'
     hasFetched: order.hasFetched,
     isRequesting: order.isRequesting,
     me: JSON.parse(JSON.stringify(auth.me)),
-    meHasFetched: auth.hasFetched
+    meHasFetched: auth.hasFetched,
+    fetchAllItems: () => item.fetchAllItems(),
+    items: JSON.parse(JSON.stringify(item.items))
 }))
 @observer
 class OrderPage extends Component {
     componentDidMount() {
         if (!this.props.meHasFetched) this.props.fetchMe()
         this.props.fetchAllOrders()
+        this.props.fetchAllItems()
     }
 
     render() {
-        let { isRequesting, me } = this.props
-        if (isRequesting || !me) return <CircularProgress />
+        let { isRequesting, items, me } = this.props
+        if (isRequesting || !items.length || !me) return <CircularProgress />
         return <Order {...this.props} />
     }
 }

@@ -22,7 +22,7 @@ export default theme => ({
         width: 200
     },
     content: {
-        marginTop: '64px',
+        marginTop: '24px',
         padding: theme.spacing(4),
         // backgroundColor: theme.palette.background.default,
         transition: theme.transitions.create('margin', {

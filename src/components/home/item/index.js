@@ -7,24 +7,45 @@ import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
+import RowItem from './row-item'
 import styles from 'components/home/styles'
 
 class Item extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            openAddItem: false,
             openConfirm: false,
             selectedRows: [],
-            rowsSelected: []
+            rowsSelected: [],
+            itemName: ''
         }
     }
+    handleChangeText = e => {
+        this.setState({ itemName: e.target.value })
+    }
     handleClose = () => {
-        this.setState({ openConfirm: false })
+        this.setState({ openAddItem: false, openConfirm: false })
     }
     render() {
+        let { itemName } = this.state
         let { items, classes } = this.props
+
         const columns = [
-            'Tên hàng',
+            {
+                name: 'Tên hàng',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <RowItem
+                            value={items[tableMeta.rowIndex].itemName}
+                            tableMeta={tableMeta}
+                            updateValue={updateValue}
+                            updateItem={this.props.updateItem}
+                            idItem={items[tableMeta.rowIndex]._id}
+                        />
+                    )
+                }
+            },
             {
                 name: 'Xem',
                 options: {
@@ -95,6 +116,19 @@ class Item extends Component {
                     deleteAria: 'Delete Selected Rows'
                 }
             },
+            customToolbar: () => {
+                return (
+                    <Button
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+                        onClick={() => {
+                            this.setState({ openAddItem: true })
+                        }}>
+                        <AddIcon className={classes.addIcon} />
+                    </Button>
+                )
+            },
             customToolbarSelect: selectedRows => (
                 <IconButton
                     onClick={() => {
@@ -122,23 +156,28 @@ class Item extends Component {
         return (
             <>
                 <span className={classes.spacer} />
-                <div className={classes.row}>
-                    <Button
-                        color="primary"
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                            this.props.history.push('/dashboard/items/add')
-                        }}>
-                        <AddIcon className={classes.addIcon} />
-                        Add
-                    </Button>
-                </div>
+
                 <MUIDataTable
                     title={'Danh sách hàng'}
                     data={data}
                     columns={columns}
                     options={options}
+                />
+                <ConfirmDialog
+                    open={this.state.openAddItem}
+                    title="Nhập hàng:"
+                    cancelLabel="Đóng"
+                    okLabel="Nhập"
+                    input={{
+                        value: itemName,
+                        onChange: this.handleChangeText
+                    }}
+                    onHide={this.handleClose}
+                    onOK={() => {
+                        this.props.addItem({ itemName })
+                        this.props.fetchAllItems()
+                        this.handleClose()
+                    }}
                 />
                 <ConfirmDialog
                     open={this.state.openConfirm}

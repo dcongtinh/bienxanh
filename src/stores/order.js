@@ -15,20 +15,22 @@ class OrderStore {
     async addOrder({
         group,
         warehouse,
-        items,
         owner,
         createdAt,
+        itemNote,
         mergeList,
+        orders,
         callback
     }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.addOrder({
             group,
             warehouse,
-            items,
             owner,
             createdAt,
-            mergeList
+            itemNote,
+            mergeList,
+            orders
         })
 
         if (success) {
@@ -36,7 +38,7 @@ class OrderStore {
                 message: `Thêm hoá đơn thành công!`,
                 variant: 'success'
             })
-            if (callback) callback()
+            if (callback) callback(data)
         } else {
             this.rootStore.alert.show({
                 message: data.message,

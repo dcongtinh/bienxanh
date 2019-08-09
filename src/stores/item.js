@@ -12,11 +12,10 @@ class WarehouseStore {
         this.rootStore = rootStore
     }
     @action
-    async addItem({ itemName, itemPrices, callback }) {
+    async addItem({ itemName, callback }) {
         this.isRequesting = true
         const { success, data } = await itemAPI.addItem({
-            itemName,
-            itemPrices
+            itemName
         })
 
         if (success) {
@@ -52,12 +51,11 @@ class WarehouseStore {
     }
 
     @action
-    async updateItem({ idItem, itemName, itemPrices, callback }) {
-        this.isRequesting = true
+    async updateItem({ idItem, data: updateData, callback }) {
+        // this.isRequesting = true
         const { success, data } = await itemAPI.updateItem({
             idItem,
-            itemName,
-            itemPrices
+            data: updateData
         })
 
         if (success) {
@@ -73,7 +71,7 @@ class WarehouseStore {
                 variant: 'error'
             })
         }
-        this.isRequesting = false
+        // this.isRequesting = false
     }
     @action
     async deleteItems({ itemsListId }) {

@@ -11,14 +11,14 @@ import { inject, observer } from 'mobx-react'
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
     fetchItem: ({ idItem }) => item.fetchItem({ idItem }),
+    updateItem: object => item.updateItem(object),
     deleteItems: ({ itemsListId }) => item.deleteItems({ itemsListId }),
-    item: JSON.parse(JSON.stringify(item.item)),
-    isRequesting: item.isRequesting
+    item: JSON.parse(JSON.stringify(item.item))
+    // isRequesting: item.isRequesting
 }))
 @observer
 class ViewItemPage extends Component {
     componentDidMount() {
-        console.log(this.props.match.params.idItem)
         this.props.fetchItem({
             idItem: this.props.match.params.idItem
         })
@@ -26,7 +26,7 @@ class ViewItemPage extends Component {
     }
 
     render() {
-        if (!this.props.item || !this.props.wareHouses)
+        if (!this.props.item || !this.props.wareHouses.length)
             return <CircularProgress />
         return <ViewItem {...this.props} />
     }

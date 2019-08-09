@@ -4,15 +4,37 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import TextField from 'components/Input/TextField'
+import TextField from '@material-ui/core/TextField'
+import TextFieldCustomized from 'components/Input/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import SaveIcon from '@material-ui/icons/Save'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import AddItemForm from 'components/home/order/add-order/AddItemForm'
-import Select from 'components/Input/Select'
+import Select from 'react-select'
 import moment from 'moment'
+import numeral from 'numeral'
+import { DatePicker } from '@material-ui/pickers'
+import NumberFormat from 'react-number-format'
+import OrderTable from './OrderTable'
+
+const NumberFormatCustom = props => {
+    const { inputRef, onChange, ...other } = props
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value
+                    }
+                })
+            }}
+            thousandSeparator
+        />
+    )
+}
 
 const styles = theme => ({
     '@global': {
@@ -64,126 +86,132 @@ class UpdateOrder extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            count: Math.max(props.order.items.length, 1),
-            buyerArea: props.order.warehouse.buyerArea,
             buyerCode: props.order.warehouse.buyerCode,
             warehouse: props.order.warehouse._id,
             date: props.order.createdAt || new Date()
-        }
-        let state = {}
-        props.order.items.forEach((item, index) => {
-            state[`itemName${index}`] = item.itemName._id
-            state[`itemQuantity${index}`] = item.itemQuantity
-            state[`itemPrice${index}`] = item.itemPrice
-            state[`itemNote${index}`] = item.itemNote
-        })
-        this.state = Object.assign({}, this.state, state)
-    }
-    handleChangeCount = count => {
-        this.setState({ count })
-    }
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value,
-            [`error${e.target.name}`]: false
-        })
-        if (e.target.name === 'warehouse') {
-            this.props.wareHouses.forEach(wareHouse => {
-                if (wareHouse._id === e.target.value)
-                    this.setState({ buyerCode: wareHouse.buyerCode })
-            })
         }
     }
     handleDateChange = date => {
         this.setState({ date })
     }
     render() {
-        let { count, buyerCode, warehouse } = this.state
-        let {
-            classes,
-            isRequesting,
-            wareHouses,
-            items,
-            me,
-            order,
-            history
-        } = this.props
-        let orderItems = order.items
+        let { buyerCode, warehouse } = this.state
+        let { classes, isRequesting, wareHouses, items, me, order } = this.props
         let idOrder = this.props.match.params.idOrder
-        let optionsWarehouse = []
+        let optionsWarehouse = [],
+            warehouseName = {}
         wareHouses.forEach(warehouse => {
+            warehouseName[warehouse._id] = `${warehouse.warehouseName} (${
+                warehouse.warehouse
+            })`
             optionsWarehouse.push({
                 value: warehouse._id,
                 label: `${warehouse.warehouseName} (${warehouse.warehouse})`
             })
         })
-        let optionsItem = []
+        let optionsItem = [],
+            itemName = {}
         items.forEach(item => {
+            itemName[item._id] = item.itemName
             optionsItem.push({
                 value: item._id,
                 label: item.itemName
             })
         })
-        let array = []
-        for (let i = 0; i < count; ++i) array.push('')
-
-        let initialValues = {},
-            _AddOrderSchema = {}
-        array.forEach((item, index) => {
-            let _initialValues = {
-                [`itemQuantity${index}`]:
-                    this.state[`itemQuantity${index}`] || 1,
-                [`itemNote${index}`]: this.state[`itemNote${index}`]
-            }
-            initialValues = Object.assign({}, initialValues, _initialValues)
-
-            let _addOrderSchema = {
-                [`itemQuantity${index}`]: Yup.number('Not a numbBar').required(
-                    '* Bắt buộc'
-                ),
-                [`itemNote${index}`]: Yup.string()
-            }
-            _AddOrderSchema = Object.assign(
-                {},
-                _AddOrderSchema,
-                _addOrderSchema
-            )
-        })
         let { buyerName } = order
         let lastIndex = buyerName.lastIndexOf('/') + 1
-        initialValues = Object.assign({}, initialValues, {
-            group: order.group,
-            buyerName: buyerName.substring(lastIndex, buyerName.length)
-        })
-        _AddOrderSchema = Object.assign({}, _AddOrderSchema, {
-            group: Yup.number().required('* Bắt buộc'),
-            buyerName: Yup.string()
-        })
-        let AddOrderSchema = Yup.object().shape(_AddOrderSchema)
-        let pricesList = []
-        array.forEach((__item__, index) => {
-            let idItem = this.state[`itemName${index}`] || optionsItem[0].value
+        let initialValues = {
+            buyerName: buyerName.substring(lastIndex, buyerName.length),
+            itemNote: order.itemNote
+        }
+        let AddOrderSchema = Yup.object().shape({ buyerName: Yup.string() })
+
+        let columns = [
+            {
+                title: 'Hàng hoá',
+                field: 'itemName',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return <div>{itemName[rowData.itemName]}</div>
+                },
+                editComponent: props => {
+                    let value
+                    if (props.value)
+                        value = {
+                            value: props.value,
+                            label: itemName[props.value]
+                        }
+                    return (
+                        <Select
+                            name="itemName"
+                            value={value}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={optionsItem}
+                            className={'basic-multi-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn hàng hoá"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
+            },
+            {
+                title: 'Số lượng',
+                field: 'itemQuantity',
+                render: rowData => {
+                    return (
+                        <div>
+                            {rowData.itemQuantity
+                                ? numeral(rowData.itemQuantity).format(
+                                      '(0,0.[0000])'
+                                  )
+                                : '-'}
+                        </div>
+                    )
+                },
+                editComponent: props => (
+                    <TextField
+                        style={{ width: 80 }}
+                        onChange={e => props.onChange(e.target.value)}
+                        value={props.value}
+                        name="itemQuantity"
+                        InputProps={{
+                            inputComponent: NumberFormatCustom
+                        }}
+                    />
+                )
+            }
+        ]
+        order.orders.forEach((_order, index) => {
+            let idItem = _order.itemName
             let idWarehouse = this.state.warehouse || wareHouses[0]._id
             let item = items.filter(item => {
                 return item._id === idItem
             })
-            item = item[0]
-            let warehouse = wareHouses.filter(warehouse => {
-                return warehouse._id === idWarehouse
-            })
-            warehouse = warehouse[0]
-            let { buyerArea } = warehouse
             let prices = []
+            item = item[0]
             item.itemPrices.forEach(itemPrice => {
-                let match = itemPrice.wareHouses[buyerArea].filter(
-                    warehouse => {
-                        return warehouse.value === idWarehouse
-                    }
-                )
-                if (match.length)
+                let match = itemPrice[idWarehouse] ? true : false
+                if (match)
                     prices.push({
                         dateApply: itemPrice.dateApply,
-                        itemPrice: itemPrice.itemPrice
+                        itemPrice: itemPrice[idWarehouse]
                     })
             })
             prices.sort((a, b) => {
@@ -201,185 +229,172 @@ class UpdateOrder extends React.Component {
                     break
                 }
             }
-            pricesList.push(price)
+            _order.itemPrice = price
         })
-        return (
-            <Container component="main" maxWidth="sm">
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <div className={classes.form}>
-                        <Formik
-                            enableReinitialize
-                            initialValues={initialValues}
-                            validationSchema={AddOrderSchema}
-                            onSubmit={(values, { resetForm }) => {
-                                let warehouse =
-                                    this.state.warehouse ||
-                                    optionsWarehouse[0].value
-                                let _items = []
-                                array.forEach((__item__, index) => {
-                                    let itemPrice = pricesList[index] || 0
-                                    let itemName =
-                                        this.state[`itemName${index}`] ||
-                                        optionsItem[0].value
 
-                                    let _item = {
-                                        itemName,
-                                        itemQuantity:
-                                            values[`itemQuantity${index}`],
-                                        itemPrice,
-                                        itemNote: values[`itemNote${index}`]
-                                    }
-                                    _items.push(_item)
-                                })
-                                let buyerName = `26296/WH${buyerCode}/${
-                                    values.buyerName
-                                }`
-                                this.props.updateOrder({
-                                    idOrder,
-                                    data: {
-                                        warehouse,
-                                        buyerName,
-                                        items: _items,
-                                        owner: me._id
-                                    },
-                                    callback: () =>
-                                        this.props.fetchOrder({ idOrder })
-                                })
-                            }}>
-                            {({
-                                values,
-                                errors,
-                                touched,
-                                handleChange,
-                                handleBlur,
-                                handleSubmit
-                            }) => {
-                                let disabled = false
-                                array.forEach((__item__, index) => {
-                                    disabled |=
-                                        errors[`itemQuantity${index}`] &&
-                                        touched[`itemQuantity${index}`]
-                                })
-                                return (
-                                    <Form>
-                                        <Grid item container spacing={2}>
-                                            <Grid item xs={12} sm={3}>
-                                                <TextField
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    value={values.group}
-                                                    label="Mã hoá đơn"
-                                                    name="group"
-                                                    InputProps={{
-                                                        readOnly: true
-                                                    }}
-                                                />
+        if (!warehouse) warehouse = optionsWarehouse[0]
+        else {
+            warehouse = {
+                value: warehouse,
+                label: warehouseName[warehouse]
+            }
+        }
+
+        return (
+            <div>
+                <Container component="main" maxWidth="sm">
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                        <div className={classes.form}>
+                            <Formik
+                                enableReinitialize
+                                initialValues={initialValues}
+                                validationSchema={AddOrderSchema}
+                                onSubmit={(values, { resetForm }) => {
+                                    let warehouse =
+                                        this.state.warehouse ||
+                                        optionsWarehouse[0].value
+                                    let buyerName = `26296/WH${buyerCode}/${
+                                        values.buyerName
+                                    }`
+                                    this.props.updateOrder({
+                                        idOrder,
+                                        data: {
+                                            warehouse,
+                                            buyerName,
+                                            orders: order.orders,
+                                            owner: me._id,
+                                            itemNote: values.itemNote
+                                        },
+                                        callback: () =>
+                                            this.props.fetchOrder({ idOrder })
+                                    })
+                                }}>
+                                {({
+                                    values,
+                                    errors,
+                                    touched,
+                                    handleChange,
+                                    handleBlur,
+                                    handleSubmit
+                                }) => {
+                                    let disabled = false
+                                    return (
+                                        <Form>
+                                            <Grid item container spacing={2}>
+                                                <Grid item xs={12} sm={6}>
+                                                    <TextFieldCustomized
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        value={values.buyerName}
+                                                        label="Họ tên"
+                                                        name="buyerName"
+                                                        norequired={true}
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                                <InputAdornment position="start">
+                                                                    {`26296/WH${buyerCode}/`}
+                                                                </InputAdornment>
+                                                            )
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6}>
+                                                    <DatePicker
+                                                        autoOk
+                                                        inputVariant="outlined"
+                                                        name="date"
+                                                        variant="inline"
+                                                        format="DD/MM/YYYY"
+                                                        label="Ngày nhập"
+                                                        value={this.state.date}
+                                                        onChange={
+                                                            this
+                                                                .handleDateChange
+                                                        }
+                                                        fullWidth
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <TextFieldCustomized
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        value={values.itemNote}
+                                                        label="Ghi chú"
+                                                        name={'itemNote'}
+                                                        norequired={true}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <Select
+                                                        name="warehouse"
+                                                        value={warehouse}
+                                                        label="Nhập kho"
+                                                        onChange={data => {
+                                                            this.props.wareHouses.forEach(
+                                                                wareHouse => {
+                                                                    if (
+                                                                        wareHouse._id ===
+                                                                        data.value
+                                                                    ) {
+                                                                        this.setState(
+                                                                            {
+                                                                                buyerCode:
+                                                                                    wareHouse.buyerCode,
+                                                                                warehouse:
+                                                                                    data.value
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                }
+                                                            )
+                                                        }}
+                                                        options={
+                                                            optionsWarehouse
+                                                        }
+                                                    />
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    value={values.buyerName}
-                                                    label="Họ tên"
-                                                    name="buyerName"
-                                                    norequired={true}
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                            <InputAdornment position="start">
-                                                                {`26296/WH${buyerCode}/`}
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={3}>
-                                                <TextField
-                                                    value={moment(
-                                                        this.state.date
-                                                    ).format('DD/MM/YYYY')}
-                                                    label="Ngày áp dụng"
-                                                    InputProps={{
-                                                        readOnly: true
-                                                    }}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <Select
-                                                    name="warehouse"
-                                                    value={
-                                                        warehouse ||
-                                                        optionsWarehouse[0]
-                                                            .value
-                                                    }
-                                                    label="Nhập kho"
-                                                    onChange={this.handleChange}
-                                                    options={optionsWarehouse}
-                                                />
-                                            </Grid>
-                                            <AddItemForm
-                                                array={array}
-                                                handleChange={handleChange}
-                                                handleChangeCount={
-                                                    this.handleChangeCount
-                                                }
-                                                handleBlur={handleBlur}
-                                                values={values}
-                                                errors={errors}
-                                                touched={touched}
-                                                optionsItem={optionsItem}
-                                                states={this.state}
-                                                handleSelectChange={
-                                                    this.handleChange
-                                                }
-                                                isUpdateOrder
-                                                updateOrder={
-                                                    this.props.updateOrder
-                                                }
-                                                fetchOrder={
-                                                    this.props.fetchOrder
-                                                }
-                                                deleteOrders={
-                                                    this.props.deleteOrders
-                                                }
-                                                items={items}
-                                                orderItems={orderItems}
-                                                warehouse={warehouse}
-                                                wareHouses={wareHouses}
-                                                buyerName={buyerName}
-                                                idOrder={idOrder}
-                                                history={history}
-                                                prices={pricesList}
-                                            />
-                                        </Grid>
-                                        <Button
-                                            disabled={Boolean(
-                                                isRequesting || disabled
-                                            )}
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}>
-                                            <SaveIcon
-                                                className={classes.iconSubmit}
-                                            />
-                                            Cập nhật
-                                            {isRequesting ? (
-                                                <CircularProgress
-                                                    color="secondary"
+                                            <Button
+                                                disabled={Boolean(
+                                                    isRequesting || disabled
+                                                )}
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.submit}>
+                                                <SaveIcon
                                                     className={
-                                                        classes.circularProgress
+                                                        classes.iconSubmit
                                                     }
                                                 />
-                                            ) : null}
-                                        </Button>
-                                    </Form>
-                                )
-                            }}
-                        </Formik>
+                                                Cập nhật
+                                                {isRequesting ? (
+                                                    <CircularProgress
+                                                        color="secondary"
+                                                        className={
+                                                            classes.circularProgress
+                                                        }
+                                                    />
+                                                ) : null}
+                                            </Button>
+                                        </Form>
+                                    )
+                                }}
+                            </Formik>
+                        </div>
                     </div>
-                </div>
-            </Container>
+                </Container>
+                <OrderTable
+                    idOrder={idOrder}
+                    idWarehouse={this.state.warehouse}
+                    items={items}
+                    title={`Hoá đơn số ${order.group}`}
+                    data={order.orders || []}
+                    columns={columns}
+                    updateOrder={this.props.updateOrder}
+                />
+            </div>
         )
     }
 }

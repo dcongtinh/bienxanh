@@ -34,7 +34,7 @@ export default theme => ({
         height: '100px'
     },
     nameText: {
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing()
     },
     bioText: {},
     profileDivider: {
