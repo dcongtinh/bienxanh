@@ -14,7 +14,8 @@ export const getApi = () => {
         auth: c('/auth'),
         wareHouse: c('/warehouses'),
         item: c('/items'),
-        order: c('/orders')
+        order: c('/orders'),
+        supplier: c('/suppliers')
     }
 }
 

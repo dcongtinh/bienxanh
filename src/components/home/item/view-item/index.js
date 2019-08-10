@@ -33,7 +33,7 @@ class ViewItemInfo extends React.Component {
         let { idItem } = this.props.match.params
         let columns = [
             {
-                title: 'Ngày áp dụng',
+                title: 'Ngày bán',
                 field: 'dateApply',
                 headerStyle: {
                     marginBottom: 4
@@ -110,12 +110,13 @@ class ViewItemInfo extends React.Component {
                 )
             })
         })
+        let columns2 = columns
+        columns2[0].title = 'Ngày mua'
         return (
             <div>
                 <PriceTable
                     id="itemPrices"
                     idItem={idItem}
-                    title={'Giá bán'}
                     data={item.itemPrices || []}
                     columns={columns}
                     updateItem={this.props.updateItem}
@@ -124,9 +125,8 @@ class ViewItemInfo extends React.Component {
                 <PriceTable
                     id="itemTradePrices"
                     idItem={idItem}
-                    title={'Giá mua'}
                     data={item.itemTradePrices || []}
-                    columns={columns}
+                    columns={columns2}
                     updateItem={this.props.updateItem}
                 />
             </div>

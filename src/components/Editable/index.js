@@ -50,7 +50,7 @@ class Editable extends React.Component {
         return (
             <MaterialTable
                 icons={tableIcons}
-                title={title}
+                title={title || ''}
                 columns={columns}
                 data={data}
                 editable={{

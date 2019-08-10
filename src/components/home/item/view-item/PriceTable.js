@@ -2,12 +2,6 @@ import React from 'react'
 import Editable from 'components/Editable'
 
 class PriceTable extends React.Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //         data: this.props.data
-    //     }
-    // }
     state = {
         data: this.props.data
     }

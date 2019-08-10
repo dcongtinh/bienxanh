@@ -25,6 +25,10 @@ import ViewItem from 'pages/home/item/view-item'
 import AddItem from 'pages/home/item/add-item'
 import UpdateItem from 'pages/home/item/update-item'
 
+import Supplier from 'pages/home/supplier'
+import AddSupplier from 'pages/home/supplier/add-supplier'
+import UpdateSupplier from 'pages/home/supplier/update-supplier'
+
 import Login from 'pages/auth/login'
 import Register from 'pages/auth/register'
 import BaseLayout from 'components/layout/base'
@@ -115,6 +119,21 @@ class App extends React.Component {
                                 path="/dashboard/items/:idItem"
                                 exact
                                 component={UpdateItem}
+                            />
+                            <Route
+                                path="/dashboard/suppliers"
+                                exact
+                                component={Supplier}
+                            />
+                            <Route
+                                path="/dashboard/suppliers/add"
+                                exact
+                                component={AddSupplier}
+                            />
+                            <Route
+                                path="/dashboard/suppliers/:idSupplier"
+                                exact
+                                component={UpdateSupplier}
                             />
                             <Redirect from="/" to="/" />
                         </Switch>

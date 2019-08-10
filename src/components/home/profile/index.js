@@ -59,7 +59,8 @@ class Profile extends React.Component {
             user: access.indexOf('user') !== -1,
             order: access.indexOf('order') !== -1,
             item: access.indexOf('item') !== -1,
-            warehouse: access.indexOf('warehouse') !== -1
+            warehouse: access.indexOf('warehouse') !== -1,
+            supplier: access.indexOf('supplier') !== -1
         }
     }
 
@@ -71,7 +72,8 @@ class Profile extends React.Component {
             { value: 'user', label: 'Quản lí nhân viên' },
             { value: 'order', label: 'Quản lí hoá đơn' },
             { value: 'item', label: 'Quản lí hàng hoá' },
-            { value: 'warehouse', label: 'Quản lí kho' }
+            { value: 'warehouse', label: 'Quản lí kho' },
+            { value: 'supplier', label: 'Quản lí NCC' }
         ]
         return (
             <Container component="main" maxWidth="sm">
