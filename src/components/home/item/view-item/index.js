@@ -6,7 +6,7 @@ import numeral from 'numeral'
 import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import PriceTable from './PriceTable'
-
+import Select from 'react-select'
 const NumberFormatCustom = props => {
     const { inputRef, onChange, ...other } = props
     return (
@@ -29,8 +29,22 @@ const styles = theme => ({})
 
 class ViewItemInfo extends React.Component {
     render() {
-        let { item, wareHouses } = this.props
+        let { item, wareHouses, suppliers } = this.props
         let { idItem } = this.props.match.params
+        let supplierList = [],
+            name = {}
+        suppliers.forEach(supplier => {
+            for (let i in supplier.supplierItems) {
+                if (supplier.supplierItems[i].value === idItem) {
+                    supplierList.push({
+                        value: supplier._id,
+                        label: supplier.supplierName
+                    })
+                    name[supplier._id] = supplier.supplierName
+                    break
+                }
+            }
+        })
         let columns = [
             {
                 title: 'Ngày bán',
@@ -83,6 +97,105 @@ class ViewItemInfo extends React.Component {
                 )
             }
         ]
+        let columns2 = [
+            {
+                title: 'Nhà cung cấp',
+                field: 'supplier',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return <div>{name[rowData.supplier]}</div>
+                },
+                editComponent: props => {
+                    console.log(props, '')
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: name[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="supplier"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={supplierList}
+                            className={'basic-multi-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn hàng hoá"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
+            },
+            {
+                title: 'Ngày mua',
+                field: 'dateApply',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div>
+                            {moment(rowData.dateApply).format('DD/MM/YYYY')}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    return (
+                        <DatePicker
+                            name="dateApply"
+                            format="DD/MM/YYYY"
+                            variant="inline"
+                            value={props.value}
+                            onChange={date => {
+                                props.onChange(date)
+                            }}
+                            autoOk
+                        />
+                    )
+                }
+            },
+            {
+                title: 'Đồng giá',
+                field: 'equalPrice',
+                render: rowData => (
+                    <div>
+                        {rowData.equalPrice
+                            ? numeral(rowData.equalPrice).format('(0,0')
+                            : '-'}
+                    </div>
+                ),
+                editComponent: props => (
+                    <TextField
+                        style={{ width: 80 }}
+                        onChange={e => props.onChange(e.target.value)}
+                        value={props.value}
+                        name="equalPrice"
+                        InputProps={{
+                            inputComponent: NumberFormatCustom
+                        }}
+                    />
+                )
+            }
+        ]
+
         let warehouseList = []
         wareHouses.forEach(warehouse => {
             let idWh = warehouse._id
@@ -109,9 +222,29 @@ class ViewItemInfo extends React.Component {
                     />
                 )
             })
+            columns2.push({
+                title: warehouse.warehouse,
+                field: idWh,
+                render: rowData => (
+                    <div>
+                        {rowData[idWh] && !rowData.equalPrice
+                            ? numeral(rowData[idWh]).format('(0,0')
+                            : '-'}
+                    </div>
+                ),
+                editComponent: props => (
+                    <TextField
+                        style={{ width: 80 }}
+                        onChange={e => props.onChange(e.target.value)}
+                        value={props.value}
+                        name={idWh}
+                        InputProps={{
+                            inputComponent: NumberFormatCustom
+                        }}
+                    />
+                )
+            })
         })
-        let columns2 = columns
-        columns2[0].title = 'Ngày mua'
         return (
             <div>
                 <PriceTable
