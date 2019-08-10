@@ -50,6 +50,7 @@ class Order extends Component {
         items.forEach(item => {
             itemName[item._id] = item.itemName
         })
+        let ordersListId = []
         const columns = [
             'Nhóm',
             'Mã',
@@ -126,6 +127,7 @@ class Order extends Component {
         ]
         let data = []
         orders.forEach(order => {
+            ordersListId.push(order._id)
             let row = []
             row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
             row.push(order.warehouse.buyerCode)
@@ -265,6 +267,9 @@ class Order extends Component {
                         variant="outlined"
                         orders={orders}
                         name={itemName}
+                        onClick={() => {
+                            this.props.exportOrders({ ordersListId })
+                        }}
                     />
                     <Button
                         color="primary"

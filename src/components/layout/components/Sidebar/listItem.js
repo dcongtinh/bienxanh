@@ -6,6 +6,7 @@ import ViewListIcon from '@material-ui/icons/ViewList'
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore'
 import ListIcon from '@material-ui/icons/List'
 import HomeIcon from '@material-ui/icons/Home'
+import HistoryIcon from '@material-ui/icons/History'
 
 export default [
     { title: 'Trang chủ', icon: <DashboardIcon />, link: '/' },
@@ -44,5 +45,11 @@ export default [
         icon: <HomeIcon />,
         link: '/dashboard/suppliers',
         access: 'supplier'
+    },
+    {
+        title: 'Hoá đơn đã xuất',
+        icon: <HistoryIcon />,
+        link: '/dashboard/exports',
+        access: 'order'
     }
 ]

@@ -39,6 +39,8 @@ const orderAPI = {
         }),
     mergeOrders: ({ ordersListId, enabled }) =>
         axios.put(c('/merge'), { ordersListId, enabled }),
+    exportOrders: ({ ordersListId }) =>
+        axios.put(c('/export'), { ordersListId }),
     deleteOrders: ({ ordersListId }) =>
         axios.post(c('/delete'), { ordersListId })
 }

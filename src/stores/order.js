@@ -150,6 +150,27 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
+    async exportOrders({ ordersListId, callback }) {
+        this.isRequesting = true
+        const { success, data } = await orderAPI.exportOrders({
+            ordersListId
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Xuất hoá đơn thành công!`,
+                variant: 'success'
+            })
+            if (callback) callback()
+            this.orders = []
+            this.fetchAllOrders()
+        } else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        this.isRequesting = false
+    }
+    @action
     async deleteOrders({ ordersListId, callback }) {
         this.isRequesting = true
         const { success, data } = await orderAPI.deleteOrders({

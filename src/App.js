@@ -29,6 +29,9 @@ import Supplier from 'pages/home/supplier'
 import AddSupplier from 'pages/home/supplier/add-supplier'
 import UpdateSupplier from 'pages/home/supplier/update-supplier'
 
+import Export from 'pages/home/export'
+import UpdateExport from 'pages/home/export/update-export'
+
 import Login from 'pages/auth/login'
 import Register from 'pages/auth/register'
 import BaseLayout from 'components/layout/base'
@@ -134,6 +137,16 @@ class App extends React.Component {
                                 path="/dashboard/suppliers/:idSupplier"
                                 exact
                                 component={UpdateSupplier}
+                            />
+                            <Route
+                                path="/dashboard/exports"
+                                exact
+                                component={Export}
+                            />
+                            <Route
+                                path="/dashboard/exports/:idExported"
+                                exact
+                                component={UpdateExport}
                             />
                             <Redirect from="/" to="/" />
                         </Switch>

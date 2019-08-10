@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react'
     mergeOrders: ({ ordersListId, enabled, callback }) =>
         order.mergeOrders({ ordersListId, enabled, callback }),
     updateOrder: object => order.updateOrder(object),
+    exportOrders: object => order.exportOrders(object),
     orders: JSON.parse(JSON.stringify(order.orders)),
     count: order.count,
     hasFetched: order.hasFetched,

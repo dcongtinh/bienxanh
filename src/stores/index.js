@@ -4,6 +4,7 @@ import WarehouseStore from './warehouse'
 import ItemStore from './item'
 import OrderStore from './order'
 import SupplierStore from './supplier'
+import ExportStore from './export'
 
 class RootStore {
     constructor() {
@@ -12,6 +13,7 @@ class RootStore {
         this.item = new ItemStore(this)
         this.order = new OrderStore(this)
         this.supplier = new SupplierStore(this)
+        this.exported = new ExportStore(this)
         this.alert = new AlertStore(this)
     }
 }

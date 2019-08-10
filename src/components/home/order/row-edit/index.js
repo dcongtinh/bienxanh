@@ -20,15 +20,19 @@ class RowEdit extends Component {
 
     render() {
         let { checked } = this.state
-        let { classes, idOrder } = this.props
+        let { classes, idOrder, noedit } = this.props
         return (
             <div className={classes.editOption}>
-                <IconButton
-                    onClick={() => {
-                        this.props.history.push(`/dashboard/orders/${idOrder}`)
-                    }}>
-                    <EditIcon />
-                </IconButton>
+                {!noedit && (
+                    <IconButton
+                        onClick={() => {
+                            this.props.history.push(
+                                `/dashboard/orders/${idOrder}`
+                            )
+                        }}>
+                        <EditIcon />
+                    </IconButton>
+                )}
                 <Checkbox
                     checked={Boolean(checked)}
                     onChange={() => {
