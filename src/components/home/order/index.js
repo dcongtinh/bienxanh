@@ -261,17 +261,18 @@ class Order extends Component {
             <>
                 <span className={classes.spacer} />
                 <div className={classes.row}>
-                    <DownloadExcel
-                        className={classes.exportButton}
-                        size="small"
-                        variant="outlined"
-                        orders={orders}
-                        name={itemName}
-                        onClick={() => {
-                            // if (orders.length)
-                            //     this.props.exportOrders({ ordersListId })
-                        }}
-                    />
+                    {orders.length && (
+                        <DownloadExcel
+                            className={classes.exportButton}
+                            size="small"
+                            variant="outlined"
+                            orders={orders}
+                            name={itemName}
+                            onClick={() => {
+                                this.props.exportOrders({ ordersListId })
+                            }}
+                        />
+                    )}
                     <Button
                         color="primary"
                         size="small"

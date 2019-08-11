@@ -169,7 +169,7 @@ class UpdateExport extends Component {
             },
             customToolbar: () => {
                 return (
-                    <Tooltip title="Khôi phục cung cấp">
+                    <Tooltip title="Khôi phục hoá đơn">
                         <IconButton color="primary" onClick={this.handleOpen}>
                             <BackupIcon />
                         </IconButton>
