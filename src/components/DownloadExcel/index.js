@@ -142,7 +142,7 @@ export default class DownloadExcel extends Component {
                     }
                 })
                 ///6. buyerPhone
-                let time = moment(order.createdAt).toArray()
+                let time = moment(order.date).toArray()
                 row.push({
                     value: `${time[0] % 100}${
                         time[1] + 1 < 10 ? `0${time[1] + 1}` : time[1] + 1

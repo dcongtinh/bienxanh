@@ -16,7 +16,7 @@ class OrderStore {
         group,
         warehouse,
         owner,
-        createdAt,
+        date,
         itemNote,
         mergeList,
         orders,
@@ -27,7 +27,7 @@ class OrderStore {
             group,
             warehouse,
             owner,
-            createdAt,
+            date,
             itemNote,
             mergeList,
             orders
@@ -110,7 +110,6 @@ class OrderStore {
             idOrder,
             data: updateData
         })
-
         if (success) {
             this.rootStore.alert.show({
                 message: `Cập nhật hoá đơn thành công!`,

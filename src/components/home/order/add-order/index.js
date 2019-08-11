@@ -12,7 +12,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import SendIcon from '@material-ui/icons/Send'
 import Select from 'components/Input/Select'
 import { DatePicker } from '@material-ui/pickers'
-import moment from 'moment'
 
 const styles = theme => ({
     '@global': {
@@ -117,7 +116,7 @@ class AddOrder extends React.Component {
                                 this.props.addOrder({
                                     warehouse,
                                     owner: me._id,
-                                    createdAt: moment(date).format(),
+                                    date,
                                     itemNote: values.itemNote,
                                     callback: order => {
                                         resetForm()

@@ -26,8 +26,7 @@ class Order extends Component {
             openConfirmUnMerge: false,
             selectedRows: [],
             rowsSelected: [],
-            unMerge1: false,
-            orders: props.orders
+            unMerge1: false
         }
     }
     handleClose = () => {
@@ -43,10 +42,9 @@ class Order extends Component {
             openConfirmDelete,
             openConfirmMerge,
             openConfirmUnMerge,
-            unMerge1,
-            orders
+            unMerge1
         } = this.state
-        let { classes, me, items } = this.props
+        let { classes, orders, me, items } = this.props
         let itemName = {}
         items.forEach(item => {
             itemName[item._id] = item.itemName
@@ -65,9 +63,7 @@ class Order extends Component {
                             tableMeta={tableMeta}
                             updateValue={updateValue}
                             updateOrder={this.props.updateOrder}
-                            updateOrderChange={buyerName => {
-                                orders[tableMeta.rowIndex].buyerName = buyerName
-                            }}
+                            callback={this.props.fetchAllOrders}
                             idOrder={orders[tableMeta.rowIndex]._id}
                         />
                     )
@@ -143,7 +139,7 @@ class Order extends Component {
             )
             row.push('')
             row.push('')
-            row.push(moment(order.createdAt).format('DD/MM/YYYY'))
+            row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
             data.push(row)
         })
@@ -311,7 +307,7 @@ class Order extends Component {
                             let {
                                 warehouse,
                                 buyerName,
-                                createdAt,
+                                date,
                                 owner
                             } = ordersFirst
                             ordersFirst.orders.forEach(order => {
@@ -320,7 +316,7 @@ class Order extends Component {
                                     warehouse: warehouse._id,
                                     buyerName,
                                     orders: [order],
-                                    createdAt,
+                                    date,
                                     owner: owner._id
                                 })
                             })
@@ -364,7 +360,7 @@ class Order extends Component {
 
                         let length = rowsSelected.length
                         let ordersFirst = orders[rowsSelected[0]]
-                        let { group, createdAt } = ordersFirst
+                        let { group, date } = ordersFirst
                         let _orders = ordersFirst.orders
                         let warehouse = ordersFirst.warehouse._id
                         let mergeList = [] // list _id of orders was merged
@@ -400,7 +396,7 @@ class Order extends Component {
                                     warehouse,
                                     orders: _orderList,
                                     owner: me._id,
-                                    createdAt,
+                                    date,
                                     mergeList,
                                     callback: () => this.props.fetchAllOrders()
                                 })

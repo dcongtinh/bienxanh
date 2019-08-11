@@ -10,7 +10,7 @@ const orderAPI = {
         group,
         warehouse,
         owner,
-        createdAt,
+        date,
         itemNote,
         mergeList,
         orders
@@ -19,7 +19,7 @@ const orderAPI = {
             group,
             warehouse,
             owner,
-            createdAt,
+            date,
             itemNote,
             mergeList,
             orders

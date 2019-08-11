@@ -88,7 +88,7 @@ class UpdateOrder extends React.Component {
         this.state = {
             buyerCode: props.order.warehouse.buyerCode,
             warehouse: props.order.warehouse._id,
-            date: props.order.createdAt || new Date()
+            date: props.order.date || new Date()
         }
     }
     handleDateChange = date => {
@@ -199,6 +199,7 @@ class UpdateOrder extends React.Component {
             }
         ]
         order.orders.forEach((_order, index) => {
+            delete _order._id
             let idItem = _order.itemName
             let idWarehouse = this.state.warehouse || wareHouses[0]._id
             let item = items.filter(item => {
@@ -240,7 +241,6 @@ class UpdateOrder extends React.Component {
                 label: warehouseName[warehouse]
             }
         }
-
         return (
             <div>
                 <Container component="main" maxWidth="sm">
@@ -265,7 +265,8 @@ class UpdateOrder extends React.Component {
                                             buyerName,
                                             orders: order.orders,
                                             owner: me._id,
-                                            itemNote: values.itemNote
+                                            itemNote: values.itemNote,
+                                            date: this.state.date
                                         }
                                     })
                                 }}>

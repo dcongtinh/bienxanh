@@ -117,7 +117,7 @@ class UpdateExport extends Component {
             )
             row.push('')
             row.push('')
-            row.push(moment(order.createdAt).format('DD/MM/YYYY'))
+            row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
             data.push(row)
         })

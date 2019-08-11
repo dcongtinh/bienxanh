@@ -9,7 +9,6 @@ import * as Yup from 'yup'
 import TextField from 'components/Input/TextField'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SendIcon from '@material-ui/icons/Send'
-import Select from 'components/Input/Select'
 
 const SignUpSchema = Yup.object().shape({
     warehouse: Yup.string().required('* Bắt buộc'),
