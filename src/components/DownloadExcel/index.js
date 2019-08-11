@@ -39,7 +39,6 @@ const styles = {
 export default class DownloadExcel extends Component {
     render() {
         let { orders, name } = this.props
-        console.log(orders)
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
@@ -131,7 +130,7 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignRight
+                        alignment: styles.alignLeft
                     }
                 })
                 ///5. buyerAddress
@@ -147,7 +146,7 @@ export default class DownloadExcel extends Component {
                 row.push({
                     value: `${time[0] % 100}${
                         time[1] + 1 < 10 ? `0${time[1] + 1}` : time[1] + 1
-                    }${time[2]}`,
+                    }${time[2] < 10 ? `0${time[2]}` : time[2]}`,
                     style: {
                         font: styles.font,
                         border: styles.border

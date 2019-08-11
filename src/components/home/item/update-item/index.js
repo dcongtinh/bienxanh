@@ -90,7 +90,6 @@ class UpdateItem extends React.Component {
         this.setState({ datas })
     }
     handleChangeOption = data => {
-        console.log(data)
         this.setState({ data: data || [] })
     }
     handleChangeDate = (name, value) => {

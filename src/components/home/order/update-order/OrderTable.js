@@ -16,38 +16,6 @@ class PriceTable extends React.Component {
     render() {
         let { data } = this.state
         let { idOrder, title, columns } = this.props
-        const getPrice = idItem => {
-            let { idWarehouse, items } = this.props
-            let prices = []
-            let item = items.filter(item => {
-                return item._id === idItem
-            })
-            item = item[0]
-            item.itemPrices.forEach(itemPrice => {
-                let match = itemPrice[idWarehouse] ? true : false
-                if (match)
-                    prices.push({
-                        dateApply: itemPrice.dateApply,
-                        itemPrice: itemPrice[idWarehouse]
-                    })
-            })
-            prices.sort((a, b) => {
-                return (
-                    new Date(b.dateApply).getTime() -
-                    new Date(a.dateApply).getTime()
-                )
-            })
-            let date = moment(this.state.date).format('YYYY/MM/DD')
-            for (let i in prices) {
-                let item = prices[i]
-                let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
-                if (date >= dateApply) {
-                    var price = item.itemPrice
-                    break
-                }
-            }
-            return price
-        }
         return (
             <Editable
                 title={title}
@@ -55,13 +23,11 @@ class PriceTable extends React.Component {
                 data={data}
                 style={{ marginTop: 70 }}
                 onRowAdd={newData => {
-                    newData.itemPrice = getPrice(newData.itemName)
                     data.push(newData)
                     this.updateOrder(idOrder, data)
                 }}
                 onRowUpdate={(newData, oldData) => {
                     const index = data.indexOf(oldData)
-                    newData.itemPrice = getPrice(newData.itemName)
                     data[index] = newData
                     this.updateOrder(idOrder, data)
                 }}

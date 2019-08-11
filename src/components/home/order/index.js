@@ -27,7 +27,7 @@ class Order extends Component {
             selectedRows: [],
             rowsSelected: [],
             unMerge1: false,
-            page: 0
+            orders: props.orders
         }
     }
     handleClose = () => {
@@ -43,9 +43,10 @@ class Order extends Component {
             openConfirmDelete,
             openConfirmMerge,
             openConfirmUnMerge,
-            unMerge1
+            unMerge1,
+            orders
         } = this.state
-        let { classes, orders, me, items } = this.props
+        let { classes, me, items } = this.props
         let itemName = {}
         items.forEach(item => {
             itemName[item._id] = item.itemName
@@ -64,6 +65,9 @@ class Order extends Component {
                             tableMeta={tableMeta}
                             updateValue={updateValue}
                             updateOrder={this.props.updateOrder}
+                            updateOrderChange={buyerName => {
+                                orders[tableMeta.rowIndex].buyerName = buyerName
+                            }}
                             idOrder={orders[tableMeta.rowIndex]._id}
                         />
                     )
@@ -268,8 +272,8 @@ class Order extends Component {
                         orders={orders}
                         name={itemName}
                         onClick={() => {
-                            if (orders.length)
-                                this.props.exportOrders({ ordersListId })
+                            // if (orders.length)
+                            //     this.props.exportOrders({ ordersListId })
                         }}
                     />
                     <Button

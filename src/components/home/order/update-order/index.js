@@ -221,11 +221,12 @@ class UpdateOrder extends React.Component {
                 )
             })
             let date = moment(this.state.date).format('YYYY/MM/DD')
+            let price = 0
             for (let i in prices) {
                 let item = prices[i]
                 let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
                 if (date >= dateApply) {
-                    var price = item.itemPrice
+                    price = item.itemPrice
                     break
                 }
             }
@@ -385,8 +386,6 @@ class UpdateOrder extends React.Component {
                 </Container>
                 <OrderTable
                     idOrder={idOrder}
-                    idWarehouse={this.state.warehouse}
-                    items={items}
                     title={`Hoá đơn số ${order.group}`}
                     data={order.orders || []}
                     columns={columns}
