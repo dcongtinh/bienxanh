@@ -12,6 +12,7 @@ import { inject, observer } from 'mobx-react'
     updateOrder: object => order.updateOrder(object),
     fetchExport: ({ idExported }) => exported.fetchExport({ idExported }),
     exported: JSON.parse(JSON.stringify(exported.exported)),
+    setExport: object => exported.setExport(object),
     isRequesting: exported.isRequesting,
     fetchAllItems: () => item.fetchAllItems(),
     items: JSON.parse(JSON.stringify(item.items)),

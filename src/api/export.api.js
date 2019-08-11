@@ -7,7 +7,9 @@ const c = path => {
 
 const exportAPI = {
     getAllExports: () => axios.get(c('/get-exports')),
-    getExport: ({ idExported }) => axios.post(c('/get-export'), { idExported })
+    getExport: ({ idExported }) => axios.post(c('/get-export'), { idExported }),
+    setExport: ({ idExported, exportedList }) =>
+        axios.put(c('/set-export'), { idExported, exportedList })
 }
 
 export default exportAPI

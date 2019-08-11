@@ -39,6 +39,7 @@ const styles = {
 export default class DownloadExcel extends Component {
     render() {
         let { orders, name } = this.props
+        console.log(orders)
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
@@ -126,7 +127,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///4. buyerName
                 row.push({
-                    value: order.warehouse.buyerName,
+                    value: order.buyerName,
                     style: {
                         font: styles.font,
                         border: styles.border,

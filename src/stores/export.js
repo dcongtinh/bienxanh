@@ -28,6 +28,27 @@ class ExportStore {
         if (success) this.exported = data.exported
         this.isRequesting = false
     }
+    @action
+    async setExport({ idExported, exportedList, callback }) {
+        this.isRequesting = true
+        const { success, data } = await exportAPI.setExport({
+            idExported,
+            exportedList
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Khôi phục hoá đơn thành công!`,
+                variant: 'success'
+            })
+            if (callback) callback()
+        } else {
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        }
+        this.isRequesting = false
+    }
 }
 
 export default ExportStore

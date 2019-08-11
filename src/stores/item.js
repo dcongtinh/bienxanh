@@ -60,7 +60,7 @@ class WarehouseStore {
 
         if (success) {
             this.rootStore.alert.show({
-                message: `Cập nhật hàng  thành công!`,
+                message: `Cập nhật hàng thành công!`,
                 variant: 'success'
             })
             if (callback) callback()

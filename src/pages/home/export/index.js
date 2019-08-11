@@ -19,7 +19,9 @@ class ExportPage extends Component {
     }
 
     render() {
-        if (!this.props.exportList.length) return <CircularProgress />
+        if (!this.props.exportList) return <CircularProgress />
+        if (!this.props.exportList.length)
+            return <div>Chưa có hoá đơn nào đã xuất</div>
         return <Export {...this.props} />
     }
 }

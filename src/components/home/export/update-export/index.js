@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
+import IconButton from '@material-ui/core/IconButton'
+import BackupIcon from '@material-ui/icons/Backup'
+import Tooltip from '@material-ui/core/Tooltip'
 import { withStyles } from '@material-ui/core/styles'
 import moment from 'moment'
 import styles from './styles'
 import RowEdit from 'components/home/order/row-edit'
 import { observer } from 'mobx-react'
+import ConfirmDialog from 'components/ConfirmDialog'
 
 @observer
 class UpdateExport extends Component {
@@ -13,10 +17,17 @@ class UpdateExport extends Component {
         this.state = {
             selectedRows: [],
             rowsSelected: [],
-            page: 0
+            openConfirm: false
         }
     }
+    handleOpen = () => {
+        this.setState({ openConfirm: true })
+    }
+    handleClose = () => {
+        this.setState({ openConfirm: false })
+    }
     render() {
+        let { openConfirm } = this.state
         let { classes, exported, items, wareHouses } = this.props
         let orders = exported.exportedList
         let itemName = {},
@@ -31,7 +42,6 @@ class UpdateExport extends Component {
                 buyerCode: warehouse.buyerCode
             }
         })
-        let ordersListId = []
         const columns = [
             'Nhóm',
             'Mã',
@@ -92,9 +102,10 @@ class UpdateExport extends Component {
                 }
             }
         ]
-        let data = []
+        let data = [],
+            exportedList = []
         orders.forEach(order => {
-            ordersListId.push(order._id)
+            exportedList.push(order._id)
             let row = []
             row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
             row.push(whName[order.warehouse].buyerCode)
@@ -155,6 +166,15 @@ class UpdateExport extends Component {
                     delete: 'Delete',
                     deleteAria: 'Delete Selected Rows'
                 }
+            },
+            customToolbar: () => {
+                return (
+                    <Tooltip title="Khôi phục cung cấp">
+                        <IconButton color="primary" onClick={this.handleOpen}>
+                            <BackupIcon />
+                        </IconButton>
+                    </Tooltip>
+                )
             }
         }
 
@@ -162,6 +182,22 @@ class UpdateExport extends Component {
             <>
                 <span className={classes.spacer} />
                 <MUIDataTable data={data} columns={columns} options={options} />
+                <ConfirmDialog
+                    open={openConfirm}
+                    title={`Bạn có chắc muốn khôi phục hoá đơn?`}
+                    cancelLabel="Huỷ"
+                    okLabel="Đồng ý"
+                    onHide={this.handleClose}
+                    onOK={() => {
+                        this.props.setExport({
+                            idExported: exported._id,
+                            exportedList,
+                            callback: () =>
+                                this.props.history.push('/dashboard/orders')
+                        })
+                        this.handleClose()
+                    }}
+                />
             </>
         )
     }
