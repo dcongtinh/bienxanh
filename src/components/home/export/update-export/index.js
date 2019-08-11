@@ -138,8 +138,8 @@ class UpdateExport extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -161,12 +161,7 @@ class UpdateExport extends Component {
         return (
             <>
                 <span className={classes.spacer} />
-                <MUIDataTable
-                    title={'Danh sách hoá đơn'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
             </>
         )
     }

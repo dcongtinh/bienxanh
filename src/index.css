@@ -20,3 +20,6 @@ code {
   background: #909090;
   border-radius: 10px;
 }
+.basic-single-select {
+  width: 200px;
+}

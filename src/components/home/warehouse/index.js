@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
 import EditIcon from '@material-ui/icons/Edit'
-import AddIcon from '@material-ui/icons/Add'
+import AddBox from '@material-ui/icons/AddBox'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
 import styles from 'components/home/styles'
 
 class Warehouse extends Component {
@@ -91,8 +91,8 @@ class Warehouse extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -108,6 +108,21 @@ class Warehouse extends Component {
                     delete: 'Delete',
                     deleteAria: 'Delete Selected Rows'
                 }
+            },
+            customToolbar: () => {
+                return (
+                    <Tooltip title="Thêm kho">
+                        <IconButton
+                            color="primary"
+                            onClick={() => {
+                                this.props.history.push(
+                                    '/dashboard/warehouses/add'
+                                )
+                            }}>
+                            <AddBox />
+                        </IconButton>
+                    </Tooltip>
+                )
             },
             customToolbarSelect: selectedRows => (
                 <IconButton
@@ -136,24 +151,7 @@ class Warehouse extends Component {
         return (
             <>
                 <span className={classes.spacer} />
-                <div className={classes.row}>
-                    <Button
-                        color="primary"
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                            this.props.history.push('/dashboard/warehouses/add')
-                        }}>
-                        <AddIcon className={classes.addIcon} />
-                        Add
-                    </Button>
-                </div>
-                <MUIDataTable
-                    title={'Danh sách kho'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={this.state.openConfirm}
                     title="Bạn có chắc muốn xoá kho?"

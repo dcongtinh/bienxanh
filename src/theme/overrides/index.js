@@ -18,6 +18,7 @@ import MuiTableCell from './MuiTableCell'
 import MuiTablePagination from './MuiTablePagination'
 import MuiTableRow from './MuiTableRow'
 import MuiTabs from './MuiTabs'
+import MuiToolbar from './MuiToolbar'
 
 export default {
     MTableToolbar,
@@ -39,5 +40,6 @@ export default {
     MuiTableCell,
     MuiTablePagination,
     MuiTableRow,
-    MuiTabs
+    MuiTabs,
+    MuiToolbar
 }

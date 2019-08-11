@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import SendIcon from '@material-ui/icons/Send'
 import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
 
 const styles = theme => ({
     '@global': {
@@ -216,6 +217,7 @@ class AddSupplier extends React.Component {
                                                     }
                                                     classNamePrefix={'select'}
                                                     placeholder="Chọn hàng hoá"
+                                                    components={makeAnimated()}
                                                     styles={{
                                                         multiValue: base => ({
                                                             ...base,

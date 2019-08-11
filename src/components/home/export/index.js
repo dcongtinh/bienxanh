@@ -74,7 +74,6 @@ class Export extends Component {
         })
         rowsSelected.sort()
         const options = {
-            selectableRows: 'none',
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,
@@ -95,8 +94,8 @@ class Export extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -113,23 +112,7 @@ class Export extends Component {
                     deleteAria: 'Delete Selected Rows'
                 }
             },
-            // customToolbarSelect: selectedRows => (
-            //     <IconButton
-            //         onClick={() => {
-            //             let rowsSelected = []
-            //             selectedRows.data.forEach(row => {
-            //                 rowsSelected.push(row.dataIndex)
-            //             })
-            //             rowsSelected.sort()
-            //             this.setState({
-            //                 openConfirm: true,
-            //                 selectedRows: selectedRows.data,
-            //                 rowsSelected
-            //             })
-            //         }}>
-            //         <RemoveCircleIcon />
-            //     </IconButton>
-            // ),
+            customToolbarSelect: selectedRows => <div />,
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(
                     `/dashboard/exports/${exportList[rowMeta.dataIndex]._id}`
@@ -141,12 +124,7 @@ class Export extends Component {
             <>
                 <span className={classes.spacer} />
 
-                <MUIDataTable
-                    title={'Danh sách hoá đơn'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
                 {/*
                 <ConfirmDialog
                     open={this.state.openConfirm}

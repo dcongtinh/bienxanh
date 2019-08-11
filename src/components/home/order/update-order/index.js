@@ -187,7 +187,7 @@ class UpdateOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 80 }}
+                        style={{ width: 70 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemQuantity"
@@ -265,9 +265,7 @@ class UpdateOrder extends React.Component {
                                             orders: order.orders,
                                             owner: me._id,
                                             itemNote: values.itemNote
-                                        },
-                                        callback: () =>
-                                            this.props.fetchOrder({ idOrder })
+                                        }
                                     })
                                 }}>
                                 {({

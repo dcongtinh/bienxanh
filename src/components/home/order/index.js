@@ -171,8 +171,8 @@ class Order extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -268,7 +268,8 @@ class Order extends Component {
                         orders={orders}
                         name={itemName}
                         onClick={() => {
-                            this.props.exportOrders({ ordersListId })
+                            if (orders.length)
+                                this.props.exportOrders({ ordersListId })
                         }}
                     />
                     <Button
@@ -282,12 +283,7 @@ class Order extends Component {
                         Add
                     </Button>
                 </div>
-                <MUIDataTable
-                    title={'Danh sách hoá đơn'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={openConfirmUnMerge}
                     title="Bạn có chắc muốn tách hoá đơn?"

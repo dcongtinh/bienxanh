@@ -117,8 +117,6 @@ class OrderStore {
                 variant: 'success'
             })
             if (callback) callback()
-            // this.orders = []
-            // this.fetchAllOrders({})
         } else {
             this.rootStore.alert.show({
                 message: data.message,

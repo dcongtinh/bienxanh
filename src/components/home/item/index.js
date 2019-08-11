@@ -3,10 +3,10 @@ import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import IconButton from '@material-ui/core/IconButton'
-import AddIcon from '@material-ui/icons/Add'
+import AddBox from '@material-ui/icons/AddBox'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
+import Tooltip from '@material-ui/core/Tooltip'
 import RowItem from './row-item'
 import styles from 'components/home/styles'
 
@@ -98,8 +98,8 @@ class Item extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -118,15 +118,15 @@ class Item extends Component {
             },
             customToolbar: () => {
                 return (
-                    <Button
-                        color="primary"
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                            this.setState({ openAddItem: true })
-                        }}>
-                        <AddIcon className={classes.addIcon} />
-                    </Button>
+                    <Tooltip title="Thêm hoá đơn">
+                        <IconButton
+                            color="primary"
+                            onClick={() => {
+                                this.setState({ openAddItem: true })
+                            }}>
+                            <AddBox />
+                        </IconButton>
+                    </Tooltip>
                 )
             },
             customToolbarSelect: selectedRows => (
@@ -157,12 +157,7 @@ class Item extends Component {
             <>
                 <span className={classes.spacer} />
 
-                <MUIDataTable
-                    title={'Danh sách hàng'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={this.state.openAddItem}
                     title="Nhập hàng:"

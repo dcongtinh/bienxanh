@@ -69,19 +69,6 @@ class AddWarehouse extends React.Component {
     }
     render() {
         let { classes, isRequesting } = this.props
-        let optionsArea = []
-        optionsArea.push({
-            label: 'Miền Bắc',
-            value: 0
-        })
-        optionsArea.push({
-            label: 'Miền Trung',
-            value: 1
-        })
-        optionsArea.push({
-            label: 'Miền Nam',
-            value: 2
-        })
         return (
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
@@ -99,14 +86,11 @@ class AddWarehouse extends React.Component {
                                     buyerLegalName,
                                     buyerTaxCode
                                 } = values
-                                let buyerArea =
-                                    this.state.buyerArea || optionsArea[0].value
                                 this.props.addWarehouse({
                                     warehouse,
                                     warehouseName,
                                     buyerCode,
                                     buyerAddress,
-                                    buyerArea,
                                     buyerLegalName,
                                     buyerTaxCode,
                                     callback: () => resetForm()
@@ -122,7 +106,7 @@ class AddWarehouse extends React.Component {
                             }) => (
                                 <Form>
                                     <Grid item container spacing={2}>
-                                        <Grid item xs={12} sm={4}>
+                                        <Grid item xs={12} sm={6}>
                                             <TextField
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -136,7 +120,7 @@ class AddWarehouse extends React.Component {
                                                 message={errors.warehouse}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} sm={4}>
+                                        <Grid item xs={12} sm={6}>
                                             <TextField
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -148,18 +132,6 @@ class AddWarehouse extends React.Component {
                                                     touched.buyerCode
                                                 }
                                                 message={errors.buyerCode}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <Select
-                                                name="buyerArea"
-                                                value={
-                                                    this.state.buyerArea ||
-                                                    optionsArea[0].value
-                                                }
-                                                label="Khu vực"
-                                                onChange={this.handleChange}
-                                                options={optionsArea}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>

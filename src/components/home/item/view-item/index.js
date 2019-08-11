@@ -25,11 +25,17 @@ const NumberFormatCustom = props => {
     )
 }
 
-const styles = theme => ({})
+const styles = theme => ({
+    supplierName: {
+        maxWidth: 120,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+    }
+})
 
 class ViewItemInfo extends React.Component {
     render() {
-        let { item, wareHouses, suppliers } = this.props
+        let { classes, item, wareHouses, suppliers } = this.props
         let { idItem } = this.props.match.params
         let supplierList = [],
             name = {}
@@ -86,7 +92,7 @@ class ViewItemInfo extends React.Component {
                 ),
                 editComponent: props => (
                     <TextField
-                        style={{ width: 80 }}
+                        style={{ width: 70 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="equalPrice"
@@ -105,10 +111,13 @@ class ViewItemInfo extends React.Component {
                     marginBottom: 4
                 },
                 render: rowData => {
-                    return <div>{name[rowData.supplier]}</div>
+                    return (
+                        <div className={classes.supplierName}>
+                            {name[rowData.supplier]}
+                        </div>
+                    )
                 },
                 editComponent: props => {
-                    console.log(props, '')
                     let data
                     if (props.value) {
                         data = {
@@ -124,7 +133,7 @@ class ViewItemInfo extends React.Component {
                                 props.onChange(data.value)
                             }}
                             options={supplierList}
-                            className={'basic-multi-select'}
+                            className={'basic-single-select'}
                             classNamePrefix={'select'}
                             placeholder="Chọn hàng hoá"
                             styles={{
@@ -184,7 +193,7 @@ class ViewItemInfo extends React.Component {
                 ),
                 editComponent: props => (
                     <TextField
-                        style={{ width: 80 }}
+                        style={{ width: 70 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="equalPrice"
@@ -212,7 +221,7 @@ class ViewItemInfo extends React.Component {
                 ),
                 editComponent: props => (
                     <TextField
-                        style={{ width: 80 }}
+                        style={{ width: 70 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name={idWh}
@@ -234,7 +243,7 @@ class ViewItemInfo extends React.Component {
                 ),
                 editComponent: props => (
                     <TextField
-                        style={{ width: 80 }}
+                        style={{ width: 70 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name={idWh}
@@ -250,6 +259,7 @@ class ViewItemInfo extends React.Component {
                 <PriceTable
                     id="itemPrices"
                     idItem={idItem}
+                    title={item.itemName}
                     data={item.itemPrices || []}
                     columns={columns}
                     updateItem={this.props.updateItem}

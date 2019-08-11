@@ -3,11 +3,10 @@ import MUIDataTable from 'mui-datatables'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
-import AddIcon from '@material-ui/icons/Add'
+import AddBox from '@material-ui/icons/AddBox'
+import Tooltip from '@material-ui/core/Tooltip'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
-// import RowItem from './row-item'
 import styles from 'components/home/styles'
 
 class Supplier extends Component {
@@ -88,8 +87,8 @@ class Supplier extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -108,15 +107,17 @@ class Supplier extends Component {
             },
             customToolbar: () => {
                 return (
-                    <Button
-                        color="primary"
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                            this.props.history.push(`/dashboard/suppliers/add`)
-                        }}>
-                        <AddIcon className={classes.addIcon} />
-                    </Button>
+                    <Tooltip title="Thêm nhà cung cấp">
+                        <IconButton
+                            color="primary"
+                            onClick={() => {
+                                this.props.history.push(
+                                    `/dashboard/suppliers/add`
+                                )
+                            }}>
+                            <AddBox />
+                        </IconButton>
+                    </Tooltip>
                 )
             },
             customToolbarSelect: selectedRows => (
@@ -147,12 +148,7 @@ class Supplier extends Component {
             <>
                 <span className={classes.spacer} />
 
-                <MUIDataTable
-                    title={'Danh sách nhà cung cấp'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={this.state.openConfirm}
                     title="Bạn có chắc muốn xoá nhà cung cấp?"

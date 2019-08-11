@@ -88,8 +88,8 @@ class Users extends Component {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
-                    viewColumns: 'View Columns',
-                    filterTable: 'Filter Table'
+                    viewColumns: 'Xem cột',
+                    filterTable: 'Lọc bảng'
                 },
                 filter: {
                     all: 'All',
@@ -143,12 +143,7 @@ class Users extends Component {
                         Add
                     </Button>
                 </div>
-                <MUIDataTable
-                    title={'Danh sách nhân viên'}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
+                <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={this.state.openConfirm}
                     title="Bạn có chắc muốn xoá tài khoản ?"
