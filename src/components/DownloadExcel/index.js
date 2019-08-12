@@ -9,7 +9,7 @@ const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
 const styles = {
     font: {
         name: 'Times New Roman',
-        sz: '14'
+        sz: '12'
     },
     border: {
         top: { style: 'thin' },
