@@ -5,6 +5,7 @@ class ExportStore {
     @observable isFetchingMe = true
     @observable hasFetched = false
     @observable exports = []
+    @observable exportedListId = []
     @observable exported = null
     @observable isRequesting = false
 
@@ -14,8 +15,13 @@ class ExportStore {
     @action
     async fetchAllExports() {
         this.isRequesting = true
+        this.exports = []
+        this.exportedListId = []
         const { success, data } = await exportAPI.getAllExports()
-        if (success) this.exports = data.exportedList
+        if (success) {
+            this.exports = data.exportedList
+            this.exportedListId = data.exportedListId
+        }
         this.isRequesting = false
     }
     @action
@@ -47,6 +53,27 @@ class ExportStore {
                 variant: 'error'
             })
         }
+        this.isRequesting = false
+    }
+    @action
+    async deleteExports({ exportedList, exportsList, callback }) {
+        this.isRequesting = true
+        const { success, data } = await exportAPI.deleteExports({
+            exportedList,
+            exportsList
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Xoá hoá đơn đã xuất thành công!`,
+                variant: 'success'
+            })
+            if (callback) callback()
+            this.fetchAllExports()
+        } else
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
         this.isRequesting = false
     }
 }

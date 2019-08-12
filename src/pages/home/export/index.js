@@ -10,6 +10,8 @@ import { inject, observer } from 'mobx-react'
 @inject(({ exported }) => ({
     fetchAllExports: () => exported.fetchAllExports(),
     exportList: JSON.parse(JSON.stringify(exported.exports)),
+    exportedListId: JSON.parse(JSON.stringify(exported.exportedListId)),
+    deleteExports: object => exported.deleteExports(object),
     isRequesting: exported.isRequesting
 }))
 @observer
@@ -19,9 +21,10 @@ class ExportPage extends Component {
     }
 
     render() {
-        if (!this.props.exportList) return <CircularProgress />
-        if (!this.props.exportList.length)
-            return <div>Chưa có hoá đơn nào đã xuất</div>
+        let { exportList, exportedListId } = this.props
+        if (!exportList || !exportedListId) return <CircularProgress />
+        if (!exportList.length || !exportedListId.length)
+            return <CircularProgress />
         return <Export {...this.props} />
     }
 }

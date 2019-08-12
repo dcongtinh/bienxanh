@@ -1,6 +1,7 @@
 import React from 'react'
 import Editable from 'components/Editable'
 import moment from 'moment'
+
 class PriceTable extends React.Component {
     state = {
         data: this.props.data
@@ -46,7 +47,7 @@ class PriceTable extends React.Component {
                     break
                 }
             }
-            return price
+            return price || 0
         }
 
         return (

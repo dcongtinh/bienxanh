@@ -30,7 +30,6 @@ class Item extends Component {
     render() {
         let { itemName } = this.state
         let { items, classes } = this.props
-
         const columns = [
             {
                 name: 'Tên hàng',
@@ -78,11 +77,11 @@ class Item extends Component {
         })
         rowsSelected.sort()
         const options = {
+            rowsPerPage: 100,
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,
             rowsSelected,
-            selectableRowsOnClick: true,
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
@@ -145,12 +144,7 @@ class Item extends Component {
                     }}>
                     <RemoveCircleIcon />
                 </IconButton>
-            ),
-            onRowClick: (rowData, rowMeta) => {
-                this.props.history.push(
-                    `/dashboard/items/${items[rowMeta.dataIndex]._id}`
-                )
-            }
+            )
         }
 
         return (

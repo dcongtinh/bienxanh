@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import IconButton from '@material-ui/core/IconButton'
+import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import styles from 'components/home/styles'
 import moment from 'moment'
@@ -19,7 +21,7 @@ class Export extends Component {
         this.setState({ openConfirm: false })
     }
     render() {
-        let { exportList, classes } = this.props
+        let { exportList, exportedListId, classes } = this.props
         const columns = [
             {
                 name: 'Ngày xuất',
@@ -112,7 +114,23 @@ class Export extends Component {
                     deleteAria: 'Delete Selected Rows'
                 }
             },
-            customToolbarSelect: selectedRows => <div />,
+            customToolbarSelect: selectedRows => (
+                <IconButton
+                    onClick={() => {
+                        let rowsSelected = []
+                        selectedRows.data.forEach(row => {
+                            rowsSelected.push(row.dataIndex)
+                        })
+                        rowsSelected.sort()
+                        this.setState({
+                            openConfirm: true,
+                            selectedRows: selectedRows.data,
+                            rowsSelected
+                        })
+                    }}>
+                    <RemoveCircleIcon />
+                </IconButton>
+            ),
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(
                     `/dashboard/exports/${exportList[rowMeta.dataIndex]._id}`
@@ -125,23 +143,27 @@ class Export extends Component {
                 <span className={classes.spacer} />
 
                 <MUIDataTable data={data} columns={columns} options={options} />
-                {/*
+
                 <ConfirmDialog
                     open={this.state.openConfirm}
-                    title="Bạn có chắc muốn xoá hàng?"
+                    title="Bạn có chắc muốn xoá hoá đơn đã xuất?"
                     cancelLabel="Huỷ"
                     okLabel="Xoá"
                     onHide={this.handleClose}
                     onOK={() => {
-                        let itemsListId = []
+                        let exportedList = [],
+                            exportsList = []
                         this.state.rowsSelected.forEach(index => {
-                            itemsListId.push(items[index]._id)
+                            exportsList.push(exportList[index]._id)
+                            exportedList = exportedList.concat(
+                                exportedListId[index].exportedList
+                            )
                         })
-                        this.props.deleteItems({ itemsListId })
+                        this.props.deleteExports({ exportedList, exportsList })
                         this.handleClose()
                         this.setState({ selectedRows: [] })
                     }}
-                /> */}
+                />
             </>
         )
     }

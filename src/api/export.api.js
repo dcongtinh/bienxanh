@@ -9,7 +9,9 @@ const exportAPI = {
     getAllExports: () => axios.get(c('/get-exports')),
     getExport: ({ idExported }) => axios.post(c('/get-export'), { idExported }),
     setExport: ({ idExported, exportedList }) =>
-        axios.put(c('/set-export'), { idExported, exportedList })
+        axios.put(c('/set-export'), { idExported, exportedList }),
+    deleteExports: ({ exportedList, exportsList }) =>
+        axios.post(c('/delete'), { exportedList, exportsList })
 }
 
 export default exportAPI
