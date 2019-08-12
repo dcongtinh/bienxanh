@@ -12,7 +12,6 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Select from 'react-select'
-import moment from 'moment'
 import numeral from 'numeral'
 import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
@@ -198,41 +197,41 @@ class UpdateOrder extends React.Component {
                 )
             }
         ]
-        order.orders.forEach((_order, index) => {
-            delete _order._id
-            let idItem = _order.itemName
-            let idWarehouse = this.state.warehouse || wareHouses[0]._id
-            let item = items.filter(item => {
-                return item._id === idItem
-            })
-            let prices = []
-            item = item[0]
-            item.itemPrices.forEach(itemPrice => {
-                let match = itemPrice[idWarehouse] ? true : false
-                if (match)
-                    prices.push({
-                        dateApply: itemPrice.dateApply,
-                        itemPrice: itemPrice[idWarehouse]
-                    })
-            })
-            prices.sort((a, b) => {
-                return (
-                    new Date(b.dateApply).getTime() -
-                    new Date(a.dateApply).getTime()
-                )
-            })
-            let date = moment(this.state.date).format('YYYY/MM/DD')
-            let price = 0
-            for (let i in prices) {
-                let item = prices[i]
-                let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
-                if (date >= dateApply) {
-                    price = item.itemPrice
-                    break
-                }
-            }
-            _order.itemPrice = price
-        })
+        // order.orders.forEach((_order, index) => {
+        //     delete _order._id
+        //     let idItem = _order.itemName
+        //     let idWarehouse = this.state.warehouse || wareHouses[0]._id
+        //     let item = items.filter(item => {
+        //         return item._id === idItem
+        //     })
+        //     let prices = []
+        //     item = item[0]
+        //     item.itemPrices.forEach(itemPrice => {
+        //         let match = itemPrice[idWarehouse] ? true : false
+        //         if (match)
+        //             prices.push({
+        //                 dateApply: itemPrice.dateApply,
+        //                 itemPrice: itemPrice[idWarehouse]
+        //             })
+        //     })
+        //     prices.sort((a, b) => {
+        //         return (
+        //             new Date(b.dateApply).getTime() -
+        //             new Date(a.dateApply).getTime()
+        //         )
+        //     })
+        //     let date = moment(this.state.date).format('YYYY/MM/DD')
+        //     let price = 0
+        //     for (let i in prices) {
+        //         let item = prices[i]
+        //         let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+        //         if (date >= dateApply) {
+        //             price = item.itemPrice
+        //             break
+        //         }
+        //     }
+        //     _order.itemPrice = price
+        // })
 
         if (!warehouse) warehouse = optionsWarehouse[0]
         else {
@@ -387,6 +386,9 @@ class UpdateOrder extends React.Component {
                 </Container>
                 <OrderTable
                     idOrder={idOrder}
+                    idWarehouse={this.state.warehouse}
+                    date={this.state.date}
+                    items={items}
                     title={`Hoá đơn số ${order.group}`}
                     data={order.orders || []}
                     columns={columns}

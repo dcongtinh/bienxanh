@@ -261,7 +261,7 @@ class Order extends Component {
             <>
                 <span className={classes.spacer} />
                 <div className={classes.row}>
-                    {orders.length && (
+                    {orders.length ? (
                         <DownloadExcel
                             className={classes.exportButton}
                             size="small"
@@ -272,7 +272,7 @@ class Order extends Component {
                                 this.props.exportOrders({ ordersListId })
                             }}
                         />
-                    )}
+                    ) : null}
                     <Button
                         color="primary"
                         size="small"
