@@ -1,6 +1,5 @@
 import React from 'react'
 import Editable from 'components/Editable'
-import moment from 'moment'
 
 class OrdersTable extends React.Component {
     render() {
