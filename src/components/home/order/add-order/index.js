@@ -66,26 +66,7 @@ const styles = theme => ({
 class AddOrder extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            data: [],
-            warehouse: '',
-            itemNote: '',
-            date: new Date()
-        }
-    }
-    handleDateChange = date => {
-        this.setState({ date })
-    }
-    handleChange = data => {
-        this.setState({ data })
-    }
-    handleChangeText = e => {
-        this.setState({ [e.target.name]: e.target.value })
-    }
-    render() {
-        let { warehouse, data, itemNote } = this.state
-
-        let { classes, isRequesting, wareHouses, items, me } = this.props
+        let { wareHouses, items } = props
         let optionsWarehouse = [],
             warehouseName = {}
         wareHouses.forEach(warehouse => {
@@ -107,6 +88,40 @@ class AddOrder extends React.Component {
                 label: item.itemName
             })
         })
+        let data = []
+        for (let i = 0; i < 5; ++i) data.push({ itemName: items[0]._id })
+        this.state = {
+            data,
+            warehouse: optionsWarehouse[0].value,
+            itemNote: '',
+            date: new Date(),
+            optionsWarehouse,
+            warehouseName,
+            optionsItem,
+            itemName
+        }
+    }
+    handleDateChange = date => {
+        this.setState({ date })
+    }
+    handleChange = data => {
+        this.setState({ data })
+    }
+    handleChangeText = e => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+    render() {
+        let {
+            warehouse,
+            data,
+            itemNote,
+            optionsWarehouse,
+            warehouseName,
+            optionsItem,
+            itemName
+        } = this.state
+
+        let { classes, isRequesting, wareHouses, items, me } = this.props
 
         let columns = [
             {
@@ -215,14 +230,15 @@ class AddOrder extends React.Component {
             }
             order.itemPrice = price
         })
-
-        if (!warehouse) warehouse = optionsWarehouse[0]
-        else {
-            warehouse = {
-                value: warehouse,
-                label: warehouseName[warehouse].wh
-            }
+        warehouse = {
+            value: warehouse,
+            label: warehouseName[warehouse].wh
         }
+        let disabled = !data.length
+        data.forEach(item => {
+            disabled |= !item.itemQuantity
+        })
+
         return (
             <div>
                 <Container component="main" maxWidth="sm">
@@ -312,7 +328,7 @@ class AddOrder extends React.Component {
                                     }
                                 })
                             }}
-                            disabled={Boolean(isRequesting || !data.length)}
+                            disabled={Boolean(isRequesting || disabled)}
                             type="submit"
                             variant="contained"
                             color="primary">

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress'
+// import CircularProgress from '@material-ui/core/CircularProgress'
 import createIsAuthenticated from 'hoc/is-authenticated'
 import canReachAccess from 'hoc/can-reach'
 import Export from 'components/home/export'
@@ -22,9 +22,8 @@ class ExportPage extends Component {
 
     render() {
         let { exportList, exportedListId } = this.props
-        if (!exportList || !exportedListId) return <CircularProgress />
         if (!exportList.length || !exportedListId.length)
-            return <CircularProgress />
+            return <div>Chưa có hoá đơn nào đã xuất...</div>
         return <Export {...this.props} />
     }
 }

@@ -229,6 +229,10 @@ class UpdateOrder extends React.Component {
                 label: warehouseName[warehouse]
             }
         }
+        let disabled = !data.length
+        data.forEach(item => {
+            disabled |= !item.itemQuantity
+        })
         return (
             <div>
                 <Container component="main" maxWidth="sm">
@@ -333,7 +337,7 @@ class UpdateOrder extends React.Component {
                                     }
                                 })
                             }}
-                            disabled={Boolean(isRequesting || !data.length)}
+                            disabled={Boolean(isRequesting || disabled)}
                             type="submit"
                             variant="contained"
                             color="primary">
