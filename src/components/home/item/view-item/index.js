@@ -104,55 +104,55 @@ class ViewItemInfo extends React.Component {
             }
         ]
         let columns2 = [
-            {
-                title: 'Nhà cung cấp',
-                field: 'supplier',
-                headerStyle: {
-                    marginBottom: 4
-                },
-                render: rowData => {
-                    return (
-                        <div className={classes.supplierName}>
-                            {name[rowData.supplier]}
-                        </div>
-                    )
-                },
-                editComponent: props => {
-                    let data
-                    if (props.value) {
-                        data = {
-                            value: props.value,
-                            label: name[props.value]
-                        }
-                    }
-                    return (
-                        <Select
-                            name="supplier"
-                            value={data}
-                            onChange={data => {
-                                props.onChange(data.value)
-                            }}
-                            options={supplierList}
-                            className={'basic-single-select'}
-                            classNamePrefix={'select'}
-                            placeholder="Chọn hàng hoá"
-                            styles={{
-                                multiValue: base => ({
-                                    ...base,
-                                    borderRadius: 16
-                                }),
-                                option: base => ({
-                                    ...base,
-                                    maxWidth: '100%',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
-                            }}
-                        />
-                    )
-                }
-            },
+            // {
+            //     title: 'Nhà cung cấp',
+            //     field: 'supplier',
+            //     headerStyle: {
+            //         marginBottom: 4
+            //     },
+            //     render: rowData => {
+            //         return (
+            //             <div className={classes.supplierName}>
+            //                 {name[rowData.supplier]}
+            //             </div>
+            //         )
+            //     },
+            //     editComponent: props => {
+            //         let data
+            //         if (props.value) {
+            //             data = {
+            //                 value: props.value,
+            //                 label: name[props.value]
+            //             }
+            //         }
+            //         return (
+            //             <Select
+            //                 name="supplier"
+            //                 value={data}
+            //                 onChange={data => {
+            //                     props.onChange(data.value)
+            //                 }}
+            //                 options={supplierList}
+            //                 className={'basic-single-select'}
+            //                 classNamePrefix={'select'}
+            //                 placeholder="Chọn hàng hoá"
+            //                 styles={{
+            //                     multiValue: base => ({
+            //                         ...base,
+            //                         borderRadius: 16
+            //                     }),
+            //                     option: base => ({
+            //                         ...base,
+            //                         maxWidth: '100%',
+            //                         overflow: 'hidden',
+            //                         textOverflow: 'ellipsis',
+            //                         whiteSpace: 'nowrap'
+            //                     })
+            //                 }}
+            //             />
+            //         )
+            //     }
+            // },
             {
                 title: 'Ngày mua',
                 field: 'dateApply',

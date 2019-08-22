@@ -88,8 +88,9 @@ class AddOrder extends React.Component {
                 label: item.itemName
             })
         })
+
         let data = []
-        for (let i = 0; i < 5; ++i) data.push({ itemName: items[0]._id })
+        for (let i = 0; i < 5; ++i) data.push({})
         this.state = {
             data,
             warehouse: optionsWarehouse[0].value,
@@ -120,9 +121,29 @@ class AddOrder extends React.Component {
             optionsItem,
             itemName
         } = this.state
-
-        let { classes, isRequesting, wareHouses, items, me } = this.props
-
+        console.log(data)
+        let {
+            classes,
+            isRequesting,
+            wareHouses,
+            items,
+            suppliers,
+            me
+        } = this.props
+        let supplierList = [],
+            name = {}
+        suppliers.forEach(supplier => {
+            // for (let i in supplier.supplierItems) {
+            // if (supplier.supplierItems[i].value === idItem) {
+            supplierList.push({
+                value: supplier._id,
+                label: supplier.supplierName
+            })
+            name[supplier._id] = supplier.supplierName
+            //     break
+            // }
+            // }
+        })
         let columns = [
             {
                 title: 'Hàng hoá',
@@ -149,6 +170,55 @@ class AddOrder extends React.Component {
                             }}
                             options={optionsItem}
                             className={'basic-multi-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn hàng hoá"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
+            },
+            {
+                title: 'Nhà cung cấp',
+                field: 'itemSupplier',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div className={classes.supplierName}>
+                            {name[rowData.itemSupplier]}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: name[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="itemSupplier"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={supplierList}
+                            className={'basic-single-select'}
                             classNamePrefix={'select'}
                             placeholder="Chọn hàng hoá"
                             styles={{
@@ -197,47 +267,49 @@ class AddOrder extends React.Component {
         ]
         data.forEach((order, index) => {
             delete order.tableData
-            let idItem = order.itemName
-            let idWarehouse = this.state.warehouse || wareHouses[0]._id
-            let item = items.filter(item => {
-                return item._id === idItem
-            })
-            let prices = []
-            item = item[0]
-            item.itemPrices.forEach(itemPrice => {
-                let match = itemPrice[idWarehouse] ? true : false
-                if (match)
-                    prices.push({
-                        dateApply: itemPrice.dateApply,
-                        itemPrice: itemPrice[idWarehouse]
-                    })
-            })
-            prices.sort((a, b) => {
-                return (
-                    new Date(b.dateApply).getTime() -
-                    new Date(a.dateApply).getTime()
-                )
-            })
-            let date = moment(this.state.date).format('YYYY/MM/DD')
-            let price = 0
-            for (let i in prices) {
-                let item = prices[i]
-                let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
-                if (date >= dateApply) {
-                    price = item.itemPrice
-                    break
+            if (order.itemName) {
+                let idItem = order.itemName
+                let idWarehouse = this.state.warehouse || wareHouses[0]._id
+                let item = items.filter(item => {
+                    return item._id === idItem
+                })
+                let prices = []
+                item = item[0]
+                item.itemPrices.forEach(itemPrice => {
+                    let match = itemPrice[idWarehouse] ? true : false
+                    if (match)
+                        prices.push({
+                            dateApply: itemPrice.dateApply,
+                            itemPrice: itemPrice[idWarehouse]
+                        })
+                })
+                prices.sort((a, b) => {
+                    return (
+                        new Date(b.dateApply).getTime() -
+                        new Date(a.dateApply).getTime()
+                    )
+                })
+                let date = moment(this.state.date).format('YYYY/MM/DD')
+                let price = 0
+                for (let i in prices) {
+                    let item = prices[i]
+                    let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+                    if (date >= dateApply) {
+                        price = item.itemPrice
+                        break
+                    }
                 }
+                order.itemPrice = price
             }
-            order.itemPrice = price
         })
         warehouse = {
             value: warehouse,
             label: warehouseName[warehouse].wh
         }
         let disabled = !data.length
-        data.forEach(item => {
-            disabled |= !item.itemQuantity
-        })
+        // data.forEach(item => {
+        //     disabled |= !item.itemQuantity
+        // })
 
         return (
             <div>
@@ -312,12 +384,15 @@ class AddOrder extends React.Component {
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
                                 let { date } = this.state
+                                let _data = data.filter(item => {
+                                    return item.itemName && item.itemQuantity
+                                })
                                 this.props.addOrder({
                                     warehouse,
                                     owner: me._id,
                                     date,
                                     itemNote,
-                                    orders: data,
+                                    orders: _data,
                                     callback: () => {
                                         this.setState({
                                             data: [],

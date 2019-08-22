@@ -91,7 +91,16 @@ class UpdateOrder extends React.Component {
     }
     render() {
         let { buyerCode, warehouse, buyerName, itemNote, data } = this.state
-        let { classes, isRequesting, wareHouses, items, me, order } = this.props
+        console.log(data)
+        let {
+            classes,
+            isRequesting,
+            wareHouses,
+            items,
+            me,
+            order,
+            suppliers
+        } = this.props
         let idOrder = this.props.match.params.idOrder
         let optionsWarehouse = [],
             warehouseName = {}
@@ -112,6 +121,20 @@ class UpdateOrder extends React.Component {
                 value: item._id,
                 label: item.itemName
             })
+        })
+        let supplierList = [],
+            name = {}
+        suppliers.forEach(supplier => {
+            // for (let i in supplier.supplierItems) {
+            // if (supplier.supplierItems[i].value === idItem) {
+            supplierList.push({
+                value: supplier._id,
+                label: supplier.supplierName
+            })
+            name[supplier._id] = supplier.supplierName
+            //     break
+            // }
+            // }
         })
 
         let columns = [
@@ -160,6 +183,55 @@ class UpdateOrder extends React.Component {
                 }
             },
             {
+                title: 'Nhà cung cấp',
+                field: 'itemSupplier',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div className={classes.supplierName}>
+                            {name[rowData.itemSupplier]}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: name[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="itemSupplier"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={supplierList}
+                            className={'basic-single-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn hàng hoá"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
+            },
+            {
                 title: 'Số lượng',
                 field: 'itemQuantity',
                 render: rowData => {
@@ -188,38 +260,40 @@ class UpdateOrder extends React.Component {
         ]
         data.forEach((_order, index) => {
             delete _order._id
-            let idItem = _order.itemName
-            let idWarehouse = this.state.warehouse || wareHouses[0]._id
-            let item = items.filter(item => {
-                return item._id === idItem
-            })
-            let prices = []
-            item = item[0]
-            item.itemPrices.forEach(itemPrice => {
-                let match = itemPrice[idWarehouse] ? true : false
-                if (match)
-                    prices.push({
-                        dateApply: itemPrice.dateApply,
-                        itemPrice: itemPrice[idWarehouse]
-                    })
-            })
-            prices.sort((a, b) => {
-                return (
-                    new Date(b.dateApply).getTime() -
-                    new Date(a.dateApply).getTime()
-                )
-            })
-            let date = moment(this.state.date).format('YYYY/MM/DD')
-            let price = 0
-            for (let i in prices) {
-                let item = prices[i]
-                let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
-                if (date >= dateApply) {
-                    price = item.itemPrice
-                    break
+            if (order.itemName) {
+                let idItem = _order.itemName
+                let idWarehouse = this.state.warehouse || wareHouses[0]._id
+                let item = items.filter(item => {
+                    return item._id === idItem
+                })
+                let prices = []
+                item = item[0]
+                item.itemPrices.forEach(itemPrice => {
+                    let match = itemPrice[idWarehouse] ? true : false
+                    if (match)
+                        prices.push({
+                            dateApply: itemPrice.dateApply,
+                            itemPrice: itemPrice[idWarehouse]
+                        })
+                })
+                prices.sort((a, b) => {
+                    return (
+                        new Date(b.dateApply).getTime() -
+                        new Date(a.dateApply).getTime()
+                    )
+                })
+                let date = moment(this.state.date).format('YYYY/MM/DD')
+                let price = 0
+                for (let i in prices) {
+                    let item = prices[i]
+                    let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+                    if (date >= dateApply) {
+                        price = item.itemPrice
+                        break
+                    }
                 }
+                _order.itemPrice = price
             }
-            _order.itemPrice = price
         })
 
         if (!warehouse) warehouse = optionsWarehouse[0]
