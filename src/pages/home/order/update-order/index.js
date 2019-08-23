@@ -8,7 +8,9 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @canReachAccess({ access: 'order' })
-@inject(({ wareHouse, item, order, supplier }) => ({
+@inject(({ auth, wareHouse, item, order, supplier }) => ({
+    fetchAllUser: () => auth.fetchAllUser(),
+    users: JSON.parse(JSON.stringify(auth.users)),
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     fetchAllItems: () => item.fetchAllItems(),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
@@ -29,11 +31,18 @@ class UpdateOrderPage extends Component {
         this.props.fetchAllItems()
         this.props.fetchOrder({ idOrder: this.props.match.params.idOrder })
         this.props.fetchAllSuppliers()
+        this.props.fetchAllUser()
     }
 
     render() {
-        let { wareHouses, items, order, suppliers } = this.props
-        if (!wareHouses.length || !items.length || !order || !suppliers.length)
+        let { wareHouses, items, order, suppliers, users } = this.props
+        if (
+            !wareHouses.length ||
+            !items.length ||
+            !order ||
+            !suppliers.length ||
+            !users.length
+        )
             return <CircularProgress />
         return <UpdateOrder {...this.props} />
     }

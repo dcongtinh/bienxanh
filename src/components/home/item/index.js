@@ -64,6 +64,7 @@ class Item extends Component {
             }
         ]
         let data = []
+
         items.forEach(item => {
             let row = []
             row.push(item.itemName)

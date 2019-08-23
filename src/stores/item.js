@@ -36,7 +36,16 @@ class WarehouseStore {
     async fetchAllItems() {
         this.isRequesting = true
         const { success, data } = await itemAPI.getAllItems()
-        if (success) this.items = data.items
+
+        if (success) {
+            let items = data.items
+            items.sort((a, b) => {
+                if (a.itemName > b.itemName) return 1
+                if (a.itemName < b.itemName) return -1
+                return 0
+            })
+            this.items = items
+        }
         this.isRequesting = false
     }
     @action

@@ -9,6 +9,7 @@ const orderAPI = {
     addOrder: ({
         group,
         warehouse,
+        buyerName,
         owner,
         date,
         itemNote,
@@ -18,6 +19,7 @@ const orderAPI = {
         axios.post(c('/add'), {
             group,
             warehouse,
+            buyerName,
             owner,
             date,
             itemNote,

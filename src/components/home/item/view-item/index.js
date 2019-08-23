@@ -1,12 +1,11 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import moment from 'moment'
 import numeral from 'numeral'
 import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import PriceTable from './PriceTable'
-import Select from 'react-select'
+
 const NumberFormatCustom = props => {
     const { inputRef, onChange, ...other } = props
     return (
@@ -25,17 +24,9 @@ const NumberFormatCustom = props => {
     )
 }
 
-const styles = theme => ({
-    supplierName: {
-        maxWidth: 120,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis'
-    }
-})
-
 class ViewItemInfo extends React.Component {
     render() {
-        let { classes, item, wareHouses, suppliers } = this.props
+        let { item, wareHouses, suppliers } = this.props
         let { idItem } = this.props.match.params
         let supplierList = [],
             name = {}
@@ -277,4 +268,4 @@ class ViewItemInfo extends React.Component {
     }
 }
 
-export default withStyles(styles)(ViewItemInfo)
+export default ViewItemInfo

@@ -9,6 +9,8 @@ import { inject, observer } from 'mobx-react'
 @canReachAccess({ access: 'order' })
 @inject(({ auth, wareHouse, item, order, supplier }) => ({
     fetchMe: () => auth.fetchMe(),
+    fetchAllUser: () => auth.fetchAllUser(),
+    users: JSON.parse(JSON.stringify(auth.users)),
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     fetchAllItems: () => item.fetchAllItems(),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
@@ -27,11 +29,18 @@ class AddOrderPage extends Component {
         this.props.fetchAllWarehouses()
         this.props.fetchAllItems()
         this.props.fetchAllSuppliers()
+        this.props.fetchAllUser()
     }
 
     render() {
-        let { wareHouses, items, suppliers, me } = this.props
-        if (!wareHouses.length || !items.length || !suppliers.length || !me)
+        let { wareHouses, items, suppliers, users, me } = this.props
+        if (
+            !wareHouses.length ||
+            !items.length ||
+            !suppliers.length ||
+            !users.length ||
+            !me
+        )
             return <CircularProgress />
         return <AddOrder {...this.props} />
     }

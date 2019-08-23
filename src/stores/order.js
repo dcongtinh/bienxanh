@@ -15,6 +15,7 @@ class OrderStore {
     async addOrder({
         group,
         warehouse,
+        buyerName,
         owner,
         date,
         itemNote,
@@ -26,6 +27,7 @@ class OrderStore {
         const { success, data } = await orderAPI.addOrder({
             group,
             warehouse,
+            buyerName,
             owner,
             date,
             itemNote,
