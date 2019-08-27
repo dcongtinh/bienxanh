@@ -1,5 +1,5 @@
 import React from 'react'
-import Editable from 'components/Editable'
+import Editable2 from 'components/Editable/Editable2'
 
 class PriceTable extends React.Component {
     state = {
@@ -15,7 +15,7 @@ class PriceTable extends React.Component {
             )
         })
         return (
-            <Editable
+            <Editable2
                 title={title}
                 columns={columns}
                 data={data}

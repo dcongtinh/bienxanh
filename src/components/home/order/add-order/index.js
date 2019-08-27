@@ -531,7 +531,7 @@ class AddOrder extends React.Component {
             value: warehouse,
             label: warehouseName[warehouse].wh
         }
-        let disabled = !data.length
+        // let disabled = !data.length
         // data.forEach(item => {
         //     disabled |= !item.itemQuantity
         // })

@@ -53,9 +53,7 @@ class Item extends Component {
                         <IconButton
                             onClick={() => {
                                 this.props.history.push(
-                                    `/dashboard/items/view/${
-                                        items[tableMeta.rowIndex]._id
-                                    }`
+                                    `/dashboard/items/view/${items[tableMeta.rowIndex]._id}`
                                 )
                             }}>
                             <VisibilityIcon />
@@ -119,7 +117,7 @@ class Item extends Component {
             },
             customToolbar: () => {
                 return (
-                    <Tooltip title="Thêm hoá đơn">
+                    <Tooltip title="Thêm hàng hoá">
                         <IconButton
                             color="primary"
                             onClick={() => {

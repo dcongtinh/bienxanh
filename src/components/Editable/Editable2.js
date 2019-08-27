@@ -57,26 +57,22 @@ class Editable extends React.Component {
                     onRowAdd: newData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                data.push(newData)
-                                this.props.handleChange(data)
+                                this.props.onRowAdd(newData)
                                 resolve()
                             }, true)
                         }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                const index = data.indexOf(oldData)
-                                data[index] = newData
-                                this.props.handleChange(data)
+                                this.props.onRowUpdate(newData, oldData)
+
                                 resolve()
                             }, true)
                         }),
                     onRowDelete: oldData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                const index = data.indexOf(oldData)
-                                data.splice(index, 1)
-                                this.props.handleChange(data)
+                                this.props.onRowDelete(oldData)
                                 resolve()
                             }, true)
                         })

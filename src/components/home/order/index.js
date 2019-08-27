@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
-import Editable from 'components/Editable'
+// import Editable from 'components/Editable'
 import MergeTypeIcon from '@material-ui/icons/MergeType'
 import UndoIcon from '@material-ui/icons/Undo'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'

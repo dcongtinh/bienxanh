@@ -253,6 +253,7 @@ class ViewItemInfo extends React.Component {
                     title={item.itemName}
                     data={item.itemPrices || []}
                     columns={columns}
+                    warehouseList={warehouseList}
                     updateItem={this.props.updateItem}
                 />
 
@@ -261,6 +262,7 @@ class ViewItemInfo extends React.Component {
                     idItem={idItem}
                     data={item.itemTradePrices || []}
                     columns={columns2}
+                    warehouseList={warehouseList}
                     updateItem={this.props.updateItem}
                 />
             </div>
