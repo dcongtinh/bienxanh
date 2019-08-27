@@ -34,6 +34,7 @@ class Supplier extends Component {
             {
                 name: 'Chỉnh sửa',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <IconButton
                             onClick={() => {

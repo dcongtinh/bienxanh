@@ -57,21 +57,26 @@ class Editable extends React.Component {
                     onRowAdd: newData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                this.props.onRowAdd(newData)
+                                data.push(newData)
+                                this.props.handleChange(data)
                                 resolve()
                             }, true)
                         }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                this.props.onRowUpdate(newData, oldData)
+                                const index = data.indexOf(oldData)
+                                data[index] = newData
+                                this.props.handleChange(data)
                                 resolve()
                             }, true)
                         }),
                     onRowDelete: oldData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                this.props.onRowDelete(oldData)
+                                const index = data.indexOf(oldData)
+                                data.splice(index, 1)
+                                this.props.handleChange(data)
                                 resolve()
                             }, true)
                         })
@@ -105,7 +110,7 @@ class Editable extends React.Component {
                         }
                     }
                 }}
-                style={style}
+                style={{ marginTop: 16 }}
             />
         )
     }

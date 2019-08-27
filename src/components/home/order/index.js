@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
+import Editable from 'components/Editable'
 import MergeTypeIcon from '@material-ui/icons/MergeType'
 import UndoIcon from '@material-ui/icons/Undo'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
@@ -50,12 +51,42 @@ class Order extends Component {
             itemName[item._id] = item.itemName
         })
         let ordersListId = []
+        // const columns = [
+        //     {
+        //         title: 'Nhóm',
+        //         field: 'group',
+        //         headerStyle: {
+        //             marginBottom: 4
+        //         },
+        //         render: rowData => {
+        //             // console.log(rowData)
+        //             // return <div>{rowData.group}</div>
+        //             return (
+        //                 <RowItem
+        //                     order={orders[tableMeta.rowIndex]}
+        //                     value={value}
+        //                     tableMeta={tableMeta}
+        //                     updateValue={updateValue}
+        //                     updateOrder={this.props.updateOrder}
+        //                     callback={this.props.fetchAllOrders}
+        //                     idOrder={orders[tableMeta.rowIndex]._id}
+        //                 />
+        //             )
+        //         }
+        //     }
+        // ]
         const columns = [
-            'Nhóm',
+            {
+                name: 'Nhóm',
+                options: {
+                    filter: false
+                }
+            },
             'Mã',
             {
                 name: 'Họ tên',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <RowItem
                             order={orders[tableMeta.rowIndex]}
@@ -73,6 +104,7 @@ class Order extends Component {
             {
                 name: 'Đơn hàng',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <div>
@@ -93,6 +125,7 @@ class Order extends Component {
             {
                 name: 'Số lượng',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <div>
@@ -113,6 +146,7 @@ class Order extends Component {
             {
                 name: 'Chỉnh sửa',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <RowEdit
                             style={{ marginLeft: 16 }}
@@ -125,6 +159,7 @@ class Order extends Component {
                 }
             }
         ]
+
         let data = []
         orders.forEach(order => {
             ordersListId.push(order._id)
@@ -133,9 +168,7 @@ class Order extends Component {
             row.push(order.warehouse.buyerCode)
             row.push(order.buyerName)
             row.push(
-                `${order.warehouse.warehouseName} (${
-                    order.warehouse.warehouse
-                })`
+                `${order.warehouse.warehouseName} (${order.warehouse.warehouse})`
             )
             row.push('')
             row.push('')
@@ -144,11 +177,36 @@ class Order extends Component {
             data.push(row)
         })
 
+        // orders.forEach(order => {
+        //     ordersListId.push(order._id)
+        //     let row = {}
+        //     row.group = `${order.group} ${order.mergeList.length ? '*' : ''}`
+        // let row = []
+        // row.push({
+        //     group: `${order.group} ${order.mergeList.length ? '*' : ''}`
+        // })
+        // row.push({ buyerCode: order.warehouse.buyerCode })
+        // row.push({ buyerName: order.buyerName })
+        // row.push({
+        //     warehouse: `${order.warehouse.warehouseName} (${
+        //         order.warehouse.warehouse
+        //     })`
+        // })
+        // row.push({ orders: 0 })
+        // row.push({ itemQuantity: 0 })
+        // row.push({ createdAt: moment(order.date).format('DD/MM/YYYY') })
+        // row.push({
+        //     updatedAy: moment(order.updatedAt).format('DD/MM/YYYY')
+        // })
+        //     data.push(row)
+        // })
+
         let { selectedRows } = this.state
         let rowsSelected = []
         selectedRows.forEach(row => {
             rowsSelected.push(row.dataIndex)
         })
+        // console.log(data)
         rowsSelected.sort()
         const options = {
             rowsPerPage: 100,
@@ -284,6 +342,7 @@ class Order extends Component {
                         Add
                     </Button>
                 </div>
+                {/* <Editable data={data} columns={columns} /> */}
                 <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={openConfirmUnMerge}

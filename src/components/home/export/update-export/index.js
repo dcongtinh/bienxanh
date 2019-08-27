@@ -90,6 +90,7 @@ class UpdateExport extends Component {
             {
                 name: 'Chỉnh sửa',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <RowEdit
                             noedit

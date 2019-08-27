@@ -13,7 +13,7 @@ import Select from 'react-select'
 import numeral from 'numeral'
 import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
-import OrdersTable from './OrdersTable'
+import Editable from 'components/Editable'
 import moment from 'moment'
 const NumberFormatCustom = props => {
     const { inputRef, onChange, ...other } = props
@@ -612,7 +612,7 @@ class AddOrder extends React.Component {
                         </div>
                     </div>
                 </Container>
-                <OrdersTable
+                <Editable
                     data={data}
                     columns={columns}
                     handleChange={this.handleChange}
@@ -628,9 +628,7 @@ class AddOrder extends React.Component {
                                 let _data = data.filter(item => {
                                     return item.itemName && item.itemQuantity
                                 })
-                                let buyerName = `26296/WH${buyerCode}/${
-                                    this.state.buyerName
-                                }`
+                                let buyerName = `26296/WH${buyerCode}/${this.state.buyerName}`
                                 this.props.addOrder({
                                     warehouse,
                                     buyerName,
@@ -648,7 +646,7 @@ class AddOrder extends React.Component {
                                     }
                                 })
                             }}
-                            disabled={Boolean(isRequesting || disabled)}
+                            disabled={Boolean(isRequesting)}
                             type="submit"
                             variant="contained"
                             color="primary">

@@ -13,7 +13,7 @@ import Select from 'react-select'
 import numeral from 'numeral'
 import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
-import OrdersTable from 'components/home/order/add-order/OrdersTable'
+import Editable from 'components/Editable'
 import moment from 'moment'
 
 const NumberFormatCustom = props => {
@@ -99,6 +99,7 @@ class UpdateOrder extends React.Component {
     }
     render() {
         let { buyerCode, warehouse, buyerName, itemNote, data } = this.state
+        console.log(data)
         let {
             classes,
             isRequesting,
@@ -600,7 +601,7 @@ class UpdateOrder extends React.Component {
                         </div>
                     </div>
                 </Container>
-                <OrdersTable
+                <Editable
                     title={`Hoá đơn số ${order.group}`}
                     data={data}
                     columns={columns}

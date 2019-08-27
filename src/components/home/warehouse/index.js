@@ -32,6 +32,7 @@ class Warehouse extends Component {
             {
                 name: 'Chỉnh sửa',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <div className={classes.editOption}>

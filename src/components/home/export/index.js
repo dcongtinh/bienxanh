@@ -34,6 +34,7 @@ class Export extends Component {
             {
                 name: 'Thanh toán',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let paid = 0
                         value.forEach(order => {
@@ -46,6 +47,7 @@ class Export extends Component {
             {
                 name: 'Xem',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <IconButton
                             onClick={() => {

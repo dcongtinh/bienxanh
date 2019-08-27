@@ -48,6 +48,7 @@ class Item extends Component {
             {
                 name: 'Xem',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <IconButton
                             onClick={() => {
