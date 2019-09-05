@@ -86,9 +86,9 @@ export default class DownloadExcel extends Component {
             'amountBeforeTax', /// 26
             'itemTradePrice',
             'totalPrice',
-            'taxPercentag', /// 27
-            'taxAmount', /// 28
-            'discount' /// 29
+            'beforeTax',
+            'discount1',
+            'discount2'
         ]
         let data = [],
             itemNo = 0
@@ -112,17 +112,31 @@ export default class DownloadExcel extends Component {
             })
         })
         data.push(header)
+        let discount1 = 0.0353,
+            discount2 = 0.045
         orders.forEach((order, index1) => {
             order.orders.forEach((item, index2) => {
                 let itemQuantity = item.itemQuantity || 0
+                let {
+                    itemFeeShip,
+                    itemFeeCentral,
+                    itemFeeNorth,
+                    itemFeeSouth
+                } = item
+                let itemFee = itemFeeCentral + itemFeeNorth + itemFeeSouth
                 // let itemPrice = item.itemPrice || 0
-
                 let itemPrice = this.getPrice(order, item, 'itemPrices')
                 let itemTradePrice = this.getPrice(
                     order,
                     item,
                     'itemTradePrices'
                 )
+                let beforeTax =
+                    itemQuantity *
+                        itemTradePrice *
+                        (1 - discount1 - discount2) -
+                    (itemQuantity * itemPrice + itemFeeShip) -
+                    itemFee
 
                 ///1. itemNo
                 let row = []
@@ -202,28 +216,31 @@ export default class DownloadExcel extends Component {
                         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
-                ///27. taxPercentag
+                ///26. totalPrice
                 row.push({
-                    value: -2,
+                    value: beforeTax,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
-                ///28. taxAmount
+                ///26. discount1
                 row.push({
-                    value: '',
+                    value: itemQuantity * itemTradePrice * discount1,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
-                ///29. discount
+                ///26. discount2
                 row.push({
-                    value: '',
+                    value: itemQuantity * itemTradePrice * discount2,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
                 data.push(row)
@@ -241,9 +258,9 @@ export default class DownloadExcel extends Component {
                     'Thành tiền', /// 26
                     'Giá bán', /// 25
                     'Doanh số', /// 25
-                    'Thuế suất %', /// 27
-                    'Tiền thuế', /// 28
-                    'Chiết khấu %' /// 29
+                    'Lãi trước thuế',
+                    'Chiết khấu 3.53%',
+                    'Chiết khấu 4.5%'
                 ],
                 data
             }
