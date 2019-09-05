@@ -325,6 +325,7 @@ class Order extends Component {
                             size="small"
                             variant="outlined"
                             orders={orders}
+                            items={items}
                             name={itemName}
                             onClick={() => {
                                 this.props.exportOrders({ ordersListId })

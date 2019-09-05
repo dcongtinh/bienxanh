@@ -9,7 +9,7 @@ import styles from './styles'
 import RowEdit from 'components/home/order/row-edit'
 import { observer } from 'mobx-react'
 import ConfirmDialog from 'components/ConfirmDialog'
-
+import Export from 'components/DownloadExcel/Export'
 @observer
 class UpdateExport extends Component {
     constructor(props) {
@@ -112,9 +112,7 @@ class UpdateExport extends Component {
             row.push(whName[order.warehouse].buyerCode)
             row.push(order.buyerName)
             row.push(
-                `${whName[order.warehouse].warehouseName} (${
-                    whName[order.warehouse].warehouse
-                })`
+                `${whName[order.warehouse].warehouseName} (${whName[order.warehouse].warehouse})`
             )
             row.push('')
             row.push('')
@@ -178,10 +176,18 @@ class UpdateExport extends Component {
                 )
             }
         }
-
         return (
             <>
                 <span className={classes.spacer} />
+                <div className={classes.row}>
+                    <Export
+                        size="small"
+                        variant="outlined"
+                        orders={orders}
+                        items={items}
+                        name={itemName}
+                    />
+                </div>
                 <MUIDataTable data={data} columns={columns} options={options} />
                 <ConfirmDialog
                     open={openConfirm}

@@ -37,6 +37,43 @@ const styles = {
 }
 
 export default class DownloadExcel extends Component {
+    getPrice(order, item, name) {
+        let idItem = item.itemName
+        let idWarehouse = order.warehouse._id
+
+        let { items } = this.props
+        let _item = items.filter(item => {
+            return item._id === idItem
+        })
+        _item = _item[0]
+
+        let prices = []
+        _item[name].forEach(itemPrice => {
+            let match = itemPrice[idWarehouse] ? true : false
+            if (match)
+                prices.push({
+                    dateApply: itemPrice.dateApply,
+                    itemPrice: itemPrice[idWarehouse]
+                })
+        })
+        prices.sort((a, b) => {
+            return (
+                new Date(b.dateApply).getTime() -
+                new Date(a.dateApply).getTime()
+            )
+        })
+        let date = moment(order.date).format('YYYY/MM/DD')
+        let price = 0
+        for (let i in prices) {
+            let item = prices[i]
+            let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+            if (date >= dateApply) {
+                price = item.itemPrice
+                break
+            }
+        }
+        return price
+    }
     render() {
         let { orders, name } = this.props
         let headerProps = [
@@ -95,8 +132,8 @@ export default class DownloadExcel extends Component {
         orders.forEach((order, index1) => {
             order.orders.forEach((item, index2) => {
                 let itemQuantity = item.itemQuantity || 0
-                let itemPrice = item.itemPrice || 0
-
+                // let itemPrice = item.itemPrice || 0
+                let itemPrice = this.getPrice(order, item, 'itemPrices')
                 ///1. itemNo
                 let row = []
                 row.push({

@@ -498,7 +498,8 @@ class AddOrder extends React.Component {
                 let item = items.filter(item => {
                     return item._id === idItem
                 })
-                let prices = []
+                let prices = [],
+                    tradePrices = []
                 item = item[0]
                 item.itemPrices.forEach(itemPrice => {
                     let match = itemPrice[idWarehouse] ? true : false
@@ -508,7 +509,21 @@ class AddOrder extends React.Component {
                             itemPrice: itemPrice[idWarehouse]
                         })
                 })
+                item.itemTradePrices.forEach(itemTradePrice => {
+                    let match = itemTradePrice[idWarehouse] ? true : false
+                    if (match)
+                        tradePrices.push({
+                            dateApply: itemTradePrice.dateApply,
+                            itemTradePrice: itemTradePrice[idWarehouse]
+                        })
+                })
                 prices.sort((a, b) => {
+                    return (
+                        new Date(b.dateApply).getTime() -
+                        new Date(a.dateApply).getTime()
+                    )
+                })
+                tradePrices.sort((a, b) => {
                     return (
                         new Date(b.dateApply).getTime() -
                         new Date(a.dateApply).getTime()
@@ -524,7 +539,18 @@ class AddOrder extends React.Component {
                         break
                     }
                 }
+
+                let tradePrice = 0
+                for (let i in tradePrices) {
+                    let item = tradePrices[i]
+                    let dateApply = moment(item.dateApply).format('YYYY/MM/DD')
+                    if (date >= dateApply) {
+                        tradePrice = item.itemTradePrice
+                        break
+                    }
+                }
                 order.itemPrice = price
+                order.itemTradePrice = tradePrice
             }
         })
         warehouse = {
