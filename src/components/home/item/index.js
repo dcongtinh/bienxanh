@@ -54,19 +54,17 @@ class Item extends Component {
                 name: 'Tên hàng',
                 options: {
                     customBodyRender: (value, tableMeta, updateValue) => {
-                        // console.log(tableMeta)
                         let idx =
                             typeof tableMeta.rowData !== 'string'
                                 ? tableMeta.rowData[4]
                                 : 0
-                        // return <div>{value}</div>
                         return (
                             <RowItem
-                                id={this.state.action}
                                 value={value}
                                 tableMeta={tableMeta}
                                 updateValue={updateValue}
                                 updateItem={this.props.updateItem}
+                                item={items[idx]}
                                 idItem={items[idx] ? items[idx]._id : 0}
                             />
                         )

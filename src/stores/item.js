@@ -68,11 +68,12 @@ class WarehouseStore {
         })
 
         if (success) {
+            if (callback) return callback()
+
             this.rootStore.alert.show({
                 message: `Cập nhật hàng thành công!`,
                 variant: 'success'
             })
-            if (callback) callback()
             // this.fetchItem({ idItem })
         } else {
             this.rootStore.alert.show({

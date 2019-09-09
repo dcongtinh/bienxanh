@@ -46,16 +46,21 @@ class RowItem extends Component {
 
     handleClose = () => {
         let { value } = this.props
-        this.setState({ readOnly: true, value })
+        this.setState({ readOnly: true, value: this.props.item.itemName })
+        this.props.updateValue(this.props.item.itemName)
     }
 
     handleSave = async () => {
         const { idItem } = this.props
+
         await this.props.updateItem({
             idItem,
-            data: { itemName: this.state.value }
+            data: { itemName: this.state.value },
+            callback: () => {
+                this.props.updateValue(this.state.value)
+                this.setState({ readOnly: true })
+            }
         })
-        this.setState({ readOnly: true })
     }
 
     handleKeyPress = e => {
@@ -78,13 +83,22 @@ class RowItem extends Component {
     }
     componentDidMount = () => {
         this.setState({
-            value: this.props.value
+            value: this.props.value,
+            initValue: this.props.value
         })
         window.addEventListener('keydown', e => {
             if (e.keyCode === 27) this.handleClose()
         })
     }
 
+    shouldComponentUpdate(nextProps) {
+        if (this.state.value !== nextProps.value) {
+            this.setState({
+                value: nextProps.value
+            })
+        }
+        return true
+    }
     render() {
         let { classes } = this.props
         let { readOnly, value } = this.state
