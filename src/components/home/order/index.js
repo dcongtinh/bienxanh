@@ -92,8 +92,13 @@ class Order extends Component {
                             typeof tableMeta.rowData !== 'string'
                                 ? tableMeta.rowData[8]
                                 : 0
+                        let mark = {}
+                        orders.forEach(order => {
+                            if (order.buyerName) mark[order.buyerName] = true
+                        })
                         return (
                             <RowItem
+                                mark={mark}
                                 order={orders[idx]}
                                 value={value}
                                 tableMeta={tableMeta}

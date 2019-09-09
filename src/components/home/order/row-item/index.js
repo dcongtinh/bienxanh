@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import CloseIcon from '@material-ui/icons/Close'
 import CheckIcon from '@material-ui/icons/Check'
 import TextField from '@material-ui/core/TextField'
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
 const styles = theme => ({
     closeIcon: {
         height: 20,
@@ -50,7 +52,8 @@ class RowItem extends Component {
             readOnly: true,
             prefix: '',
             code: '',
-            value: ''
+            value: '',
+            error: false
         }
     }
     getPrefix = value => {
@@ -93,14 +96,14 @@ class RowItem extends Component {
     }
 
     handleKeyPress = e => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !this.state.error) {
             this.handleSave()
         }
     }
 
     handleChangeValue = event => {
         const value = event.target.value
-        const { updateValue } = this.props
+        const { updateValue, mark } = this.props
 
         this.setState(
             {
@@ -109,6 +112,8 @@ class RowItem extends Component {
             () => {
                 const value = this.getValue()
                 updateValue(value)
+                if (mark[value]) this.setState({ error: true })
+                else this.setState({ error: false })
             }
         )
     }
@@ -137,28 +142,41 @@ class RowItem extends Component {
     }
     render() {
         let { classes } = this.props
-        const { readOnly } = this.state
+        const { readOnly, error } = this.state
         const prefix = this.getPrefix()
         const code = this.getCode()
         if (!readOnly) {
             return (
                 <Edit>
                     <Prefix>{prefix}</Prefix>
-                    <TextField
-                        autoFocus
-                        value={code}
-                        onChange={this.handleChangeValue}
-                        onKeyPress={this.handleKeyPress}
-                    />
+                    <FormControl
+                        error={error}
+                        style={{ marginTop: error && 20 }}>
+                        <TextField
+                            error={error}
+                            autoFocus
+                            value={code}
+                            onChange={this.handleChangeValue}
+                            onKeyPress={this.handleKeyPress}
+                        />
+                        {error ? (
+                            <FormHelperText
+                                style={{ margin: error && '4px 0' }}>
+                                * Trùng mã số
+                            </FormHelperText>
+                        ) : null}
+                    </FormControl>
                     <div>
                         <CloseIcon
                             className={classes.closeIcon}
                             onClick={this.handleClose}
                         />
-                        <CheckIcon
-                            className={classes.checkIcon}
-                            onClick={this.handleSave}
-                        />
+                        {!error && (
+                            <CheckIcon
+                                className={classes.checkIcon}
+                                onClick={this.handleSave}
+                            />
+                        )}
                     </div>
                 </Edit>
             )
