@@ -45,9 +45,9 @@ class RowItem extends Component {
     }
 
     handleClose = () => {
-        let { value } = this.props
-        this.setState({ readOnly: true, value: this.props.item.itemName })
-        this.props.updateValue(this.props.item.itemName)
+        let { itemName } = this.props.item
+        this.setState({ readOnly: true, value: itemName })
+        this.props.updateValue(itemName)
     }
 
     handleSave = async () => {

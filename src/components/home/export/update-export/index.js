@@ -50,18 +50,22 @@ class UpdateExport extends Component {
             {
                 name: 'Đơn hàng',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        let itemList = value.split(';')
                         return (
                             <div>
-                                {orders[tableMeta.rowIndex].orders.map(
-                                    order => {
+                                {itemList.map((item, index) => {
+                                    if (item)
                                         return (
-                                            <div className={classes.items}>
-                                                {itemName[order.itemName]}
+                                            <div
+                                                className={classes.items}
+                                                key={index}>
+                                                {item}
                                             </div>
                                         )
-                                    }
-                                )}
+                                    return null
+                                })}
                             </div>
                         )
                     }
@@ -70,15 +74,21 @@ class UpdateExport extends Component {
             {
                 name: 'Số lượng',
                 options: {
+                    filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        let quantityList = value.split(';')
                         return (
                             <div>
-                                {orders[tableMeta.rowIndex].orders.map(item => {
-                                    return (
-                                        <div className={classes.items}>
-                                            {item.itemQuantity} KG
-                                        </div>
-                                    )
+                                {quantityList.map((item, index) => {
+                                    if (item)
+                                        return (
+                                            <div
+                                                className={classes.items}
+                                                key={index}>
+                                                {item}
+                                            </div>
+                                        )
+                                    return null
                                 })}
                             </div>
                         )
@@ -88,24 +98,27 @@ class UpdateExport extends Component {
             'Ngày áp dụng',
             'Cập nhật',
             {
-                name: 'Chỉnh sửa',
+                name: 'Thanh toán',
                 options: {
                     filter: false,
-                    customBodyRender: (value, tableMeta, updateValue) => (
-                        <RowEdit
-                            noedit
-                            style={{ marginLeft: 16 }}
-                            updateOrder={this.props.updateOrder}
-                            idOrder={orders[tableMeta.rowIndex]._id}
-                            checked={orders[tableMeta.rowIndex].payStatus}
-                        />
-                    )
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <RowEdit
+                                noedit
+                                style={{ marginLeft: 16 }}
+                                updateOrder={this.props.updateOrder}
+                                idOrder={orders[value]._id}
+                                checked={orders[value].payStatus}
+                                updateValue={updateValue}
+                            />
+                        )
+                    }
                 }
             }
         ]
         let data = [],
             exportedList = []
-        orders.forEach(order => {
+        orders.forEach((order, index) => {
             exportedList.push(order._id)
             let row = []
             row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
@@ -114,10 +127,17 @@ class UpdateExport extends Component {
             row.push(
                 `${whName[order.warehouse].warehouseName} (${whName[order.warehouse].warehouse})`
             )
-            row.push('')
-            row.push('')
+            let itemList = '',
+                quantityList = ''
+            order.orders.forEach(item => {
+                itemList += itemName[item.itemName] + ';'
+                quantityList += item.itemQuantity + ' KG;'
+            })
+            row.push(itemList)
+            row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            row.push(index)
             data.push(row)
         })
 

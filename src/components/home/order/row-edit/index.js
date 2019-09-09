@@ -18,6 +18,15 @@ class RowEdit extends Component {
         }
     }
 
+    shouldComponentUpdate(nextProps) {
+        if (this.state.checked !== nextProps.checked) {
+            this.setState({
+                checked: nextProps.checked
+            })
+        }
+        return true
+    }
+
     render() {
         let { checked } = this.state
         let { classes, idOrder, noedit } = this.props
@@ -40,7 +49,8 @@ class RowEdit extends Component {
                             idOrder,
                             data: {
                                 payStatus: !checked
-                            }
+                            },
+                            callback: () => {}
                         })
                         this.setState({ checked: !checked })
                     }}

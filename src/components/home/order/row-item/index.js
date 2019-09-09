@@ -83,7 +83,7 @@ class RowItem extends Component {
     }
 
     handleSave = async () => {
-        const { order, callback } = this.props
+        const { order } = this.props
         let buyerName = this.getValue()
         await this.props.updateOrder({
             idOrder: order._id,
