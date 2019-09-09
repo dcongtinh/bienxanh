@@ -39,9 +39,7 @@ class Supplier extends Component {
                         <IconButton
                             onClick={() => {
                                 this.props.history.push(
-                                    `/dashboard/suppliers/${
-                                        suppliers[tableMeta.rowIndex]._id
-                                    }`
+                                    `/dashboard/suppliers/${suppliers[value]._id}`
                                 )
                             }}>
                             <EditIcon />
@@ -51,13 +49,14 @@ class Supplier extends Component {
             }
         ]
         let data = []
-        suppliers.forEach(supplier => {
+        suppliers.forEach((supplier, index) => {
             let row = []
             row.push(supplier.supplierCode)
             row.push(supplier.supplierName)
             row.push(supplier.supplierIdNo)
             row.push(supplier.supplierAddress)
             row.push(supplier.supplierNote)
+            row.push(index)
             data.push(row)
         })
 

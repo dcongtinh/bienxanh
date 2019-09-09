@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import RowItem from './row-item'
 import styles from 'components/home/styles'
+import numeral from 'numeral'
 
 class Item extends Component {
     constructor(props) {
@@ -27,6 +28,24 @@ class Item extends Component {
     handleClose = () => {
         this.setState({ openAddItem: false, openConfirm: false })
     }
+    getPrice(idWarehouse, itemPrices) {
+        let prices = []
+        itemPrices.forEach(itemPrice => {
+            let match = itemPrice[idWarehouse] ? true : false
+            if (match)
+                prices.push({
+                    dateApply: itemPrice.dateApply,
+                    itemPrice: itemPrice[idWarehouse]
+                })
+        })
+        prices.sort((a, b) => {
+            return (
+                new Date(b.dateApply).getTime() -
+                new Date(a.dateApply).getTime()
+            )
+        })
+        return prices[0] ? prices[0].itemPrice : 0
+    }
     render() {
         let { itemName } = this.state
         let { items, classes } = this.props
@@ -35,8 +54,9 @@ class Item extends Component {
                 name: 'Tên hàng',
                 options: {
                     customBodyRender: (value, tableMeta, updateValue) => (
+                        // <div>{value}</div>
                         <RowItem
-                            value={items[tableMeta.rowIndex].itemName}
+                            value={value}
                             tableMeta={tableMeta}
                             updateValue={updateValue}
                             updateItem={this.props.updateItem}
@@ -46,27 +66,71 @@ class Item extends Component {
                 }
             },
             {
+                name: 'AP',
+                label: 'An Phú',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <div>
+                            {value
+                                ? numeral(value).format('(0,0.[0000])')
+                                : '-'}
+                        </div>
+                    )
+                }
+            },
+            {
+                name: 'TL',
+                label: 'Thăng Long',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <div>
+                            {value
+                                ? numeral(value).format('(0,0.[0000])')
+                                : '-'}
+                        </div>
+                    )
+                }
+            },
+            {
+                name: 'DN',
+                label: 'Đà Nẵng',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <div>
+                            {value
+                                ? numeral(value).format('(0,0.[0000])')
+                                : '-'}
+                        </div>
+                    )
+                }
+            },
+            {
                 name: 'Xem',
                 options: {
                     filter: false,
-                    customBodyRender: (value, tableMeta, updateValue) => (
-                        <IconButton
-                            onClick={() => {
-                                this.props.history.push(
-                                    `/dashboard/items/view/${items[tableMeta.rowIndex]._id}`
-                                )
-                            }}>
-                            <VisibilityIcon />
-                        </IconButton>
-                    )
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <IconButton
+                                onClick={() => {
+                                    this.props.history.push(
+                                        `/dashboard/items/view/${items[value]._id}`
+                                    )
+                                }}>
+                                <VisibilityIcon />
+                            </IconButton>
+                        )
+                    }
                 }
             }
         ]
         let data = []
-
-        items.forEach(item => {
+        items.forEach((item, index) => {
             let row = []
             row.push(item.itemName)
+            row.push(this.getPrice('5d2dacc828322044ab2d2c79', item.itemPrices)) // An Phú
+            row.push(this.getPrice('5d4fc31d2b427e0676ab03f4', item.itemPrices)) // Thăng Long
+            row.push(this.getPrice('5d4fc2232b427e0676ab03ec', item.itemPrices)) // Đà Nẵng
+            row.push(index)
             data.push(row)
         })
 

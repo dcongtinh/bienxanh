@@ -33,34 +33,30 @@ class Warehouse extends Component {
                 name: 'Chỉnh sửa',
                 options: {
                     filter: false,
-                    customBodyRender: (value, tableMeta, updateValue) => {
-                        return (
-                            <div className={classes.editOption}>
-                                <IconButton
-                                    onClick={() => {
-                                        this.props.history.push(
-                                            `/dashboard/warehouses/${
-                                                wareHouses[tableMeta.rowIndex]
-                                                    ._id
-                                            }`
-                                        )
-                                    }}>
-                                    <EditIcon />
-                                </IconButton>
-                            </div>
-                        )
-                    }
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <div className={classes.editOption}>
+                            <IconButton
+                                onClick={() => {
+                                    this.props.history.push(
+                                        `/dashboard/warehouses/${wareHouses[value]._id}`
+                                    )
+                                }}>
+                                <EditIcon />
+                            </IconButton>
+                        </div>
+                    )
                 }
             }
         ]
         let data = []
-        wareHouses.forEach(wareHouse => {
+        wareHouses.forEach((wareHouse, index) => {
             let row = []
             row.push(wareHouse.buyerCode)
             row.push(`${wareHouse.warehouseName} (${wareHouse.warehouse})`)
             row.push(wareHouse.buyerName)
             row.push(wareHouse.buyerLegalName)
             row.push(wareHouse.buyerTaxCode)
+            row.push(index)
             data.push(row)
         })
 

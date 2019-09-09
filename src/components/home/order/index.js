@@ -152,8 +152,8 @@ class Order extends Component {
                             style={{ marginLeft: 16 }}
                             history={this.props.history}
                             updateOrder={this.props.updateOrder}
-                            idOrder={orders[tableMeta.rowIndex]._id}
-                            checked={orders[tableMeta.rowIndex].payStatus}
+                            idOrder={orders[value]._id}
+                            checked={orders[value].payStatus}
                         />
                     )
                 }
@@ -161,7 +161,7 @@ class Order extends Component {
         ]
 
         let data = []
-        orders.forEach(order => {
+        orders.forEach((order, index) => {
             ordersListId.push(order._id)
             let row = []
             row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
@@ -174,6 +174,7 @@ class Order extends Component {
             row.push('')
             row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            row.push(index)
             data.push(row)
         })
 

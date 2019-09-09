@@ -32,33 +32,29 @@ class Users extends Component {
                 name: 'Chỉnh sửa',
                 options: {
                     filter: false,
-                    customBodyRender: (value, tableMeta, updateValue) => {
-                        return (
-                            <div className={classes.editOption}>
-                                <IconButton
-                                    onClick={() => {
-                                        this.props.history.push(
-                                            `/dashboard/profile/${
-                                                users[tableMeta.rowIndex]
-                                                    .username
-                                            }`
-                                        )
-                                    }}>
-                                    <EditIcon />
-                                </IconButton>
-                            </div>
-                        )
-                    }
+                    customBodyRender: (value, tableMeta, updateValue) => (
+                        <div className={classes.editOption}>
+                            <IconButton
+                                onClick={() => {
+                                    this.props.history.push(
+                                        `/dashboard/profile/${users[value].username}`
+                                    )
+                                }}>
+                                <EditIcon />
+                            </IconButton>
+                        </div>
+                    )
                 }
             }
         ]
         let data = []
-        users.forEach(user => {
+        users.forEach((user, index) => {
             let row = []
             row.push(user.firstname)
             row.push(user.lastname)
             row.push(user.username)
             row.push(user.email)
+            row.push(index)
             data.push(row)
         })
 

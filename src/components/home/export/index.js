@@ -52,9 +52,7 @@ class Export extends Component {
                         <IconButton
                             onClick={() => {
                                 this.props.history.push(
-                                    `/dashboard/exports/${
-                                        exportList[tableMeta.rowIndex]._id
-                                    }`
+                                    `/dashboard/exports/${exportList[value]._id}`
                                 )
                             }}>
                             <VisibilityIcon />
@@ -64,10 +62,11 @@ class Export extends Component {
             }
         ]
         let data = []
-        exportList.forEach(exported => {
+        exportList.forEach((exported, index) => {
             let row = []
             row.push(exported.createdAt)
             row.push(exported.exportedList)
+            row.push(index)
             data.push(row)
         })
 

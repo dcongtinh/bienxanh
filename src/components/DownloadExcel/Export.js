@@ -75,7 +75,7 @@ export default class DownloadExcel extends Component {
         return price
     }
     render() {
-        let { orders, items, name } = this.props
+        let { orders, name } = this.props
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
