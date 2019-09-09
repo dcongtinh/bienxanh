@@ -48,21 +48,29 @@ class Item extends Component {
     }
     render() {
         let { itemName } = this.state
-        let { items, classes } = this.props
+        let { classes, items } = this.props
         const columns = [
             {
                 name: 'Tên hàng',
                 options: {
-                    customBodyRender: (value, tableMeta, updateValue) => (
-                        // <div>{value}</div>
-                        <RowItem
-                            value={value}
-                            tableMeta={tableMeta}
-                            updateValue={updateValue}
-                            updateItem={this.props.updateItem}
-                            idItem={items[tableMeta.rowIndex]._id}
-                        />
-                    )
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        // console.log(tableMeta)
+                        let idx =
+                            typeof tableMeta.rowData !== 'string'
+                                ? tableMeta.rowData[4]
+                                : 0
+                        // return <div>{value}</div>
+                        return (
+                            <RowItem
+                                id={this.state.action}
+                                value={value}
+                                tableMeta={tableMeta}
+                                updateValue={updateValue}
+                                updateItem={this.props.updateItem}
+                                idItem={items[idx] ? items[idx]._id : 0}
+                            />
+                        )
+                    }
                 }
             },
             {
@@ -133,7 +141,6 @@ class Item extends Component {
             row.push(index)
             data.push(row)
         })
-
         let { selectedRows } = this.state
         let rowsSelected = []
         selectedRows.forEach(row => {

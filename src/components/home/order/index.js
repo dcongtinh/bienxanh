@@ -87,17 +87,23 @@ class Order extends Component {
                 name: 'Họ tên',
                 options: {
                     filter: false,
-                    customBodyRender: (value, tableMeta, updateValue) => (
-                        <RowItem
-                            order={orders[tableMeta.rowIndex]}
-                            value={value}
-                            tableMeta={tableMeta}
-                            updateValue={updateValue}
-                            updateOrder={this.props.updateOrder}
-                            callback={this.props.fetchAllOrders}
-                            idOrder={orders[tableMeta.rowIndex]._id}
-                        />
-                    )
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let idx =
+                            typeof tableMeta.rowData !== 'string'
+                                ? tableMeta.rowData[8]
+                                : 0
+                        return (
+                            <RowItem
+                                order={orders[tableMeta.rowIndex]}
+                                value={value}
+                                tableMeta={tableMeta}
+                                updateValue={updateValue}
+                                updateOrder={this.props.updateOrder}
+                                callback={this.props.fetchAllOrders}
+                                idOrder={orders[idx] ? orders[idx]._id : 0}
+                            />
+                        )
+                    }
                 }
             },
             'Tên đơn vị',

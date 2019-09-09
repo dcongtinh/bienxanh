@@ -22,7 +22,7 @@ class ItemPage extends Component {
     }
 
     render() {
-        if (!this.props.items) return <CircularProgress />
+        if (!this.props.items.length) return <CircularProgress />
         return <Item {...this.props} />
     }
 }
