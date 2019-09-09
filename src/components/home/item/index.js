@@ -65,7 +65,6 @@ class Item extends Component {
                                 updateValue={updateValue}
                                 updateItem={this.props.updateItem}
                                 item={items[idx]}
-                                idItem={items[idx] ? items[idx]._id : 0}
                             />
                         )
                     }

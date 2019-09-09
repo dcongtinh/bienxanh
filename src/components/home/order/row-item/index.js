@@ -76,20 +76,20 @@ class RowItem extends Component {
     handleClose = () => {
         let value = this.props.order.buyerName
         this.setState({ readOnly: true, value })
+        this.props.updateValue(this.props.order.buyerName)
     }
 
     handleSave = async () => {
-        const { idOrder, callback } = this.props
+        const { order, callback } = this.props
         let buyerName = this.getValue()
         await this.props.updateOrder({
-            idOrder,
+            idOrder: order._id,
             data: { buyerName },
             callback: () => {
-                if (callback) callback()
+                this.props.updateValue(buyerName)
+                this.setState({ readOnly: true })
             }
         })
-
-        this.setState({ readOnly: true })
     }
 
     handleKeyPress = e => {
@@ -101,6 +101,7 @@ class RowItem extends Component {
     handleChangeValue = event => {
         const value = event.target.value
         const { updateValue } = this.props
+
         this.setState(
             {
                 code: value
@@ -108,9 +109,6 @@ class RowItem extends Component {
             () => {
                 const value = this.getValue()
                 updateValue(value)
-                this.setState({
-                    value
-                })
             }
         )
     }
@@ -126,6 +124,17 @@ class RowItem extends Component {
         })
     }
 
+    shouldComponentUpdate(nextProps) {
+        if (this.state.value !== nextProps.value) {
+            let values = nextProps.value.split('/')
+            this.setState({
+                prefix: values[0] + '/' + values[1] + '/',
+                code: values[2],
+                value: nextProps.value
+            })
+        }
+        return true
+    }
     render() {
         let { classes } = this.props
         const { readOnly } = this.state

@@ -113,11 +113,11 @@ class OrderStore {
             data: updateData
         })
         if (success) {
+            if (callback) return callback()
             this.rootStore.alert.show({
                 message: `Cập nhật hoá đơn thành công!`,
                 variant: 'success'
             })
-            if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,

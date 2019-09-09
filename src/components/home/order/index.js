@@ -94,13 +94,11 @@ class Order extends Component {
                                 : 0
                         return (
                             <RowItem
-                                order={orders[tableMeta.rowIndex]}
+                                order={orders[idx]}
                                 value={value}
                                 tableMeta={tableMeta}
                                 updateValue={updateValue}
                                 updateOrder={this.props.updateOrder}
-                                callback={this.props.fetchAllOrders}
-                                idOrder={orders[idx] ? orders[idx]._id : 0}
                             />
                         )
                     }
@@ -112,17 +110,18 @@ class Order extends Component {
                 options: {
                     filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        let itemList = value.split(';')
                         return (
                             <div>
-                                {orders[tableMeta.rowIndex].orders.map(
-                                    order => {
+                                {itemList.map(item => {
+                                    if (item)
                                         return (
                                             <div className={classes.items}>
-                                                {itemName[order.itemName]}
+                                                {item}
                                             </div>
                                         )
-                                    }
-                                )}
+                                    return null
+                                })}
                             </div>
                         )
                     }
@@ -133,14 +132,17 @@ class Order extends Component {
                 options: {
                     filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        let quantityList = value.split(';')
                         return (
                             <div>
-                                {orders[tableMeta.rowIndex].orders.map(item => {
-                                    return (
-                                        <div className={classes.items}>
-                                            {item.itemQuantity} KG
-                                        </div>
-                                    )
+                                {quantityList.map(item => {
+                                    if (item)
+                                        return (
+                                            <div className={classes.items}>
+                                                {item}
+                                            </div>
+                                        )
+                                    return null
                                 })}
                             </div>
                         )
@@ -176,8 +178,14 @@ class Order extends Component {
             row.push(
                 `${order.warehouse.warehouseName} (${order.warehouse.warehouse})`
             )
-            row.push('')
-            row.push('')
+            let itemList = '',
+                quantityList = ''
+            order.orders.forEach(item => {
+                itemList += itemName[item.itemName] + ';'
+                quantityList += item.itemQuantity + ' KG;'
+            })
+            row.push(itemList)
+            row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
             row.push(index)

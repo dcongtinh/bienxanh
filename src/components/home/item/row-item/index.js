@@ -51,10 +51,10 @@ class RowItem extends Component {
     }
 
     handleSave = async () => {
-        const { idItem } = this.props
+        const { item } = this.props
 
         await this.props.updateItem({
-            idItem,
+            idItem: item._id,
             data: { itemName: this.state.value },
             callback: () => {
                 this.props.updateValue(this.state.value)
@@ -83,8 +83,7 @@ class RowItem extends Component {
     }
     componentDidMount = () => {
         this.setState({
-            value: this.props.value,
-            initValue: this.props.value
+            value: this.props.value
         })
         window.addEventListener('keydown', e => {
             if (e.keyCode === 27) this.handleClose()
