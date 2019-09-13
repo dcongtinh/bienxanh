@@ -36,6 +36,8 @@ import Login from 'pages/auth/login'
 import Register from 'pages/auth/register'
 import BaseLayout from 'components/layout/base'
 import Snackbar from 'components/Snackbar'
+
+import Caro from 'components/Caro'
 import { inject, observer } from 'mobx-react'
 
 @inject(({ alert }) => ({
@@ -57,6 +59,7 @@ class App extends React.Component {
                             <Route path="/dashboard" exact component={Home} />
                             <Route path="/auth/login" component={Login} />
                             <Route path="/auth/register" component={Register} />
+                            <Route path="/caro" exact component={Caro} />
                             <Route
                                 exact
                                 path="/dashboard/profile/:username"
@@ -148,6 +151,7 @@ class App extends React.Component {
                                 exact
                                 component={UpdateExport}
                             />
+
                             <Redirect from="/" to="/" />
                         </Switch>
                     </BaseLayout>
