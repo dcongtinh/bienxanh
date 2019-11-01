@@ -270,12 +270,13 @@ export default class DownloadExcel extends Component {
                     value: itemFeeShip || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
                 ///PHI VC
                 row.push({
-                    value: itemWeight * itemFeeCentral || 0,
+                    value: itemFeeNorth || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -284,10 +285,11 @@ export default class DownloadExcel extends Component {
                 })
                 ///PHI TC
                 row.push({
-                    value: itemFeeNorth || 0,
+                    value: itemWeight * itemFeeCentral || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
                 ///WEIGHT
@@ -303,7 +305,8 @@ export default class DownloadExcel extends Component {
                     value: itemFeeCentral || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
                 ///NCC VC

@@ -337,7 +337,7 @@ class AddOrder extends React.Component {
                 )
             },
             {
-                title: 'Phí TC',
+                title: 'Phí VC',
                 field: 'itemFeeNorth',
                 render: rowData => {
                     return (
