@@ -28,10 +28,19 @@ class UpdateExport extends Component {
     }
     render() {
         let { openConfirm } = this.state
-        let { classes, exported, items, wareHouses } = this.props
+        let {
+            classes,
+            exported,
+            items,
+            wareHouses,
+            suppliers,
+            users
+        } = this.props
         let orders = exported.exportedList
         let itemName = {},
-            whName = {}
+            whName = {},
+            supplierName = {},
+            userName = {}
         items.forEach(item => {
             itemName[item._id] = item.itemName
         })
@@ -41,6 +50,12 @@ class UpdateExport extends Component {
                 warehouseName: warehouse.warehouseName,
                 buyerCode: warehouse.buyerCode
             }
+        })
+        suppliers.forEach(supplier => {
+            supplierName[supplier._id] = supplier.supplierName
+        })
+        users.forEach(user => {
+            userName[user._id] = user.lastname
         })
         const columns = [
             'Nhóm',
@@ -206,6 +221,8 @@ class UpdateExport extends Component {
                         orders={orders}
                         items={items}
                         name={itemName}
+                        supplierName={supplierName}
+                        userName={userName}
                     />
                 </div>
                 <MUIDataTable data={data} columns={columns} options={options} />

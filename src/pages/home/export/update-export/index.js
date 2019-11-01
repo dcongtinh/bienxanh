@@ -8,7 +8,7 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @canReachAccess({ access: 'order' })
-@inject(({ order, item, wareHouse, exported }) => ({
+@inject(({ order, item, wareHouse, exported, supplier, auth }) => ({
     updateOrder: object => order.updateOrder(object),
     fetchExport: ({ idExported }) => exported.fetchExport({ idExported }),
     exported: JSON.parse(JSON.stringify(exported.exported)),
@@ -17,21 +17,33 @@ import { inject, observer } from 'mobx-react'
     fetchAllItems: () => item.fetchAllItems(),
     items: JSON.parse(JSON.stringify(item.items)),
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
-    wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses))
+    wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
+    fetchAllSuppliers: () => supplier.fetchAllSuppliers(),
+    suppliers: JSON.parse(JSON.stringify(supplier.suppliers)),
+    fetchAllUser: () => auth.fetchAllUser(),
+    users: JSON.parse(JSON.stringify(auth.users))
 }))
 @observer
 class UpdateExportPage extends Component {
     componentDidMount = () => {
         this.props.fetchAllItems()
         this.props.fetchAllWarehouses()
+        this.props.fetchAllSuppliers()
+        this.props.fetchAllUser()
         this.props.fetchExport({
             idExported: this.props.match.params.idExported
         })
     }
 
     render() {
-        let { items, wareHouses, exported } = this.props
-        if (!items.length || !wareHouses.length || !exported)
+        let { items, wareHouses, suppliers, exported, users } = this.props
+        if (
+            !items.length ||
+            !wareHouses.length ||
+            !suppliers.length ||
+            !users ||
+            !exported
+        )
             return <CircularProgress />
         return <UpdateExport {...this.props} />
     }

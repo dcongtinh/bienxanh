@@ -75,12 +75,14 @@ export default class DownloadExcel extends Component {
         return price
     }
     render() {
-        let { orders, name } = this.props
+        let { orders, name, supplierName, userName } = this.props
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
             'itemName', /// 19
-            'itemNote', /// 20
+            'itemNote', /// 20,
+            'itemSupplier', /// 21
+            'itemShipper', /// 22
             'itemQuantity', /// 24
             'itemPrice', /// 25
             'amountBeforeTax', /// 26
@@ -117,6 +119,8 @@ export default class DownloadExcel extends Component {
         orders.forEach((order, index1) => {
             order.orders.forEach((item, index2) => {
                 let itemQuantity = item.itemQuantity || 0
+                let itemSupplier = supplierName[item.itemSupplier] || ''
+                let itemShipper = userName[item.itemShipper] || ''
                 let {
                     itemFeeShip,
                     itemFeeCentral,
@@ -167,6 +171,22 @@ export default class DownloadExcel extends Component {
                 ///20. itemNote
                 row.push({
                     value: order.itemNote || '',
+                    style: {
+                        font: styles.font,
+                        border: styles.border
+                    }
+                })
+                ///21. itemSupplier
+                row.push({
+                    value: itemSupplier,
+                    style: {
+                        font: styles.font,
+                        border: styles.border
+                    }
+                })
+                ///22. itemShipper
+                row.push({
+                    value: itemShipper,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -253,6 +273,8 @@ export default class DownloadExcel extends Component {
                     'Nhóm hóa đơn', /// 2
                     'Tên hàng hóa/dịch vụ', /// 19
                     'Ghi chú', /// 20
+                    'Nhà cung cấp', /// 21
+                    'NVGH', /// 21
                     'Số lượng', /// 24
                     'Đơn giá', /// 25
                     'Thành tiền', /// 26
