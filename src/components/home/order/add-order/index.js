@@ -311,7 +311,7 @@ class AddOrder extends React.Component {
                 }
             },
             {
-                title: 'Phí VC',
+                title: 'Phí GH',
                 field: 'itemFeeShip',
                 render: rowData => {
                     return (
@@ -337,7 +337,7 @@ class AddOrder extends React.Component {
                 )
             },
             {
-                title: 'Phí GHMB',
+                title: 'Phí TC',
                 field: 'itemFeeNorth',
                 render: rowData => {
                     return (
@@ -363,7 +363,7 @@ class AddOrder extends React.Component {
                 )
             },
             {
-                title: 'Phí GHMT',
+                title: 'Phí GiVC HK',
                 field: 'itemFeeCentral',
                 render: rowData => {
                     return (
@@ -388,32 +388,32 @@ class AddOrder extends React.Component {
                     />
                 )
             },
-            {
-                title: 'Phí GHMN',
-                field: 'itemFeeSouth',
-                render: rowData => {
-                    return (
-                        <div>
-                            {rowData.itemFeeSouth
-                                ? numeral(rowData.itemFeeSouth).format(
-                                      '(0,0.[0000])'
-                                  )
-                                : '-'}
-                        </div>
-                    )
-                },
-                editComponent: props => (
-                    <TextField
-                        style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
-                        value={props.value}
-                        name="itemFeeSouth"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom
-                        }}
-                    />
-                )
-            },
+            // {
+            //     title: 'Phí GHMN',
+            //     field: 'itemFeeSouth',
+            //     render: rowData => {
+            //         return (
+            //             <div>
+            //                 {rowData.itemFeeSouth
+            //                     ? numeral(rowData.itemFeeSouth).format(
+            //                           '(0,0.[0000])'
+            //                       )
+            //                     : '-'}
+            //             </div>
+            //         )
+            //     },
+            //     editComponent: props => (
+            //         <TextField
+            //             style={{ width: 70 }}
+            //             onChange={e => props.onChange(e.target.value)}
+            //             value={props.value}
+            //             name="itemFeeSouth"
+            //             InputProps={{
+            //                 inputComponent: NumberFormatCustom
+            //             }}
+            //         />
+            //     )
+            // },
             {
                 title: 'NVGH',
                 field: 'itemShipper',

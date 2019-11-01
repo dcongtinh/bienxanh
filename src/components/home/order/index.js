@@ -16,6 +16,7 @@ import RowItem from './row-item'
 import RowEdit from './row-edit'
 import Tooltip from '@material-ui/core/Tooltip'
 import { observer } from 'mobx-react'
+import Export from 'components/DownloadExcel/Export'
 
 @observer
 class Order extends Component {
@@ -45,36 +46,24 @@ class Order extends Component {
             openConfirmUnMerge,
             unMerge1
         } = this.state
-        let { classes, orders, me, items } = this.props
-        let itemName = {}
+        let {
+            classes,
+            orders,
+            wareHouses,
+            me,
+            items,
+            suppliers,
+            users
+        } = this.props
+        let itemName = {},
+            whName = {},
+            supplierName = {},
+            userName = {}
         items.forEach(item => {
             itemName[item._id] = item.itemName
         })
         let ordersListId = []
-        // const columns = [
-        //     {
-        //         title: 'Nhóm',
-        //         field: 'group',
-        //         headerStyle: {
-        //             marginBottom: 4
-        //         },
-        //         render: rowData => {
-        //             // console.log(rowData)
-        //             // return <div>{rowData.group}</div>
-        //             return (
-        //                 <RowItem
-        //                     order={orders[tableMeta.rowIndex]}
-        //                     value={value}
-        //                     tableMeta={tableMeta}
-        //                     updateValue={updateValue}
-        //                     updateOrder={this.props.updateOrder}
-        //                     callback={this.props.fetchAllOrders}
-        //                     idOrder={orders[tableMeta.rowIndex]._id}
-        //                 />
-        //             )
-        //         }
-        //     }
-        // ]
+
         const columns = [
             {
                 name: 'Nhóm',
@@ -197,30 +186,6 @@ class Order extends Component {
             data.push(row)
         })
 
-        // orders.forEach(order => {
-        //     ordersListId.push(order._id)
-        //     let row = {}
-        //     row.group = `${order.group} ${order.mergeList.length ? '*' : ''}`
-        // let row = []
-        // row.push({
-        //     group: `${order.group} ${order.mergeList.length ? '*' : ''}`
-        // })
-        // row.push({ buyerCode: order.warehouse.buyerCode })
-        // row.push({ buyerName: order.buyerName })
-        // row.push({
-        //     warehouse: `${order.warehouse.warehouseName} (${
-        //         order.warehouse.warehouse
-        //     })`
-        // })
-        // row.push({ orders: 0 })
-        // row.push({ itemQuantity: 0 })
-        // row.push({ createdAt: moment(order.date).format('DD/MM/YYYY') })
-        // row.push({
-        //     updatedAy: moment(order.updatedAt).format('DD/MM/YYYY')
-        // })
-        //     data.push(row)
-        // })
-
         let { selectedRows } = this.state
         let rowsSelected = []
         selectedRows.forEach(row => {
@@ -334,23 +299,48 @@ class Order extends Component {
                 )
             }
         }
-
+        wareHouses.forEach(warehouse => {
+            whName[warehouse._id] = {
+                warehouse: warehouse.warehouse,
+                warehouseName: warehouse.warehouseName,
+                buyerCode: warehouse.buyerCode
+            }
+        })
+        suppliers.forEach(supplier => {
+            supplierName[supplier._id] = supplier.supplierName
+        })
+        users.forEach(user => {
+            userName[user._id] = user.lastname
+        })
         return (
             <>
                 <span className={classes.spacer} />
                 <div className={classes.row}>
                     {orders.length ? (
-                        <DownloadExcel
-                            className={classes.exportButton}
-                            size="small"
-                            variant="outlined"
-                            orders={orders}
-                            items={items}
-                            name={itemName}
-                            onClick={() => {
-                                this.props.exportOrders({ ordersListId })
-                            }}
-                        />
+                        <>
+                            <DownloadExcel
+                                className={classes.exportButton}
+                                size="small"
+                                variant="outlined"
+                                orders={orders}
+                                items={items}
+                                name={itemName}
+                                onClick={() => {
+                                    this.props.exportOrders({ ordersListId })
+                                }}
+                            />
+                            <Export
+                                size="small"
+                                variant="outlined"
+                                orders={orders}
+                                items={items}
+                                name={itemName}
+                                whName={whName}
+                                supplierName={supplierName}
+                                userName={userName}
+                                className={classes.exportButton}
+                            />
+                        </>
                     ) : null}
                     <Button
                         color="primary"

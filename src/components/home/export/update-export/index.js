@@ -220,6 +220,7 @@ class UpdateExport extends Component {
                         variant="outlined"
                         orders={orders}
                         items={items}
+                        whName={whName}
                         name={itemName}
                         supplierName={supplierName}
                         userName={userName}

@@ -40,6 +40,8 @@ export default class DownloadExcel extends Component {
     getPrice(order, item, name) {
         let idItem = item.itemName
         let idWarehouse = order.warehouse._id
+            ? order.warehouse._id
+            : order.warehouse
 
         let { items } = this.props
         let _item = items.filter(item => {
@@ -72,7 +74,7 @@ export default class DownloadExcel extends Component {
                 break
             }
         }
-        return price
+        return parseInt(price)
     }
     render() {
         let { orders, name } = this.props
@@ -418,11 +420,11 @@ export default class DownloadExcel extends Component {
         return (
             <div>
                 <ExcelFile
-                    filename="ExportData"
+                    filename="HoaDon"
                     element={
                         <Button {...this.props}>
                             <ArrowUpwardIcon />
-                            Export
+                            Xuất Hoá Đơn
                         </Button>
                     }>
                     <ExcelSheet dataSet={multiDataSet} name="Hoa don" />

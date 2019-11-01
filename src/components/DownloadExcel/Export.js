@@ -39,8 +39,9 @@ const styles = {
 export default class DownloadExcel extends Component {
     getPrice(order, item, name) {
         let idItem = item.itemName
-        let idWarehouse = order.warehouse
-
+        let idWarehouse = order.warehouse._id
+            ? order.warehouse._id
+            : order.warehouse
         let { items } = this.props
         let _item = items.filter(item => {
             return item._id === idItem
@@ -72,10 +73,10 @@ export default class DownloadExcel extends Component {
                 break
             }
         }
-        return price
+        return parseInt(price)
     }
     render() {
-        let { orders, name, supplierName, userName } = this.props
+        let { orders, name, whName, supplierName, userName } = this.props
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
@@ -92,35 +93,44 @@ export default class DownloadExcel extends Component {
             'discount1',
             'discount2'
         ]
-        let data = [],
-            itemNo = 0
-        let header = []
-        headerProps.forEach((value, index) => {
-            // let rgb
-            // if (index === 0) rgb = 'FFBFBFBF'
-            // else if (index === 1) rgb = 'FFDDD9C5'
-            // else if (2 <= index && index <= 12) rgb = 'FFFCE9DA'
-            // else if (13 <= index && index <= 15) rgb = 'FFE5B8B8'
-            // else rgb = 'FFDCE6F1'
-            header.push({
-                value,
-                style: {
-                    // fill: {
-                    //     fgColor: { rgb }
-                    // },
-                    font: styles.font,
-                    border: styles.border
-                }
-            })
-        })
-        data.push(header)
+        let data = []
+        // itemNo = 0
+        // let header = []
+        // headerProps.forEach((value, index) => {
+        //     // let rgb
+        //     // if (index === 0) rgb = 'FFBFBFBF'
+        //     // else if (index === 1) rgb = 'FFDDD9C5'
+        //     // else if (2 <= index && index <= 12) rgb = 'FFFCE9DA'
+        //     // else if (13 <= index && index <= 15) rgb = 'FFE5B8B8'
+        //     // else rgb = 'FFDCE6F1'
+        //     header.push({
+        //         value,
+        //         style: {
+        //             // fill: {
+        //             //     fgColor: { rgb }
+        //             // },
+        //             font: styles.font,
+        //             border: styles.border
+        //         }
+        //     })
+        // })
+        // data.push(header)
         let discount1 = 0.0353,
             discount2 = 0.045
+        console.log(orders)
         orders.forEach((order, index1) => {
+            let idWarehouse = order.warehouse._id
+                ? order.warehouse._id
+                : order.warehouse
+            let warehouseName = whName[idWarehouse]
+
             order.orders.forEach((item, index2) => {
                 let itemQuantity = item.itemQuantity || 0
+                let itemLoss = item.itemLoss || 0
+                let itemWeight = item.itemWeight || 0
                 let itemSupplier = supplierName[item.itemSupplier] || ''
                 let itemShipper = userName[item.itemShipper] || ''
+
                 let {
                     itemFeeShip,
                     itemFeeCentral,
@@ -144,13 +154,23 @@ export default class DownloadExcel extends Component {
 
                 ///1. itemNo
                 let row = []
+                let time = moment(order.date).toArray()
                 row.push({
-                    value: ++itemNo,
+                    value: `${time[0] % 100}${
+                        time[1] + 1 < 10 ? `0${time[1] + 1}` : time[1] + 1
+                    }${time[2] < 10 ? `0${time[2]}` : time[2]}`,
                     style: {
                         font: styles.font,
                         border: styles.border
                     }
                 })
+                // row.push({
+                //     value: ++itemNo,
+                //     style: {
+                //         font: styles.font,
+                //         border: styles.border
+                //     }
+                // })
                 ///2. group
                 row.push({
                     value: order.group,
@@ -158,6 +178,14 @@ export default class DownloadExcel extends Component {
                         font: styles.font,
                         border: styles.border,
                         alignment: styles.alignCenter
+                    }
+                })
+                ///3. warehouse
+                row.push({
+                    value: warehouseName.warehouseName,
+                    style: {
+                        font: styles.font,
+                        border: styles.border
                     }
                 })
                 ///19. itemName
@@ -168,12 +196,39 @@ export default class DownloadExcel extends Component {
                         border: styles.border
                     }
                 })
-                ///20. itemNote
+
+                ///24. itemQuantity
                 row.push({
-                    value: order.itemNote || '',
+                    value: itemQuantity,
                     style: {
                         font: styles.font,
                         border: styles.border
+                    }
+                })
+                ///itemLoss
+                row.push({
+                    value: itemLoss,
+                    style: {
+                        font: styles.font,
+                        border: styles.border
+                    }
+                })
+                ///25. itemPrice
+                row.push({
+                    value: itemPrice,
+                    style: {
+                        font: styles.font,
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
+                    }
+                })
+                ///26. amountBeforeTax
+                row.push({
+                    value: (itemQuantity + itemLoss) * itemPrice,
+                    style: {
+                        font: styles.font,
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
                 ///21. itemSupplier
@@ -192,33 +247,74 @@ export default class DownloadExcel extends Component {
                         border: styles.border
                     }
                 })
-                ///24. itemQuantity
+                ///25. itemTradePrice
+                // row.push({
+                //     value: itemTradePrice,
+                //     style: {
+                //         font: styles.font,
+                //         border: styles.border,
+                //         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
+                //     }
+                // })
+                // ///26. totalPrice
+                // row.push({
+                //     value: itemQuantity * itemTradePrice,
+                //     style: {
+                //         font: styles.font,
+                //         border: styles.border,
+                //         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
+                //     }
+                // })
+                ///PHI GH
                 row.push({
-                    value: itemQuantity,
+                    value: itemFeeShip || 0,
                     style: {
                         font: styles.font,
                         border: styles.border
                     }
                 })
-                ///25. itemPrice
+                ///PHI VC
                 row.push({
-                    value: itemPrice,
+                    value: itemWeight * itemFeeCentral || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
                         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
-                ///26. amountBeforeTax
+                ///PHI TC
                 row.push({
-                    value: itemQuantity * itemPrice,
+                    value: itemFeeNorth || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
+                        border: styles.border
                     }
                 })
-                ///25. itemTradePrice
+                ///WEIGHT
+                row.push({
+                    value: itemWeight,
+                    style: {
+                        font: styles.font,
+                        border: styles.border
+                    }
+                })
+                ///GiVC HK
+                row.push({
+                    value: itemFeeCentral || 0,
+                    style: {
+                        font: styles.font,
+                        border: styles.border
+                    }
+                })
+                ///NCC VC
+                row.push({
+                    value: '',
+                    style: {
+                        font: styles.font,
+                        border: styles.border
+                    }
+                })
+                ///DON GIA BAN
                 row.push({
                     value: itemTradePrice,
                     style: {
@@ -227,18 +323,17 @@ export default class DownloadExcel extends Component {
                         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
-                ///26. totalPrice
+                ///DOANH THU
                 row.push({
-                    value: itemQuantity * itemTradePrice,
+                    value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
+                        border: styles.border
                     }
                 })
                 ///26. totalPrice
                 row.push({
-                    value: beforeTax,
+                    value: 0, //beforeTax,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -269,20 +364,27 @@ export default class DownloadExcel extends Component {
         const multiDataSet = [
             {
                 columns: [
-                    'STT', /// 1
-                    'Nhóm hóa đơn', /// 2
-                    'Tên hàng hóa/dịch vụ', /// 19
-                    'Ghi chú', /// 20
-                    'Nhà cung cấp', /// 21
+                    'NGÀY GIAO', /// 1
+                    'SỐ ORDER', /// 2
+                    'KHO', ///3
+                    'LOẠI HÀNG', /// 19
+                    'SỐ LƯỢNG', /// 24
+                    'HAO HỤT',
+                    'ĐƠN GIÁ', /// 25
+                    'THÀNH TIỀN', /// 26
+                    'NCC', /// 21
                     'NVGH', /// 21
-                    'Số lượng', /// 24
-                    'Đơn giá', /// 25
-                    'Thành tiền', /// 26
-                    'Giá bán', /// 25
-                    'Doanh số', /// 25
-                    'Lãi trước thuế',
-                    'Chiết khấu 3.53%',
-                    'Chiết khấu 4.5%'
+                    'PHÍ GH', /// 25
+                    'PHÍ VC', /// 25
+                    'PHÍ TC',
+                    'WEIGHT',
+                    'GiVC HK',
+                    'NCC VC',
+                    'ĐƠN GIÁ BÁN',
+                    'DOANH THU',
+                    'LÃI TRƯỚC THUẾ',
+                    'CHIẾT KHẤU 3.53%',
+                    'CHIẾT KHẤU 4.5%'
                 ],
                 data
             }
@@ -290,11 +392,11 @@ export default class DownloadExcel extends Component {
         return (
             <div>
                 <ExcelFile
-                    filename="ExportData"
+                    filename="DonHang"
                     element={
                         <Button {...this.props}>
                             <ArrowUpwardIcon />
-                            Export
+                            Xuất Đơn hàng
                         </Button>
                     }>
                     <ExcelSheet dataSet={multiDataSet} name="Hoa don" />
