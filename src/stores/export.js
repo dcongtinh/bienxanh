@@ -56,6 +56,26 @@ class ExportStore {
         this.isRequesting = false
     }
     @action
+    async exportReport({ exportIdList, callback }) {
+        this.isRequesting = true
+        const { success, data } = await exportAPI.exportReport({
+            exportIdList
+        })
+        if (success) {
+            this.rootStore.alert.show({
+                message: `Xuất báo cáo thành công!`,
+                variant: 'success'
+            })
+            if (callback) callback()
+        } else {
+            this.rootStore.alert.show({
+                message: data.message,
+                variant: 'error'
+            })
+        }
+        this.isRequesting = false
+    }
+    @action
     async deleteExports({ exportedList, exportsList, callback }) {
         this.isRequesting = true
         const { success, data } = await exportAPI.deleteExports({

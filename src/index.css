@@ -20,6 +20,9 @@ code {
   background: #909090;
   border-radius: 10px;
 }
+.item-single-select {
+  width: 250px;
+}
 .basic-single-select {
   width: 200px;
 }

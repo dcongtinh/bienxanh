@@ -63,7 +63,7 @@ const styles = theme => ({
         marginTop: theme.spacing(2)
     },
     supplierName: {
-        maxWidth: 120,
+        maxWidth: 200,
         overflow: 'hidden',
         textOverflow: 'ellipsis'
     }
@@ -149,7 +149,6 @@ class AddOrder extends React.Component {
             })
             nameSupplier[supplier._id] = supplier.supplierName
         })
-
         let userList = [],
             nameUser = {}
         users.forEach(user => {
@@ -188,7 +187,7 @@ class AddOrder extends React.Component {
                                 props.onChange(data.value)
                             }}
                             options={optionsItem}
-                            className={'basic-single-select'}
+                            className={'item-single-select'}
                             classNamePrefix={'select'}
                             placeholder="Chọn hàng hoá"
                             styles={{
@@ -311,6 +310,55 @@ class AddOrder extends React.Component {
                 }
             },
             {
+                title: 'NVGH',
+                field: 'itemShipper',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div className={classes.supplierName}>
+                            {nameUser[rowData.itemShipper]}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: nameUser[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="itemShipper"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={userList}
+                            className={'basic-single-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn nhân viên"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
+            },
+            {
                 title: 'Phí GH',
                 field: 'itemFeeShip',
                 render: rowData => {
@@ -415,55 +463,6 @@ class AddOrder extends React.Component {
             //     )
             // },
             {
-                title: 'NVGH',
-                field: 'itemShipper',
-                headerStyle: {
-                    marginBottom: 4
-                },
-                render: rowData => {
-                    return (
-                        <div className={classes.supplierName}>
-                            {nameUser[rowData.itemShipper]}
-                        </div>
-                    )
-                },
-                editComponent: props => {
-                    let data
-                    if (props.value) {
-                        data = {
-                            value: props.value,
-                            label: nameUser[props.value]
-                        }
-                    }
-                    return (
-                        <Select
-                            name="itemShipper"
-                            value={data}
-                            onChange={data => {
-                                props.onChange(data.value)
-                            }}
-                            options={userList}
-                            className={'basic-single-select'}
-                            classNamePrefix={'select'}
-                            placeholder="Chọn nhân viên"
-                            styles={{
-                                multiValue: base => ({
-                                    ...base,
-                                    borderRadius: 16
-                                }),
-                                option: base => ({
-                                    ...base,
-                                    maxWidth: '100%',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
-                            }}
-                        />
-                    )
-                }
-            },
-            {
                 title: 'TL kiện',
                 field: 'itemWeight',
                 render: rowData => {
@@ -511,6 +510,13 @@ class AddOrder extends React.Component {
                 })
                 item.itemTradePrices.forEach(itemTradePrice => {
                     let match = itemTradePrice[idWarehouse] ? true : false
+                    match &= suppliers.some(supplier => {
+                        return supplier._id === order.itemSupplier
+                            ? supplier.supplierItems.some(item => {
+                                  return item.value === order.itemName
+                              })
+                            : false
+                    })
                     if (match)
                         tradePrices.push({
                             dateApply: itemTradePrice.dateApply,
@@ -655,6 +661,8 @@ class AddOrder extends React.Component {
                                     return item.itemName && item.itemQuantity
                                 })
                                 let buyerName = `26296/WH${buyerCode}/${this.state.buyerName}`
+                                let initData = []
+                                for (let i = 0; i < 5; ++i) initData.push({})
                                 this.props.addOrder({
                                     warehouse,
                                     buyerName,
@@ -664,9 +672,8 @@ class AddOrder extends React.Component {
                                     orders: _data,
                                     callback: () => {
                                         this.setState({
-                                            data: [],
+                                            data: initData,
                                             date: new Date(),
-                                            warehouse: wareHouses[0]._id,
                                             itemNote: ''
                                         })
                                     }

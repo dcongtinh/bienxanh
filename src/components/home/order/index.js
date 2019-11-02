@@ -4,6 +4,7 @@ import MUIDataTable from 'mui-datatables'
 import MergeTypeIcon from '@material-ui/icons/MergeType'
 import UndoIcon from '@material-ui/icons/Undo'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import ImportExportIcon from '@material-ui/icons/ImportExport'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
@@ -26,6 +27,7 @@ class Order extends Component {
             openConfirmDelete: false,
             openConfirmMerge: false,
             openConfirmUnMerge: false,
+            openConfirmExport: false,
             selectedRows: [],
             rowsSelected: [],
             unMerge1: false
@@ -36,25 +38,29 @@ class Order extends Component {
             openConfirmDelete: false,
             openConfirmMerge: false,
             openConfirmUnMerge: false,
+            openConfirmExport: false,
             unMerge1: false
         })
     }
+
     render() {
         let {
             openConfirmDelete,
             openConfirmMerge,
             openConfirmUnMerge,
+            openConfirmExport,
             unMerge1
         } = this.state
         let {
             classes,
-            orders,
             wareHouses,
             me,
             items,
             suppliers,
-            users
+            users,
+            orders
         } = this.props
+        // console.log(orders)
         let itemName = {},
             whName = {},
             supplierName = {},
@@ -79,7 +85,7 @@ class Order extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let idx =
                             typeof tableMeta.rowData !== 'string'
-                                ? tableMeta.rowData[8]
+                                ? tableMeta.rowData[9]
                                 : 0
                         let mark = {}
                         orders.forEach(order => {
@@ -145,6 +151,7 @@ class Order extends Component {
             },
             'Ngày áp dụng',
             'Cập nhật',
+            'Ngày xuất BC',
             {
                 name: 'Chỉnh sửa',
                 options: {
@@ -163,6 +170,16 @@ class Order extends Component {
         ]
 
         let data = []
+        let { selectedRows } = this.state
+        let rowsSelected = [],
+            exportList = [],
+            exportIdList = []
+        selectedRows.forEach(row => {
+            rowsSelected.push(row.dataIndex)
+            exportList.push(orders[row.dataIndex])
+            exportIdList.push(orders[row.dataIndex]._id)
+        })
+        rowsSelected.sort()
         orders.forEach((order, index) => {
             ordersListId.push(order._id)
             let row = []
@@ -182,17 +199,12 @@ class Order extends Component {
             row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            if (order.reportExportedAt)
+                row.push(moment(order.reportExportedAt).format('DD/MM/YYYY'))
+            else row.push('')
             row.push(index)
             data.push(row)
         })
-
-        let { selectedRows } = this.state
-        let rowsSelected = []
-        selectedRows.forEach(row => {
-            rowsSelected.push(row.dataIndex)
-        })
-        // console.log(data)
-        rowsSelected.sort()
         const options = {
             rowsPerPage: 100,
             filterType: 'dropdown',
@@ -283,6 +295,18 @@ class Order extends Component {
                                 </IconButton>
                             </Tooltip>
                         ) : null}
+                        <Tooltip title="Xuất báo cáo">
+                            <IconButton
+                                onClick={() => {
+                                    this.setState({
+                                        openConfirmExport: true,
+                                        selectedRows: selectedRows.data,
+                                        rowsSelected
+                                    })
+                                }}>
+                                <ImportExportIcon />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Xoá">
                             <IconButton
                                 onClick={() => {
@@ -317,30 +341,17 @@ class Order extends Component {
                 <span className={classes.spacer} />
                 <div className={classes.row}>
                     {orders.length ? (
-                        <>
-                            <DownloadExcel
-                                className={classes.exportButton}
-                                size="small"
-                                variant="outlined"
-                                orders={orders}
-                                items={items}
-                                name={itemName}
-                                onClick={() => {
-                                    this.props.exportOrders({ ordersListId })
-                                }}
-                            />
-                            <Export
-                                size="small"
-                                variant="outlined"
-                                orders={orders}
-                                items={items}
-                                name={itemName}
-                                whName={whName}
-                                supplierName={supplierName}
-                                userName={userName}
-                                className={classes.exportButton}
-                            />
-                        </>
+                        <DownloadExcel
+                            className={classes.exportButton}
+                            size="small"
+                            variant="outlined"
+                            orders={orders}
+                            items={items}
+                            name={itemName}
+                            onClick={() => {
+                                this.props.exportOrders({ ordersListId })
+                            }}
+                        />
                     ) : null}
                     <Button
                         color="primary"
@@ -463,6 +474,8 @@ class Order extends Component {
                             enabled: false,
                             callback: () =>
                                 this.props.addOrder({
+                                    buyerName: ordersFirst.buyerName,
+                                    itemNote: '',
                                     group,
                                     warehouse,
                                     orders: _orderList,
@@ -476,6 +489,35 @@ class Order extends Component {
                         this.handleClose()
                         this.setState({ selectedRows: [] })
                     }}
+                />
+                <ConfirmDialog
+                    open={openConfirmExport}
+                    title="Bạn có chắc muốn xuất báo cáo?"
+                    cancelLabel="Huỷ"
+                    okLabel={
+                        <Export
+                            size="small"
+                            variant="outlined"
+                            orders={exportList}
+                            items={items}
+                            name={itemName}
+                            whName={whName}
+                            suppliers={suppliers}
+                            supplierName={supplierName}
+                            userName={userName}
+                            className={classes.exportButton}
+                            onClick={() => {
+                                this.handleClose()
+                                this.props.exportReport({
+                                    exportIdList,
+                                    callback: () => {
+                                        window.location.reload()
+                                    }
+                                })
+                            }}
+                        />
+                    }
+                    onHide={this.handleClose}
                 />
                 <ConfirmDialog
                     open={openConfirmDelete}

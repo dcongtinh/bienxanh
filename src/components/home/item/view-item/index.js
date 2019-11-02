@@ -1,11 +1,12 @@
 import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import moment from 'moment'
 import numeral from 'numeral'
 import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import PriceTable from './PriceTable'
-
+import Select from 'react-select'
 const NumberFormatCustom = props => {
     const { inputRef, onChange, ...other } = props
     return (
@@ -23,13 +24,20 @@ const NumberFormatCustom = props => {
         />
     )
 }
+const styles = theme => ({
+    supplierName: {
+        maxWidth: 200,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+    }
+})
 
 class ViewItemInfo extends React.Component {
     render() {
-        let { item, wareHouses, suppliers } = this.props
+        let { classes, item, wareHouses, suppliers } = this.props
         let { idItem } = this.props.match.params
         let supplierList = [],
-            name = {}
+            nameSupplier = {}
         suppliers.forEach(supplier => {
             for (let i in supplier.supplierItems) {
                 if (supplier.supplierItems[i].value === idItem) {
@@ -37,7 +45,7 @@ class ViewItemInfo extends React.Component {
                         value: supplier._id,
                         label: supplier.supplierName
                     })
-                    name[supplier._id] = supplier.supplierName
+                    nameSupplier[supplier._id] = supplier.supplierName
                     break
                 }
             }
@@ -95,55 +103,6 @@ class ViewItemInfo extends React.Component {
             }
         ]
         let columns2 = [
-            // {
-            //     title: 'Nhà cung cấp',
-            //     field: 'supplier',
-            //     headerStyle: {
-            //         marginBottom: 4
-            //     },
-            //     render: rowData => {
-            //         return (
-            //             <div className={classes.supplierName}>
-            //                 {name[rowData.supplier]}
-            //             </div>
-            //         )
-            //     },
-            //     editComponent: props => {
-            //         let data
-            //         if (props.value) {
-            //             data = {
-            //                 value: props.value,
-            //                 label: name[props.value]
-            //             }
-            //         }
-            //         return (
-            //             <Select
-            //                 name="supplier"
-            //                 value={data}
-            //                 onChange={data => {
-            //                     props.onChange(data.value)
-            //                 }}
-            //                 options={supplierList}
-            //                 className={'basic-single-select'}
-            //                 classNamePrefix={'select'}
-            //                 placeholder="Chọn hàng hoá"
-            //                 styles={{
-            //                     multiValue: base => ({
-            //                         ...base,
-            //                         borderRadius: 16
-            //                     }),
-            //                     option: base => ({
-            //                         ...base,
-            //                         maxWidth: '100%',
-            //                         overflow: 'hidden',
-            //                         textOverflow: 'ellipsis',
-            //                         whiteSpace: 'nowrap'
-            //                     })
-            //                 }}
-            //             />
-            //         )
-            //     }
-            // },
             {
                 title: 'Ngày mua',
                 field: 'dateApply',
@@ -168,6 +127,55 @@ class ViewItemInfo extends React.Component {
                                 props.onChange(date)
                             }}
                             autoOk
+                        />
+                    )
+                }
+            },
+            {
+                title: 'NCC',
+                field: 'itemSupplier',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div className={classes.supplierName}>
+                            {nameSupplier[rowData.itemSupplier]}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: nameSupplier[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="itemSupplier"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={supplierList}
+                            className={'basic-single-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn NCC"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
                         />
                     )
                 }
@@ -269,5 +277,4 @@ class ViewItemInfo extends React.Component {
         )
     }
 }
-
-export default ViewItemInfo
+export default withStyles(styles)(ViewItemInfo)

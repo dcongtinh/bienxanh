@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import MUIDataTable from 'mui-datatables'
+import ImportExportIcon from '@material-ui/icons/ImportExport'
 import IconButton from '@material-ui/core/IconButton'
 import BackupIcon from '@material-ui/icons/Backup'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -17,17 +18,18 @@ class UpdateExport extends Component {
         this.state = {
             selectedRows: [],
             rowsSelected: [],
-            openConfirm: false
+            openConfirm: false,
+            openConfirmExport: false
         }
     }
     handleOpen = () => {
         this.setState({ openConfirm: true })
     }
     handleClose = () => {
-        this.setState({ openConfirm: false })
+        this.setState({ openConfirm: false, openConfirmExport: false })
     }
     render() {
-        let { openConfirm } = this.state
+        let { openConfirm, openConfirmExport } = this.state
         let {
             classes,
             exported,
@@ -112,6 +114,7 @@ class UpdateExport extends Component {
             },
             'Ngày áp dụng',
             'Cập nhật',
+            'Ngày xuất BC',
             {
                 name: 'Thanh toán',
                 options: {
@@ -152,14 +155,21 @@ class UpdateExport extends Component {
             row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            if (order.reportExportedAt)
+                row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            else row.push('')
             row.push(index)
             data.push(row)
         })
 
         let { selectedRows } = this.state
-        let rowsSelected = []
+        let rowsSelected = [],
+            exportList = [],
+            exportIdList = []
         selectedRows.forEach(row => {
             rowsSelected.push(row.dataIndex)
+            exportList.push(orders[row.dataIndex])
+            exportIdList.push(orders[row.dataIndex]._id)
         })
         rowsSelected.sort()
         const options = {
@@ -209,24 +219,64 @@ class UpdateExport extends Component {
                         </IconButton>
                     </Tooltip>
                 )
+            },
+            customToolbarSelect: selectedRows => {
+                let rowsSelected = []
+                selectedRows.data.forEach(row => {
+                    rowsSelected.push(row.dataIndex)
+                })
+                rowsSelected.sort()
+                return (
+                    <div>
+                        <Tooltip title="Xuất báo cáo">
+                            <IconButton
+                                onClick={() => {
+                                    this.setState({
+                                        openConfirmExport: true,
+                                        selectedRows: selectedRows.data,
+                                        rowsSelected
+                                    })
+                                }}>
+                                <ImportExportIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                )
             }
         }
         return (
             <>
                 <span className={classes.spacer} />
-                <div className={classes.row}>
-                    <Export
-                        size="small"
-                        variant="outlined"
-                        orders={orders}
-                        items={items}
-                        whName={whName}
-                        name={itemName}
-                        supplierName={supplierName}
-                        userName={userName}
-                    />
-                </div>
+                <div className={classes.row}></div>
                 <MUIDataTable data={data} columns={columns} options={options} />
+                <ConfirmDialog
+                    open={openConfirmExport}
+                    title="Bạn có chắc muốn xuất báo cáo?"
+                    cancelLabel="Huỷ"
+                    okLabel={
+                        <Export
+                            size="small"
+                            variant="outlined"
+                            orders={exportList}
+                            items={items}
+                            name={itemName}
+                            whName={whName}
+                            supplierName={supplierName}
+                            userName={userName}
+                            className={classes.exportButton}
+                            onClick={() => {
+                                this.handleClose()
+                                this.props.exportReport({
+                                    exportIdList,
+                                    callback: () => {
+                                        window.location.reload()
+                                    }
+                                })
+                            }}
+                        />
+                    }
+                    onHide={this.handleClose}
+                />
                 <ConfirmDialog
                     open={openConfirm}
                     title={`Bạn có chắc muốn khôi phục hoá đơn?`}

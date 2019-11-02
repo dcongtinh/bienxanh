@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @canReachAccess({ access: 'order' })
-@inject(({ order, wareHouse, item, supplier, auth }) => ({
+@inject(({ order, wareHouse, item, supplier, auth, exported }) => ({
     fetchMe: () => auth.fetchMe(),
     fetchAllOrders: () => order.fetchAllOrders(),
     addOrder: object => order.addOrder(object),
@@ -31,7 +31,9 @@ import { inject, observer } from 'mobx-react'
     fetchAllUser: () => auth.fetchAllUser(),
     users: JSON.parse(JSON.stringify(auth.users)),
     fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
-    wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses))
+    wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
+    exportReport: ({ exportIdList, callback }) =>
+        exported.exportReport({ exportIdList, callback })
 }))
 @observer
 class OrderPage extends Component {

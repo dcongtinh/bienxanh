@@ -114,9 +114,9 @@ class UpdateOrder extends React.Component {
         let optionsWarehouse = [],
             warehouseName = {}
         wareHouses.forEach(warehouse => {
-            warehouseName[warehouse._id] = `${warehouse.warehouseName} (${
-                warehouse.warehouse
-            })`
+            warehouseName[
+                warehouse._id
+            ] = `${warehouse.warehouseName} (${warehouse.warehouse})`
             optionsWarehouse.push({
                 value: warehouse._id,
                 label: `${warehouse.warehouseName} (${warehouse.warehouse})`
@@ -175,7 +175,7 @@ class UpdateOrder extends React.Component {
                                 props.onChange(data.value)
                             }}
                             options={optionsItem}
-                            className={'basic-single-select'}
+                            className={'item-single-select'}
                             classNamePrefix={'select'}
                             placeholder="Chọn hàng hoá"
                             styles={{
@@ -297,110 +297,6 @@ class UpdateOrder extends React.Component {
                 }
             },
             {
-                title: 'Phí VC',
-                field: 'itemFeeShip',
-                render: rowData => {
-                    return (
-                        <div>
-                            {rowData.itemFeeShip
-                                ? numeral(rowData.itemFeeShip).format(
-                                      '(0,0.[0000])'
-                                  )
-                                : '-'}
-                        </div>
-                    )
-                },
-                editComponent: props => (
-                    <TextField
-                        style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
-                        value={props.value}
-                        name="itemFeeShip"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom
-                        }}
-                    />
-                )
-            },
-            {
-                title: 'Phí GHMB',
-                field: 'itemFeeNorth',
-                render: rowData => {
-                    return (
-                        <div>
-                            {rowData.itemFeeNorth
-                                ? numeral(rowData.itemFeeNorth).format(
-                                      '(0,0.[0000])'
-                                  )
-                                : '-'}
-                        </div>
-                    )
-                },
-                editComponent: props => (
-                    <TextField
-                        style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
-                        value={props.value}
-                        name="itemFeeNorth"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom
-                        }}
-                    />
-                )
-            },
-            {
-                title: 'Phí GHMT',
-                field: 'itemFeeCentral',
-                render: rowData => {
-                    return (
-                        <div>
-                            {rowData.itemFeeCentral
-                                ? numeral(rowData.itemFeeCentral).format(
-                                      '(0,0.[0000])'
-                                  )
-                                : '-'}
-                        </div>
-                    )
-                },
-                editComponent: props => (
-                    <TextField
-                        style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
-                        value={props.value}
-                        name="itemFeeCentral"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom
-                        }}
-                    />
-                )
-            },
-            {
-                title: 'Phí GHMN',
-                field: 'itemFeeSouth',
-                render: rowData => {
-                    return (
-                        <div>
-                            {rowData.itemFeeSouth
-                                ? numeral(rowData.itemFeeSouth).format(
-                                      '(0,0.[0000])'
-                                  )
-                                : '-'}
-                        </div>
-                    )
-                },
-                editComponent: props => (
-                    <TextField
-                        style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
-                        value={props.value}
-                        name="itemFeeSouth"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom
-                        }}
-                    />
-                )
-            },
-            {
                 title: 'NVGH',
                 field: 'itemShipper',
                 headerStyle: {
@@ -448,6 +344,84 @@ class UpdateOrder extends React.Component {
                         />
                     )
                 }
+            },
+            {
+                title: 'Phí GH',
+                field: 'itemFeeShip',
+                render: rowData => {
+                    return (
+                        <div>
+                            {rowData.itemFeeShip
+                                ? numeral(rowData.itemFeeShip).format(
+                                      '(0,0.[0000])'
+                                  )
+                                : '-'}
+                        </div>
+                    )
+                },
+                editComponent: props => (
+                    <TextField
+                        style={{ width: 70 }}
+                        onChange={e => props.onChange(e.target.value)}
+                        value={props.value}
+                        name="itemFeeShip"
+                        InputProps={{
+                            inputComponent: NumberFormatCustom
+                        }}
+                    />
+                )
+            },
+            {
+                title: 'Phí VC',
+                field: 'itemFeeNorth',
+                render: rowData => {
+                    return (
+                        <div>
+                            {rowData.itemFeeNorth
+                                ? numeral(rowData.itemFeeNorth).format(
+                                      '(0,0.[0000])'
+                                  )
+                                : '-'}
+                        </div>
+                    )
+                },
+                editComponent: props => (
+                    <TextField
+                        style={{ width: 70 }}
+                        onChange={e => props.onChange(e.target.value)}
+                        value={props.value}
+                        name="itemFeeNorth"
+                        InputProps={{
+                            inputComponent: NumberFormatCustom
+                        }}
+                    />
+                )
+            },
+            {
+                title: 'Phí GiVC HK',
+                field: 'itemFeeCentral',
+                render: rowData => {
+                    return (
+                        <div>
+                            {rowData.itemFeeCentral
+                                ? numeral(rowData.itemFeeCentral).format(
+                                      '(0,0.[0000])'
+                                  )
+                                : '-'}
+                        </div>
+                    )
+                },
+                editComponent: props => (
+                    <TextField
+                        style={{ width: 70 }}
+                        onChange={e => props.onChange(e.target.value)}
+                        value={props.value}
+                        name="itemFeeCentral"
+                        InputProps={{
+                            inputComponent: NumberFormatCustom
+                        }}
+                    />
+                )
             },
             {
                 title: 'TL kiện',
@@ -614,9 +588,7 @@ class UpdateOrder extends React.Component {
                                 let warehouse =
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
-                                let buyerName = `26296/WH${buyerCode}/${
-                                    this.state.buyerName
-                                }`
+                                let buyerName = `26296/WH${buyerCode}/${this.state.buyerName}`
                                 this.props.updateOrder({
                                     idOrder,
                                     data: {

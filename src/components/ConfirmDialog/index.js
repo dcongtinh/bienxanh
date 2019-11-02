@@ -126,7 +126,7 @@ class ConfirmDialog extends Component {
                             {cancelLabel}
                         </Button>
                     )}
-                    {okLabel && (
+                    {typeof okLabel === 'string' ? (
                         <Button
                             color="primary"
                             variant="contained"
@@ -134,6 +134,8 @@ class ConfirmDialog extends Component {
                             onClick={onOK}>
                             {okLabel}
                         </Button>
+                    ) : (
+                        okLabel
                     )}
                 </DialogActions>
             </Dialog>

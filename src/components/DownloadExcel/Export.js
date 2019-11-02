@@ -42,15 +42,26 @@ export default class DownloadExcel extends Component {
         let idWarehouse = order.warehouse._id
             ? order.warehouse._id
             : order.warehouse
-        let { items } = this.props
+        let { items, suppliers } = this.props
         let _item = items.filter(item => {
             return item._id === idItem
         })
         _item = _item[0]
 
         let prices = []
-        _item[name].forEach(itemPrice => {
+        // console.log(order, item)
+        _item[name].forEach((itemPrice, index) => {
             let match = itemPrice[idWarehouse] ? true : false
+            if (name === 'itemTradePrices') {
+                let supplier = suppliers.filter(supplier => {
+                    return supplier._id === item.itemSupplier
+                })
+                supplier = supplier[0]
+                match &= supplier.supplierItems.some(supplierItem => {
+                    return supplierItem.value === item.itemName
+                })
+                match &= itemPrice.itemSupplier === item.itemSupplier
+            }
             if (match)
                 prices.push({
                     dateApply: itemPrice.dateApply,
@@ -73,51 +84,32 @@ export default class DownloadExcel extends Component {
                 break
             }
         }
+        // if (name === 'itemTradePrices')
+        //     console.log(order, item, _item, name, suppliers, price)
         return parseInt(price)
     }
     render() {
         let { orders, name, whName, supplierName, userName } = this.props
-        let headerProps = [
-            'itemNo', /// 1
-            'group', /// 2
-            'itemName', /// 19
-            'itemNote', /// 20,
-            'itemSupplier', /// 21
-            'itemShipper', /// 22
-            'itemQuantity', /// 24
-            'itemPrice', /// 25
-            'amountBeforeTax', /// 26
-            'itemTradePrice',
-            'totalPrice',
-            'beforeTax',
-            'discount1',
-            'discount2'
-        ]
+        // let headerProps = [
+        //     'itemNo', /// 1
+        //     'group', /// 2
+        //     'itemName', /// 19
+        //     'itemNote', /// 20,
+        //     'itemSupplier', /// 21
+        //     'itemShipper', /// 22
+        //     'itemQuantity', /// 24
+        //     'itemPrice', /// 25
+        //     'amountBeforeTax', /// 26
+        //     'itemTradePrice',
+        //     'totalPrice',
+        //     'beforeTax',
+        //     'discount1',
+        //     'discount2'
+        // ]
         let data = []
-        // itemNo = 0
-        // let header = []
-        // headerProps.forEach((value, index) => {
-        //     // let rgb
-        //     // if (index === 0) rgb = 'FFBFBFBF'
-        //     // else if (index === 1) rgb = 'FFDDD9C5'
-        //     // else if (2 <= index && index <= 12) rgb = 'FFFCE9DA'
-        //     // else if (13 <= index && index <= 15) rgb = 'FFE5B8B8'
-        //     // else rgb = 'FFDCE6F1'
-        //     header.push({
-        //         value,
-        //         style: {
-        //             // fill: {
-        //             //     fgColor: { rgb }
-        //             // },
-        //             font: styles.font,
-        //             border: styles.border
-        //         }
-        //     })
-        // })
         // data.push(header)
         let discount1 = 0.0353,
             discount2 = 0.045
-        console.log(orders)
         orders.forEach((order, index1) => {
             let idWarehouse = order.warehouse._id
                 ? order.warehouse._id
@@ -134,10 +126,10 @@ export default class DownloadExcel extends Component {
                 let {
                     itemFeeShip,
                     itemFeeCentral,
-                    itemFeeNorth,
-                    itemFeeSouth
+                    itemFeeNorth
+                    // itemFeeSouth
                 } = item
-                let itemFee = itemFeeCentral + itemFeeNorth + itemFeeSouth
+                // let itemFee = itemFeeCentral + itemFeeNorth + itemFeeSouth
                 // let itemPrice = item.itemPrice || 0
                 let itemPrice = this.getPrice(order, item, 'itemPrices')
                 let itemTradePrice = this.getPrice(
@@ -145,12 +137,12 @@ export default class DownloadExcel extends Component {
                     item,
                     'itemTradePrices'
                 )
-                let beforeTax =
-                    itemQuantity *
-                        itemTradePrice *
-                        (1 - discount1 - discount2) -
-                    (itemQuantity * itemPrice + itemFeeShip) -
-                    itemFee
+                // let beforeTax =
+                //     itemQuantity *
+                //         itemTradePrice *
+                //         (1 - discount1 - discount2) -
+                //     (itemQuantity * itemPrice + itemFeeShip) -
+                //     itemFee
 
                 ///1. itemNo
                 let row = []
@@ -395,11 +387,14 @@ export default class DownloadExcel extends Component {
         return (
             <div>
                 <ExcelFile
-                    filename="DonHang"
+                    filename="BaoCao"
                     element={
-                        <Button {...this.props}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={this.props.onClick}>
                             <ArrowUpwardIcon />
-                            Xuất Đơn hàng
+                            Xuất Báo Cáo
                         </Button>
                     }>
                     <ExcelSheet dataSet={multiDataSet} name="Hoa don" />

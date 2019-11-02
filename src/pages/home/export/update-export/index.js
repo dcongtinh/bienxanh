@@ -21,7 +21,9 @@ import { inject, observer } from 'mobx-react'
     fetchAllSuppliers: () => supplier.fetchAllSuppliers(),
     suppliers: JSON.parse(JSON.stringify(supplier.suppliers)),
     fetchAllUser: () => auth.fetchAllUser(),
-    users: JSON.parse(JSON.stringify(auth.users))
+    users: JSON.parse(JSON.stringify(auth.users)),
+    exportReport: ({ exportIdList, callback }) =>
+        exported.exportReport({ exportIdList, callback })
 }))
 @observer
 class UpdateExportPage extends Component {

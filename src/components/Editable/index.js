@@ -52,6 +52,9 @@ class Editable extends React.Component {
                 icons={tableIcons}
                 title={title || ''}
                 columns={columns}
+                options={{
+                    toolbarButtonAlignment: 'left'
+                }}
                 data={data}
                 editable={{
                     onRowAdd: newData =>
