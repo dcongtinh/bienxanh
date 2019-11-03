@@ -64,6 +64,7 @@ const styles = theme => ({
         marginTop: theme.spacing(2)
     },
     supplierName: {
+        padding: '4px 0',
         maxWidth: 120,
         overflow: 'hidden',
         textOverflow: 'ellipsis'

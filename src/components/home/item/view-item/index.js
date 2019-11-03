@@ -26,6 +26,7 @@ const NumberFormatCustom = props => {
 }
 const styles = theme => ({
     supplierName: {
+        padding: '4px 0',
         maxWidth: 200,
         overflow: 'hidden',
         textOverflow: 'ellipsis'
