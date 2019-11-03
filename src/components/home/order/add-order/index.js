@@ -223,7 +223,7 @@ class AddOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 70 }}
+                        style={{ width: 60 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemQuantity"
@@ -233,9 +233,14 @@ class AddOrder extends React.Component {
                     />
                 )
             },
-
             {
                 title: 'Hao hụt',
+                headerStyle: {
+                    padding: 0
+                },
+                cellStyle: {
+                    padding: 0
+                },
                 field: 'itemLoss',
                 render: rowData => {
                     return (
@@ -250,7 +255,7 @@ class AddOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 70 }}
+                        style={{ width: 60 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemLoss"
@@ -262,10 +267,10 @@ class AddOrder extends React.Component {
             },
             {
                 title: 'NCC',
-                field: 'itemSupplier',
                 headerStyle: {
-                    marginBottom: 4
+                    padding: 0
                 },
+                field: 'itemSupplier',
                 render: rowData => {
                     return (
                         <div className={classes.supplierName}>
@@ -411,7 +416,7 @@ class AddOrder extends React.Component {
                 )
             },
             {
-                title: 'Phí GiVC HK',
+                title: 'Giá VCHK',
                 field: 'itemFeeCentral',
                 render: rowData => {
                     return (
@@ -478,7 +483,7 @@ class AddOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 70 }}
+                        style={{ width: 60 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemWeight"
@@ -487,6 +492,55 @@ class AddOrder extends React.Component {
                         }}
                     />
                 )
+            },
+            {
+                title: 'NCC VC',
+                field: 'itemTransfer',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div className={classes.supplierName}>
+                            {nameSupplier[rowData.itemTransfer]}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: nameSupplier[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="itemTransfer"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={supplierList}
+                            className={'basic-single-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn NCC VC"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
             }
         ]
         data.forEach((order, index) => {
@@ -658,7 +712,7 @@ class AddOrder extends React.Component {
                                     optionsWarehouse[0].value
                                 let { date } = this.state
                                 let _data = data.filter(item => {
-                                    return item.itemName && item.itemQuantity
+                                    return item.itemName
                                 })
                                 let buyerName = `26296/WH${buyerCode}/${this.state.buyerName}`
                                 let initData = []

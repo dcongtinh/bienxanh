@@ -211,7 +211,7 @@ class UpdateOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 70 }}
+                        style={{ width: 60 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemQuantity"
@@ -237,7 +237,7 @@ class UpdateOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 70 }}
+                        style={{ width: 60 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemLoss"
@@ -398,7 +398,7 @@ class UpdateOrder extends React.Component {
                 )
             },
             {
-                title: 'Phí GiVC HK',
+                title: 'Giá VCHK',
                 field: 'itemFeeCentral',
                 render: rowData => {
                     return (
@@ -439,7 +439,7 @@ class UpdateOrder extends React.Component {
                 },
                 editComponent: props => (
                     <TextField
-                        style={{ width: 70 }}
+                        style={{ width: 60 }}
                         onChange={e => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemWeight"
@@ -448,6 +448,55 @@ class UpdateOrder extends React.Component {
                         }}
                     />
                 )
+            },
+            {
+                title: 'NCC VC',
+                field: 'itemTransfer',
+                headerStyle: {
+                    marginBottom: 4
+                },
+                render: rowData => {
+                    return (
+                        <div className={classes.supplierName}>
+                            {name[rowData.itemTransfer]}
+                        </div>
+                    )
+                },
+                editComponent: props => {
+                    let data
+                    if (props.value) {
+                        data = {
+                            value: props.value,
+                            label: name[props.value]
+                        }
+                    }
+                    return (
+                        <Select
+                            name="itemTransfer"
+                            value={data}
+                            onChange={data => {
+                                props.onChange(data.value)
+                            }}
+                            options={supplierList}
+                            className={'basic-single-select'}
+                            classNamePrefix={'select'}
+                            placeholder="Chọn NCC VC"
+                            styles={{
+                                multiValue: base => ({
+                                    ...base,
+                                    borderRadius: 16
+                                }),
+                                option: base => ({
+                                    ...base,
+                                    maxWidth: '100%',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                })
+                            }}
+                        />
+                    )
+                }
             }
         ]
         data.forEach((_order, index) => {

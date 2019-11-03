@@ -121,6 +121,7 @@ export default class DownloadExcel extends Component {
                 let itemLoss = item.itemLoss || 0
                 let itemWeight = item.itemWeight || 0
                 let itemSupplier = supplierName[item.itemSupplier] || ''
+                let itemTransfer = supplierName[item.itemTransfer] || ''
                 let itemShipper = userName[item.itemShipper] || ''
 
                 let {
@@ -303,7 +304,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///NCC VC
                 row.push({
-                    value: '',
+                    value: itemTransfer,
                     style: {
                         font: styles.font,
                         border: styles.border
