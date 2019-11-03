@@ -115,7 +115,6 @@ export default class DownloadExcel extends Component {
                 ? order.warehouse._id
                 : order.warehouse
             let warehouseName = whName[idWarehouse]
-
             order.orders.forEach((item, index2) => {
                 let itemQuantity = item.itemQuantity || 0
                 let itemLoss = item.itemLoss || 0
@@ -157,13 +156,15 @@ export default class DownloadExcel extends Component {
                         border: styles.border
                     }
                 })
-                // row.push({
-                //     value: ++itemNo,
-                //     style: {
-                //         font: styles.font,
-                //         border: styles.border
-                //     }
-                // })
+                ///number
+                row.push({
+                    value: order.buyerName || '',
+                    style: {
+                        font: styles.font,
+                        border: styles.border,
+                        alignment: styles.alignCenter
+                    }
+                })
                 ///2. group
                 row.push({
                     value: order.group,
@@ -175,7 +176,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///3. warehouse
                 row.push({
-                    value: warehouseName.warehouseName,
+                    value: warehouseName.warehouse,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -208,7 +209,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///25. itemPrice
                 row.push({
-                    value: itemPrice,
+                    value: itemTradePrice,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -217,7 +218,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///26. amountBeforeTax
                 row.push({
-                    value: (itemQuantity + itemLoss) * itemPrice,
+                    value: (itemQuantity + itemLoss) * itemTradePrice,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -240,24 +241,6 @@ export default class DownloadExcel extends Component {
                         border: styles.border
                     }
                 })
-                ///25. itemTradePrice
-                // row.push({
-                //     value: itemTradePrice,
-                //     style: {
-                //         font: styles.font,
-                //         border: styles.border,
-                //         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                //     }
-                // })
-                // ///26. totalPrice
-                // row.push({
-                //     value: itemQuantity * itemTradePrice,
-                //     style: {
-                //         font: styles.font,
-                //         border: styles.border,
-                //         numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                //     }
-                // })
                 ///PHI GH
                 row.push({
                     value: itemFeeShip || 0,
@@ -312,7 +295,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///DON GIA BAN
                 row.push({
-                    value: itemTradePrice,
+                    value: itemPrice,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -321,10 +304,11 @@ export default class DownloadExcel extends Component {
                 })
                 ///DOANH THU
                 row.push({
-                    value: '',
+                    value: itemQuantity * itemPrice,
                     style: {
                         font: styles.font,
-                        border: styles.border
+                        border: styles.border,
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
                     }
                 })
                 ///26. totalPrice
@@ -338,7 +322,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///26. discount1
                 row.push({
-                    value: itemQuantity * itemTradePrice * discount1,
+                    value: itemQuantity * itemPrice * discount1,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -347,7 +331,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///26. discount2
                 row.push({
-                    value: itemQuantity * itemTradePrice * discount2,
+                    value: itemQuantity * itemPrice * discount2,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -362,11 +346,12 @@ export default class DownloadExcel extends Component {
                 columns: [
                     'NGÀY GIAO', /// 1
                     'SỐ ORDER', /// 2
+                    'NHÓM ORDER', /// 4
                     'KHO', ///3
                     'LOẠI HÀNG', /// 19
                     'SỐ LƯỢNG', /// 24
                     'HAO HỤT',
-                    'ĐƠN GIÁ', /// 25
+                    'ĐƠN GIÁ MUA', /// 25
                     'THÀNH TIỀN', /// 26
                     'NCC', /// 21
                     'NVGH', /// 21

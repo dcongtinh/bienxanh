@@ -53,6 +53,9 @@ class Editable extends React.Component {
                 title={title || ''}
                 columns={columns}
                 data={data}
+                options={{
+                    toolbarButtonAlignment: 'left'
+                }}
                 editable={{
                     onRowAdd: newData =>
                         new Promise((resolve, reject) => {
