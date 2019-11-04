@@ -331,7 +331,7 @@ class Order extends Component {
             }
         })
         suppliers.forEach(supplier => {
-            supplierName[supplier._id] = supplier.supplierName
+            supplierName[supplier._id] = supplier.supplierCode
         })
         users.forEach(user => {
             userName[user._id] = user.lastname
