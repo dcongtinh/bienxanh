@@ -442,7 +442,8 @@ class Order extends Component {
 
                         let length = rowsSelected.length
                         let ordersFirst = orders[rowsSelected[0]]
-                        let { group, date } = ordersFirst
+                        // let { group, date } = ordersFirst
+                        let { date } = ordersFirst
                         let _orders = ordersFirst.orders
                         let warehouse = ordersFirst.warehouse._id
                         let mergeList = [] // list _id of orders was merged
@@ -452,7 +453,7 @@ class Order extends Component {
                             let index = rowsSelected[i]
                             _orders = _orders.concat(orders[index].orders)
                             mergeList.push(orders[index]._id)
-                            group = Math.min(group, orders[index].group)
+                            // group = Math.min(group, orders[index].group)
                         }
                         let marks = {},
                             _orderList = []
@@ -476,7 +477,6 @@ class Order extends Component {
                                 this.props.addOrder({
                                     buyerName: ordersFirst.buyerName,
                                     itemNote: '',
-                                    group,
                                     warehouse,
                                     orders: _orderList,
                                     owner: me._id,
