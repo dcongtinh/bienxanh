@@ -261,6 +261,7 @@ class UpdateExport extends Component {
                             items={items}
                             name={itemName}
                             whName={whName}
+                            suppliers={suppliers}
                             supplierName={supplierName}
                             userName={userName}
                             className={classes.exportButton}
