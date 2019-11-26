@@ -545,7 +545,7 @@ class AddOrder extends React.Component {
             }
         ]
         data.forEach((order, index) => {
-            delete order.tableData
+            // delete order.tableData
             if (order.itemName) {
                 let idItem = order.itemName
                 let idWarehouse = this.state.warehouse || wareHouses[0]._id
