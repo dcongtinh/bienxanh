@@ -60,7 +60,7 @@ class Order extends Component {
             users,
             orders
         } = this.props
-        // console.log(orders)
+
         let itemName = {},
             whName = {},
             supplierName = {},
@@ -346,6 +346,7 @@ class Order extends Component {
                             size="small"
                             variant="outlined"
                             orders={orders}
+                            suppliers={suppliers}
                             items={items}
                             name={itemName}
                             onClick={() => {

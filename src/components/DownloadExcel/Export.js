@@ -49,7 +49,6 @@ export default class DownloadExcel extends Component {
         _item = _item[0]
 
         let prices = []
-        // console.log(order, item)
         _item[name].forEach((itemPrice, index) => {
             let match = itemPrice[idWarehouse] ? true : false
             if (name === 'itemTradePrices') {
@@ -57,9 +56,11 @@ export default class DownloadExcel extends Component {
                     return supplier._id === item.itemSupplier
                 })
                 supplier = supplier[0]
-                match &= supplier.supplierItems.some(supplierItem => {
-                    return supplierItem.value === item.itemName
-                })
+                match &=
+                    supplier &&
+                    supplier.supplierItems.some(supplierItem => {
+                        return supplierItem.value === item.itemName
+                    })
                 match &= itemPrice.itemSupplier === item.itemSupplier
             }
             if (match)

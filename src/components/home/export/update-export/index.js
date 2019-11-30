@@ -143,7 +143,9 @@ class UpdateExport extends Component {
             row.push(whName[order.warehouse].buyerCode)
             row.push(order.buyerName)
             row.push(
-                `${whName[order.warehouse].warehouseName} (${whName[order.warehouse].warehouse})`
+                `${whName[order.warehouse].warehouseName} (${
+                    whName[order.warehouse].warehouse
+                })`
             )
             let itemList = '',
                 quantityList = ''
