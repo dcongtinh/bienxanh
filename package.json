@@ -2,6 +2,10 @@
     "name": "codebase",
     "version": "0.1.0",
     "private": true,
+    "engines": {
+        "node": "10.16.1",
+        "yarn": "1.17.3"
+    },
     "dependencies": {
         "@babel/core": "7.4.3",
         "@babel/plugin-proposal-decorators": "7.4.4",
