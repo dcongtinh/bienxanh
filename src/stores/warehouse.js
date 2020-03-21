@@ -48,10 +48,13 @@ class WarehouseStore {
         this.isRequesting = false
     }
     @action
-    async fetchAllWarehouses() {
+    async fetchAllWarehouses(query) {
         this.isRequesting = true
-        const { success, data } = await wareHouseAPI.getAllWarehouses()
-        if (success) this.wareHouses = data.wareHouses
+        const { success, data } = await wareHouseAPI.getAllWarehouses(query)
+        if (success) {
+            this.wareHouses = data.wareHouses
+            this.wareHousesTotal = data.count
+        }
         this.isRequesting = false
     }
     @action

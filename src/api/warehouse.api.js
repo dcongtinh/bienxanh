@@ -24,7 +24,9 @@ const wareHouseAPI = {
             buyerLegalName,
             buyerTaxCode
         }),
-    getAllWarehouses: () => axios.get(c('/get-warehouses')),
+    getAllWarehouses: ({ page = 0, itemPerPage = 100 }) =>
+        axios.get(c(`/get-warehouses?page=${page}&itemPerPage=${itemPerPage}`)),
+    // getAllWarehouses: () => axios.get(c('/get-warehouses')),
     getWarehouse: ({ idWarehouse }) =>
         axios.post(c('/get-warehouse'), { idWarehouse }),
     updateWarehouse: ({

@@ -8,21 +8,59 @@ import AddBox from '@material-ui/icons/AddBox'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import styles from 'components/home/styles'
-
+import queryString from 'query-string'
+import wareHouseAPI from 'api/warehouse.api'
+import { CircularProgress } from '@material-ui/core'
 class Warehouse extends Component {
     constructor(props) {
         super(props)
+        const query = queryString.parse(props.location.search)
         this.state = {
+            page: query.page || 0,
+            itemPerPage: query.itemPerPage || 100,
+            count: props.wareHousesTotal,
+            wareHouses: props.wareHouses,
             openConfirm: false,
             selectedRows: [],
-            rowsSelected: []
+            rowsSelected: [],
+            isLoading: false
         }
     }
     handleClose = () => {
         this.setState({ openConfirm: false })
     }
+    changePage = async page => {
+        this.setState({ isLoading: true })
+        let { itemPerPage } = this.state
+        const { success, data } = await wareHouseAPI.getAllWarehouses({
+            page,
+            itemPerPage
+        })
+        if (success) {
+            this.setState({
+                page,
+                wareHouses: data.wareHouses,
+                isLoading: false
+            })
+        }
+    }
+    changeRowsPerPage = async rowsPerPage => {
+        this.setState({ isLoading: true })
+        const { success, data } = await wareHouseAPI.getAllWarehouses({
+            itemPerPage: rowsPerPage
+        })
+        if (success) {
+            this.setState({
+                page: 0,
+                itemPerPage: rowsPerPage,
+                wareHouses: data.wareHouses,
+                isLoading: false
+            })
+        }
+    }
     render() {
-        let { wareHouses, classes } = this.props
+        let { classes } = this.props
+        let { page, itemPerPage, count, wareHouses, isLoading } = this.state
         const columns = [
             'Mã kho',
             'Tên kho',
@@ -67,7 +105,10 @@ class Warehouse extends Component {
         })
         rowsSelected.sort()
         const options = {
-            rowsPerPage: 100,
+            serverSide: true,
+            page,
+            count,
+            rowsPerPage: itemPerPage,
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,
@@ -142,13 +183,45 @@ class Warehouse extends Component {
                 this.props.history.push(
                     `/dashboard/warehouses/${wareHouses[rowMeta.dataIndex]._id}`
                 )
+            },
+            onTableChange: (action, tableState) => {
+                // a developer could react to change on an action basis or
+                // examine the state as a whole and do whatever they want
+                switch (action) {
+                    case 'changePage':
+                        this.changePage(tableState.page)
+                        break
+                    case 'changeRowsPerPage':
+                        this.changeRowsPerPage(tableState.rowsPerPage)
+                        break
+                    default:
+                        break
+                }
             }
         }
 
         return (
             <>
                 <span className={classes.spacer} />
-                <MUIDataTable data={data} columns={columns} options={options} />
+                <MUIDataTable
+                    title={
+                        <>
+                            {isLoading && (
+                                <CircularProgress
+                                    size={24}
+                                    style={{
+                                        marginLeft: 15,
+                                        position: 'relative',
+                                        top: 4
+                                    }}
+                                />
+                            )}
+                        </>
+                    }
+                    data={data}
+                    columns={columns}
+                    options={options}
+                />
                 <ConfirmDialog
                     open={this.state.openConfirm}
                     title="Bạn có chắc muốn xoá kho?"
