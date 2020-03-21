@@ -157,7 +157,7 @@ class Export extends Component {
                         this.state.rowsSelected.forEach(index => {
                             exportsList.push(exportList[index]._id)
                             exportedList = exportedList.concat(
-                                exportedListId[index].exportedList
+                                exportedListId[index]
                             )
                         })
                         this.props.deleteExports({ exportedList, exportsList })

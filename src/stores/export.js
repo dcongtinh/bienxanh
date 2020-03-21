@@ -19,8 +19,16 @@ class ExportStore {
         this.exportedListId = []
         const { success, data } = await exportAPI.getAllExports()
         if (success) {
+            let exportedListId = []
+            data.exportedList.forEach(element => {
+                let array = []
+                element.exportedList.forEach(x => {
+                    array.push(x._id)
+                })
+                exportedListId.push(array)
+            })
             this.exports = data.exportedList
-            this.exportedListId = data.exportedListId
+            this.exportedListId = exportedListId
         }
         this.isRequesting = false
     }
