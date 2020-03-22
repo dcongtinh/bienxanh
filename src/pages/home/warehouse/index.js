@@ -8,7 +8,8 @@ import queryString from 'query-string'
 @createIsAuthenticated({})
 @canReachAccess({ access: 'warehouse' })
 @inject(({ wareHouse }) => ({
-    fetchAllWarehouses: query => wareHouse.fetchAllWarehouses(query),
+    showAllWarehouses: query => wareHouse.showAllWarehouses(query),
+    // fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     deleteWareHouses: ({ wareHousesListId }) =>
         wareHouse.deleteWareHouses({ wareHousesListId }),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
@@ -19,7 +20,8 @@ import queryString from 'query-string'
 class WarehousePage extends Component {
     componentDidMount() {
         const query = queryString.parse(this.props.location.search)
-        this.props.fetchAllWarehouses(query)
+        // this.props.fetchAllWarehouses(query)
+        this.props.showAllWarehouses(query)
     }
 
     render() {

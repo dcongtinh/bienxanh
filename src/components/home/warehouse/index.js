@@ -37,7 +37,7 @@ class Warehouse extends Component {
     changePage = async page => {
         this.setState({ isLoading: true })
         let { itemPerPage, order, column } = this.state
-        const { success, data } = await wareHouseAPI.getAllWarehouses({
+        const { success, data } = await wareHouseAPI.showAllWarehouses({
             page,
             itemPerPage,
             order,
@@ -54,7 +54,7 @@ class Warehouse extends Component {
     changeRowsPerPage = async rowsPerPage => {
         this.setState({ isLoading: true })
         let { order, column } = this.state
-        const { success, data } = await wareHouseAPI.getAllWarehouses({
+        const { success, data } = await wareHouseAPI.showAllWarehouses({
             itemPerPage: rowsPerPage,
             order,
             column
@@ -71,7 +71,7 @@ class Warehouse extends Component {
     sortColumn = async (column, order) => {
         let { page, itemPerPage } = this.state
         this.setState({ isLoading: true })
-        const { success, data } = await wareHouseAPI.getAllWarehouses({
+        const { success, data } = await wareHouseAPI.showAllWarehouses({
             page,
             itemPerPage,
             column,
@@ -91,7 +91,7 @@ class Warehouse extends Component {
 
         this.setState({ isLoading: true, filters: filterList })
 
-        const { success, data } = await wareHouseAPI.getAllWarehouses({
+        const { success, data } = await wareHouseAPI.showAllWarehouses({
             filters: filterList
         })
         if (success) {
@@ -276,17 +276,17 @@ class Warehouse extends Component {
             //         this.filter(filterList)
             //     }
             // },
-            customFilterDialogFooter: filterList => {
-                return (
-                    <div style={{ marginTop: '40px' }}>
-                        <Button
-                            variant="contained"
-                            onClick={() => this.filter(filterList)}>
-                            Apply
-                        </Button>
-                    </div>
-                )
-            },
+            // customFilterDialogFooter: filterList => {
+            //     return (
+            //         <div style={{ marginTop: '40px' }}>
+            //             <Button
+            //                 variant="contained"
+            //                 onClick={() => this.filter(filterList)}>
+            //                 Apply
+            //             </Button>
+            //         </div>
+            //     )
+            // },
             onTableChange: (action, tableState) => {
                 // a developer could react to change on an action basis or
                 // examine the state as a whole and do whatever they want
