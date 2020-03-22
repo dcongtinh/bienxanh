@@ -19,6 +19,9 @@ class Warehouse extends Component {
             page: query.page || 0,
             itemPerPage: query.itemPerPage || 100,
             count: props.wareHousesTotal,
+            column: query.page === '' ? '' : query.page,
+            order: query.order === '' ? '' : query.order,
+            searchText: query.searchText || null,
             wareHouses: props.wareHouses,
             openConfirm: false,
             selectedRows: [],
@@ -31,10 +34,12 @@ class Warehouse extends Component {
     }
     changePage = async page => {
         this.setState({ isLoading: true })
-        let { itemPerPage } = this.state
+        let { itemPerPage, order, column } = this.state
         const { success, data } = await wareHouseAPI.getAllWarehouses({
             page,
-            itemPerPage
+            itemPerPage,
+            order,
+            column
         })
         if (success) {
             this.setState({
@@ -46,8 +51,11 @@ class Warehouse extends Component {
     }
     changeRowsPerPage = async rowsPerPage => {
         this.setState({ isLoading: true })
+        let { order, column } = this.state
         const { success, data } = await wareHouseAPI.getAllWarehouses({
-            itemPerPage: rowsPerPage
+            itemPerPage: rowsPerPage,
+            order,
+            column
         })
         if (success) {
             this.setState({
@@ -58,19 +66,94 @@ class Warehouse extends Component {
             })
         }
     }
+    sortColumn = async (column, order) => {
+        let { page, itemPerPage } = this.state
+        this.setState({ isLoading: true })
+        const { success, data } = await wareHouseAPI.getAllWarehouses({
+            page,
+            itemPerPage,
+            column,
+            order
+        })
+        if (success) {
+            this.setState({
+                column,
+                order,
+                wareHouses: data.wareHouses,
+                isLoading: false
+            })
+        }
+    }
+    search = async searchText => {
+        // setTimeout(() => {
+        let { itemPerPage } = this.state
+        this.setState({ isLoading: true, searchText })
+        // console.log(searchText)
+        // }, 2000)
+
+        // const { success, data } = await wareHouseAPI.getAllWarehouses({
+        //     itemPerPage,
+        //     searchText
+        // })
+        // if (success) {
+        //     this.setState({
+        //         page: 0,
+        //         column: '',
+        //         order: '',
+        //         wareHouses: data.wareHouses,
+        //         isLoading: false,
+        //         count: data.count
+        //     })
+        // }
+    }
     render() {
         let { classes } = this.props
-        let { page, itemPerPage, count, wareHouses, isLoading } = this.state
+        let {
+            page,
+            itemPerPage,
+            count,
+            wareHouses,
+            isLoading,
+            column,
+            order,
+            searchText
+        } = this.state
         const columns = [
-            'Mã kho',
-            'Tên kho',
-            'Tên khách hàng',
-            'Tên đơn vị',
-            'Mã số thuế',
+            {
+                name: 'Mã kho',
+                options: {
+                    sortDirection: column === 0 ? order : null
+                }
+            },
+            {
+                name: 'Tên kho',
+                options: {
+                    sortDirection: column === 1 ? order : null
+                }
+            },
+            {
+                name: 'Tên khách hàng',
+                options: {
+                    sortDirection: column === 2 ? order : null
+                }
+            },
+            {
+                name: 'Tên đơn vị',
+                options: {
+                    sortDirection: column === 3 ? order : null
+                }
+            },
+            {
+                name: 'Mã số thuế',
+                options: {
+                    sortDirection: column === 4 ? order : null
+                }
+            },
             {
                 name: 'Chỉnh sửa',
                 options: {
                     filter: false,
+                    sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <div className={classes.editOption}>
                             <IconButton
@@ -109,6 +192,7 @@ class Warehouse extends Component {
             page,
             count,
             rowsPerPage: itemPerPage,
+            searchText,
             filterType: 'dropdown',
             responsive: 'scroll',
             filter: true,
@@ -184,9 +268,11 @@ class Warehouse extends Component {
                     `/dashboard/warehouses/${wareHouses[rowMeta.dataIndex]._id}`
                 )
             },
+
             onTableChange: (action, tableState) => {
                 // a developer could react to change on an action basis or
                 // examine the state as a whole and do whatever they want
+                // console.log({ action, tableState })
                 switch (action) {
                     case 'changePage':
                         this.changePage(tableState.page)
@@ -194,10 +280,40 @@ class Warehouse extends Component {
                     case 'changeRowsPerPage':
                         this.changeRowsPerPage(tableState.rowsPerPage)
                         break
+                    case 'sort':
+                        let order =
+                            tableState.announceText.indexOf('desc') !== -1
+                                ? 'desc'
+                                : 'asc'
+                        this.sortColumn(tableState.activeColumn, order)
+                        break
+                    // case 'search':
+                    //     this.search(tableState.searchText)
+                    //     break
                     default:
                         break
                 }
             }
+            // onFilterDialogOpen: () => {
+            //     console.log('filter dialog opened');
+            //   },
+            //   onFilterDialogClose: () => {
+            //     console.log('filter dialog closed');
+            //   },
+            //   onFilterChange: (column, filterList, type) => {
+            //     if (type === 'chip') {
+            //       console.log('updating filters via chip');
+            //       this.handleFilterSubmit(filterList)();
+            //     }
+            //   },
+            //   customFilterDialogFooter: filterList => {
+            //     return (
+            //       <div style={{ marginTop: '40px' }}>
+            //         <Button variant="contained" onClick={this.handleFilterSubmit(filterList)}>Apply Filters*</Button>
+            //         <p><em>*(Simulates selecting "Chicago" from "Location")</em></p>
+            //       </div>
+            //     );
+            //   }
         }
 
         return (

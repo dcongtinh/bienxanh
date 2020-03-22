@@ -24,8 +24,18 @@ const wareHouseAPI = {
             buyerLegalName,
             buyerTaxCode
         }),
-    getAllWarehouses: ({ page = 0, itemPerPage = 100 }) =>
-        axios.get(c(`/get-warehouses?page=${page}&itemPerPage=${itemPerPage}`)),
+    getAllWarehouses: ({
+        page = 0,
+        itemPerPage = 100,
+        column = '',
+        order = '',
+        searchText = ''
+    }) =>
+        axios.get(
+            c(
+                `/get-warehouses?page=${page}&itemPerPage=${itemPerPage}&column=${column}&order=${order}&searchText=${searchText}`
+            )
+        ),
     // getAllWarehouses: () => axios.get(c('/get-warehouses')),
     getWarehouse: ({ idWarehouse }) =>
         axios.post(c('/get-warehouse'), { idWarehouse }),
