@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from 'components/home/styles'
 import queryString from 'query-string'
 import wareHouseAPI from 'api/warehouse.api'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, Button } from '@material-ui/core'
 class Warehouse extends Component {
     constructor(props) {
         super(props)
@@ -21,6 +21,8 @@ class Warehouse extends Component {
             count: props.wareHousesTotal,
             column: query.page === '' ? '' : query.page,
             order: query.order === '' ? '' : query.order,
+            serverSideFilterList: [],
+            filters: [[], [], [], [], []],
             searchText: query.searchText || null,
             wareHouses: props.wareHouses,
             openConfirm: false,
@@ -84,27 +86,24 @@ class Warehouse extends Component {
             })
         }
     }
-    search = async searchText => {
-        // setTimeout(() => {
-        let { itemPerPage } = this.state
-        this.setState({ isLoading: true, searchText })
-        // console.log(searchText)
-        // }, 2000)
+    filter = async filterList => {
+        console.log('Submitting filters: ', filterList)
 
-        // const { success, data } = await wareHouseAPI.getAllWarehouses({
-        //     itemPerPage,
-        //     searchText
-        // })
-        // if (success) {
-        //     this.setState({
-        //         page: 0,
-        //         column: '',
-        //         order: '',
-        //         wareHouses: data.wareHouses,
-        //         isLoading: false,
-        //         count: data.count
-        //     })
-        // }
+        this.setState({ isLoading: true, filters: filterList })
+
+        const { success, data } = await wareHouseAPI.getAllWarehouses({
+            filters: filterList
+        })
+        if (success) {
+            this.setState({
+                page: 0,
+                itemPerPage: 100,
+                column: '',
+                order: '',
+                wareHouses: data.wareHouses,
+                isLoading: false
+            })
+        }
     }
     render() {
         let { classes } = this.props
@@ -116,37 +115,43 @@ class Warehouse extends Component {
             isLoading,
             column,
             order,
-            searchText
+            searchText,
+            filters
         } = this.state
         const columns = [
             {
                 name: 'Mã kho',
                 options: {
-                    sortDirection: column === 0 ? order : null
+                    sortDirection: column === 0 ? order : null,
+                    filterList: filters[0]
                 }
             },
             {
                 name: 'Tên kho',
                 options: {
-                    sortDirection: column === 1 ? order : null
+                    sortDirection: column === 1 ? order : null,
+                    filterList: filters[1]
                 }
             },
             {
                 name: 'Tên khách hàng',
                 options: {
-                    sortDirection: column === 2 ? order : null
+                    sortDirection: column === 2 ? order : null,
+                    filterList: filters[2]
                 }
             },
             {
                 name: 'Tên đơn vị',
                 options: {
-                    sortDirection: column === 3 ? order : null
+                    sortDirection: column === 3 ? order : null,
+                    filterList: filters[3]
                 }
             },
             {
                 name: 'Mã số thuế',
                 options: {
-                    sortDirection: column === 4 ? order : null
+                    sortDirection: column === 4 ? order : null,
+                    filterList: filters[4]
                 }
             },
             {
@@ -193,9 +198,11 @@ class Warehouse extends Component {
             count,
             rowsPerPage: itemPerPage,
             searchText,
+            filter: false,
+            serverSideFilterList: filters,
             filterType: 'dropdown',
+            searchable: false,
             responsive: 'scroll',
-            filter: true,
             rowsSelected,
             selectableRowsOnClick: true,
             textLabels: {
@@ -263,12 +270,23 @@ class Warehouse extends Component {
                     <RemoveCircleIcon />
                 </IconButton>
             ),
-            onRowClick: (rowData, rowMeta) => {
-                this.props.history.push(
-                    `/dashboard/warehouses/${wareHouses[rowMeta.dataIndex]._id}`
+            // onFilterChange: (column, filterList, type) => {
+            //     if (type === 'chip') {
+            //         console.log('updating filters via chip')
+            //         this.filter(filterList)
+            //     }
+            // },
+            customFilterDialogFooter: filterList => {
+                return (
+                    <div style={{ marginTop: '40px' }}>
+                        <Button
+                            variant="contained"
+                            onClick={() => this.filter(filterList)}>
+                            Apply
+                        </Button>
+                    </div>
                 )
             },
-
             onTableChange: (action, tableState) => {
                 // a developer could react to change on an action basis or
                 // examine the state as a whole and do whatever they want
@@ -294,26 +312,6 @@ class Warehouse extends Component {
                         break
                 }
             }
-            // onFilterDialogOpen: () => {
-            //     console.log('filter dialog opened');
-            //   },
-            //   onFilterDialogClose: () => {
-            //     console.log('filter dialog closed');
-            //   },
-            //   onFilterChange: (column, filterList, type) => {
-            //     if (type === 'chip') {
-            //       console.log('updating filters via chip');
-            //       this.handleFilterSubmit(filterList)();
-            //     }
-            //   },
-            //   customFilterDialogFooter: filterList => {
-            //     return (
-            //       <div style={{ marginTop: '40px' }}>
-            //         <Button variant="contained" onClick={this.handleFilterSubmit(filterList)}>Apply Filters*</Button>
-            //         <p><em>*(Simulates selecting "Chicago" from "Location")</em></p>
-            //       </div>
-            //     );
-            //   }
         }
 
         return (

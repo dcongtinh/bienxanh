@@ -29,11 +29,12 @@ const wareHouseAPI = {
         itemPerPage = 100,
         column = '',
         order = '',
-        searchText = ''
+        searchText = '',
+        filters = []
     }) =>
         axios.get(
             c(
-                `/get-warehouses?page=${page}&itemPerPage=${itemPerPage}&column=${column}&order=${order}&searchText=${searchText}`
+                `/get-warehouses?page=${page}&itemPerPage=${itemPerPage}&column=${column}&order=${order}&searchText=${searchText}&filters=${filters}`
             )
         ),
     // getAllWarehouses: () => axios.get(c('/get-warehouses')),
