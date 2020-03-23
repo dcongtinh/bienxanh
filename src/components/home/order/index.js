@@ -386,16 +386,17 @@ class Order extends Component {
                             let ordersFirst = orders[rowsSelected[0]]
                             let arrayOrders = []
 
-                            let group = this.props.count
+                            let group = this.props.group
                             let {
                                 warehouse,
                                 buyerName,
                                 date,
                                 owner
                             } = ordersFirst
+                            // console.log(group)
                             ordersFirst.orders.forEach(order => {
                                 arrayOrders.push({
-                                    group: ++group,
+                                    group: group++,
                                     warehouse: warehouse._id,
                                     buyerName,
                                     orders: [order],

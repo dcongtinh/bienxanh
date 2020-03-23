@@ -52,6 +52,7 @@ class OrderStore {
     @action
     async addOrders({ arrayOrders, callback }) {
         this.isRequesting = true
+        // console.log(arrayOrders)
         const { success, data } = await orderAPI.addOrders({
             arrayOrders
         })
@@ -88,10 +89,8 @@ class OrderStore {
         this.isRequesting = true
         const { success, data } = await orderAPI.getAllOrders()
         if (success) {
-            this.count = data.length
-            this.orders = data.filter(order => {
-                return order.enabled
-            })
+            this.group = data.group[0].group
+            this.orders = data.orders
         }
         this.isRequesting = false
     }

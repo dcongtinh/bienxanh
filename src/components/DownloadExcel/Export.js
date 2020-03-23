@@ -169,7 +169,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///3. group
                 row.push({
-                    value: order.group,
+                    value: order.group || '',
                     style: {
                         font: styles.font,
                         border: styles.border,

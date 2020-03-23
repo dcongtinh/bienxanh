@@ -147,7 +147,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///2. group
                 row.push({
-                    value: order.group,
+                    value: order.group || '',
                     style: {
                         font: styles.font,
                         border: styles.border,

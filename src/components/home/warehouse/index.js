@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from 'components/home/styles'
 import queryString from 'query-string'
 import wareHouseAPI from 'api/warehouse.api'
-import { CircularProgress, Button } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core'
 class Warehouse extends Component {
     constructor(props) {
         super(props)

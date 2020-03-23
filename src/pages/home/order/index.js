@@ -19,7 +19,7 @@ import { inject, observer } from 'mobx-react'
     updateOrder: object => order.updateOrder(object),
     exportOrders: object => order.exportOrders(object),
     orders: JSON.parse(JSON.stringify(order.orders)),
-    count: order.count,
+    group: order.group,
     hasFetched: order.hasFetched,
     isRequesting: order.isRequesting,
     me: JSON.parse(JSON.stringify(auth.me)),
