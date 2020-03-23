@@ -156,7 +156,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///3. buyerCode
                 row.push({
-                    value: order.warehouse.buyerCode,
+                    value: order.warehouse.buyerCode || '',
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -165,7 +165,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///4. buyerName
                 row.push({
-                    value: order.buyerName,
+                    value: order.buyerName || '',
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -174,7 +174,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///5. buyerAddress
                 row.push({
-                    value: order.warehouse.buyerAddress,
+                    value: order.warehouse.buyerAddress || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -201,7 +201,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///8. buyerTaxCode
                 row.push({
-                    value: order.warehouse.buyerTaxCode,
+                    value: order.warehouse.buyerTaxCode || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -225,7 +225,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///11. buyerLegalName
                 row.push({
-                    value: order.warehouse.buyerLegalName,
+                    value: order.warehouse.buyerLegalName || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -289,7 +289,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///19. itemName
                 row.push({
-                    value: name[item.itemName],
+                    value: name[item.itemName] || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -330,7 +330,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///24. itemQuantity
                 row.push({
-                    value: itemQuantity,
+                    value: itemQuantity || 0,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -338,7 +338,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///25. itemPrice
                 row.push({
-                    value: itemPrice,
+                    value: itemPrice || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -347,7 +347,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///26. amountBeforeTax
                 row.push({
-                    value: itemQuantity * itemPrice,
+                    value: itemQuantity * itemPrice || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,

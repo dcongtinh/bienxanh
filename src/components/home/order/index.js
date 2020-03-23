@@ -10,14 +10,14 @@ import AddIcon from '@material-ui/icons/Add'
 import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-import DownloadExcel from 'components/DownloadExcel'
+import DownloadExcel from 'pages/DownloadExcel'
 import moment from 'moment'
 import styles from './styles'
 import RowItem from './row-item'
 import RowEdit from './row-edit'
 import Tooltip from '@material-ui/core/Tooltip'
 import { observer } from 'mobx-react'
-import Export from 'components/DownloadExcel/Export'
+import ExportExcelPage from 'pages/DownloadExcel/Export'
 
 @observer
 class Order extends Component {
@@ -51,20 +51,9 @@ class Order extends Component {
             openConfirmExport,
             unMerge1
         } = this.state
-        let {
-            classes,
-            wareHouses,
-            me,
-            items,
-            suppliers,
-            users,
-            orders
-        } = this.props
+        let { classes, me, items, orders } = this.props
 
-        let itemName = {},
-            whName = {},
-            supplierName = {},
-            userName = {}
+        let itemName = {}
         items.forEach(item => {
             itemName[item._id] = item.itemName
         })
@@ -323,19 +312,6 @@ class Order extends Component {
                 )
             }
         }
-        wareHouses.forEach(warehouse => {
-            whName[warehouse._id] = {
-                warehouse: warehouse.warehouse,
-                warehouseName: warehouse.warehouseName,
-                buyerCode: warehouse.buyerCode
-            }
-        })
-        suppliers.forEach(supplier => {
-            supplierName[supplier._id] = supplier.supplierCode
-        })
-        users.forEach(user => {
-            userName[user._id] = user.lastname
-        })
         return (
             <>
                 <span className={classes.spacer} />
@@ -346,7 +322,6 @@ class Order extends Component {
                             size="small"
                             variant="outlined"
                             orders={orders}
-                            suppliers={suppliers}
                             items={items}
                             name={itemName}
                             onClick={() => {
@@ -497,16 +472,12 @@ class Order extends Component {
                     title="Bạn có chắc muốn xuất báo cáo?"
                     cancelLabel="Huỷ"
                     okLabel={
-                        <Export
+                        <ExportExcelPage
                             size="small"
                             variant="outlined"
                             orders={exportList}
                             items={items}
-                            name={itemName}
-                            whName={whName}
-                            suppliers={suppliers}
-                            supplierName={supplierName}
-                            userName={userName}
+                            itemName={itemName}
                             className={classes.exportButton}
                             onClick={() => {
                                 this.handleClose()

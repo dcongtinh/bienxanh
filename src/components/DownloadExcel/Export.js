@@ -90,7 +90,7 @@ export default class DownloadExcel extends Component {
         return parseInt(price)
     }
     render() {
-        let { orders, name, whName, supplierName, userName } = this.props
+        let { orders, itemName, whName, supplierName, userName } = this.props
         // let headerProps = [
         //     'itemNo', /// 1
         //     'group', /// 2
@@ -186,7 +186,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///5. itemName
                 row.push({
-                    value: name[item.itemName],
+                    value: itemName[item.itemName],
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -195,7 +195,7 @@ export default class DownloadExcel extends Component {
 
                 ///6. itemQuantity
                 row.push({
-                    value: itemQuantity,
+                    value: itemQuantity || 0,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -203,7 +203,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///7. itemLoss
                 row.push({
-                    value: itemLoss,
+                    value: itemLoss || 0,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -211,7 +211,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///8. itemPrice
                 row.push({
-                    value: itemTradePrice,
+                    value: itemTradePrice || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -220,7 +220,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///9. amountBeforeTax
                 row.push({
-                    value: amountBeforeTax,
+                    value: amountBeforeTax || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -229,7 +229,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///10. itemSupplier
                 row.push({
-                    value: itemSupplier,
+                    value: itemSupplier || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -237,7 +237,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///11. itemShipper
                 row.push({
-                    value: itemShipper,
+                    value: itemShipper || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -272,7 +272,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///15. WEIGHT
                 row.push({
-                    value: itemWeight,
+                    value: itemWeight || 0,
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -289,7 +289,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///17. NCC VC
                 row.push({
-                    value: itemTransfer,
+                    value: itemTransfer || '',
                     style: {
                         font: styles.font,
                         border: styles.border
@@ -297,7 +297,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///18. DON GIA BAN
                 row.push({
-                    value: itemPrice,
+                    value: itemPrice || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -306,7 +306,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///19. totalPrice
                 row.push({
-                    value: itemQuantity * itemPrice,
+                    value: itemQuantity * itemPrice || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -315,7 +315,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///20. beforeTax
                 row.push({
-                    value: beforeTax, //beforeTax,
+                    value: beforeTax || 0, //beforeTax,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -324,7 +324,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///21. discount1
                 row.push({
-                    value: _discount1,
+                    value: _discount1 || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -333,7 +333,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///22. discount2
                 row.push({
-                    value: _discount2,
+                    value: _discount2 || 0,
                     style: {
                         font: styles.font,
                         border: styles.border,
