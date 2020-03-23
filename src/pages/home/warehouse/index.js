@@ -10,8 +10,8 @@ import queryString from 'query-string'
 @inject(({ wareHouse }) => ({
     showAllWarehouses: query => wareHouse.showAllWarehouses(query),
     // fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
-    deleteWareHouses: ({ wareHousesListId }) =>
-        wareHouse.deleteWareHouses({ wareHousesListId }),
+    deleteWareHouses: ({ wareHousesListId, callback }) =>
+        wareHouse.deleteWareHouses({ wareHousesListId, callback }),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
     wareHousesTotal: wareHouse.wareHousesTotal,
     isRequesting: wareHouse.isRequesting

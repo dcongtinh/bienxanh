@@ -6,7 +6,12 @@ const c = path => {
 }
 
 const exportAPI = {
-    getAllExports: () => axios.get(c('/get-exports')),
+    getAllExports: ({ page = 0, itemPerPage = 10, column = '', order = '' }) =>
+        axios.get(
+            c(
+                `/get-exports?page=${page}&itemPerPage=${itemPerPage}&column=${column}&order=${order}`
+            )
+        ),
     getExport: ({ idExported }) => axios.post(c('/get-export'), { idExported }),
     setExport: ({ idExported, exportedList }) =>
         axios.put(c('/set-export'), { idExported, exportedList }),

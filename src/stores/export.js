@@ -13,11 +13,11 @@ class ExportStore {
         this.rootStore = rootStore
     }
     @action
-    async fetchAllExports() {
+    async fetchAllExports(query) {
         this.isRequesting = true
         this.exports = []
         this.exportedListId = []
-        const { success, data } = await exportAPI.getAllExports()
+        const { success, data } = await exportAPI.getAllExports(query)
         if (success) {
             let exportedListId = []
             data.exportedList.forEach(element => {
@@ -29,6 +29,7 @@ class ExportStore {
             })
             this.exports = data.exportedList
             this.exportedListId = exportedListId
+            this.exportsTotal = data.count
         }
         this.isRequesting = false
     }
@@ -96,7 +97,7 @@ class ExportStore {
                 variant: 'success'
             })
             if (callback) callback()
-            this.fetchAllExports()
+            // this.fetchAllExports({})
         } else
             this.rootStore.alert.show({
                 message: data.message,

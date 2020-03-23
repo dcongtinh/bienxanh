@@ -347,9 +347,29 @@ class Warehouse extends Component {
                         this.state.rowsSelected.forEach(index => {
                             wareHousesListId.push(wareHouses[index]._id)
                         })
-                        this.props.deleteWareHouses({ wareHousesListId })
-                        this.handleClose()
-                        this.setState({ selectedRows: [] })
+                        this.props.deleteWareHouses({
+                            wareHousesListId,
+                            callback: async () => {
+                                const {
+                                    success,
+                                    data
+                                } = await wareHouseAPI.showAllWarehouses({
+                                    page,
+                                    itemPerPage,
+                                    column,
+                                    order
+                                })
+                                if (success) {
+                                    this.setState({
+                                        wareHouses: data.wareHouses,
+                                        count: data.count,
+                                        isLoading: false,
+                                        selectedRows: []
+                                    })
+                                    this.handleClose()
+                                }
+                            }
+                        })
                     }}
                 />
             </>

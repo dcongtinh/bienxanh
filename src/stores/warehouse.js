@@ -117,7 +117,7 @@ class WarehouseStore {
         this.isRequesting = false
     }
     @action
-    async deleteWareHouses({ wareHousesListId }) {
+    async deleteWareHouses({ wareHousesListId, callback }) {
         this.isRequesting = true
         const { success, data } = await wareHouseAPI.deleteWareHouses({
             wareHousesListId
@@ -127,7 +127,7 @@ class WarehouseStore {
                 message: `Xoá tài khoản thành công!`,
                 variant: 'success'
             })
-            this.fetchAllWarehouses()
+            if (callback) callback()
         } else
             this.rootStore.alert.show({
                 message: data.message,
