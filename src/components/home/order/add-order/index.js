@@ -96,8 +96,9 @@ class AddOrder extends React.Component {
             })
         })
 
-        let data = []
-        for (let i = 0; i < 10; ++i) data.push({})
+        let data = [],
+            pageSize = 10
+        for (let i = 0; i < pageSize; ++i) data.push({})
         this.state = {
             data,
             warehouse: optionsWarehouse[0].value,
@@ -109,6 +110,7 @@ class AddOrder extends React.Component {
             warehouseName,
             optionsItem,
             itemName,
+            pageSize,
         }
     }
     handleDateChange = (date) => {
@@ -131,6 +133,7 @@ class AddOrder extends React.Component {
             warehouseName,
             optionsItem,
             itemName,
+            pageSize,
         } = this.state
         let {
             classes,
@@ -702,6 +705,7 @@ class AddOrder extends React.Component {
                 <Editable
                     data={data}
                     columns={columns}
+                    pageSize={pageSize}
                     handleChange={this.handleChange}
                 />
                 <Grid item container spacing={2}>
@@ -717,7 +721,8 @@ class AddOrder extends React.Component {
                                 })
                                 let buyerName = `26296/WH${buyerCode}/${this.state.buyerName}`
                                 let initData = []
-                                for (let i = 0; i < 10; ++i) initData.push({})
+                                for (let i = 0; i < pageSize; ++i)
+                                    initData.push({})
                                 this.props.addOrder({
                                     warehouse,
                                     buyerName,

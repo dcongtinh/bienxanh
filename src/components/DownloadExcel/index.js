@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import ReactExport from 'react-data-export'
-import { Button } from '@material-ui/core'
-import { ArrowUpward as ArrowUpwardIcon } from '@material-ui/icons'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import { Receipt } from '@material-ui/icons'
 import moment from 'moment'
 const ExcelFile = ReactExport.ExcelFile
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
@@ -9,31 +10,31 @@ const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
 const styles = {
     font: {
         name: 'Times New Roman',
-        sz: '12'
+        sz: '12',
     },
     border: {
         top: { style: 'thin' },
         right: {
-            style: 'thin'
+            style: 'thin',
         },
         bottom: {
-            style: 'thin'
+            style: 'thin',
         },
-        left: { style: 'thin' }
+        left: { style: 'thin' },
     },
     alignCenter: {
         vertical: 'center',
-        horizontal: 'center'
+        horizontal: 'center',
     },
     alignLeft: {
         vertical: 'center',
-        horizontal: 'top'
+        horizontal: 'top',
     },
     alignRight: {
         vertical: 'botom',
         horizontal: 'bottom',
-        readingOrder: 2
-    }
+        readingOrder: 2,
+    },
 }
 
 export default class DownloadExcel extends Component {
@@ -44,18 +45,18 @@ export default class DownloadExcel extends Component {
             : order.warehouse
 
         let { items } = this.props
-        let _item = items.filter(item => {
+        let _item = items.filter((item) => {
             return item._id === idItem
         })
         _item = _item[0]
 
         let prices = []
-        _item[name].forEach(itemPrice => {
+        _item[name].forEach((itemPrice) => {
             let match = itemPrice[idWarehouse] ? true : false
             if (match)
                 prices.push({
                     dateApply: itemPrice.dateApply,
-                    itemPrice: itemPrice[idWarehouse]
+                    itemPrice: itemPrice[idWarehouse],
                 })
         })
         prices.sort((a, b) => {
@@ -77,7 +78,7 @@ export default class DownloadExcel extends Component {
         return parseInt(price)
     }
     render() {
-        let { orders, name } = this.props
+        let { orders, exportable, name } = this.props
         let headerProps = [
             'itemNo', /// 1
             'group', /// 2
@@ -107,7 +108,7 @@ export default class DownloadExcel extends Component {
             'amountBeforeTax', /// 26
             'taxPercentag', /// 27
             'taxAmount', /// 28
-            'discount' /// 29
+            'discount', /// 29
         ]
         let data = [],
             itemNo = 0
@@ -123,11 +124,11 @@ export default class DownloadExcel extends Component {
                 value,
                 style: {
                     fill: {
-                        fgColor: { rgb }
+                        fgColor: { rgb },
                     },
                     font: styles.font,
-                    border: styles.border
-                }
+                    border: styles.border,
+                },
             })
         })
         data.push(header)
@@ -142,8 +143,8 @@ export default class DownloadExcel extends Component {
                     value: ++itemNo,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///2. group
                 row.push({
@@ -151,8 +152,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignCenter
-                    }
+                        alignment: styles.alignCenter,
+                    },
                 })
                 ///3. buyerCode
                 row.push({
@@ -160,8 +161,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignCenter
-                    }
+                        alignment: styles.alignCenter,
+                    },
                 })
                 ///4. buyerName
                 row.push({
@@ -169,16 +170,16 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignLeft
-                    }
+                        alignment: styles.alignLeft,
+                    },
                 })
                 ///5. buyerAddress
                 row.push({
                     value: order.warehouse.buyerAddress || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///6. buyerPhone
                 let time = moment(order.date).toArray()
@@ -188,136 +189,136 @@ export default class DownloadExcel extends Component {
                     }${time[2] < 10 ? `0${time[2]}` : time[2]}`,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///7. buyerEmail
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///8. buyerTaxCode
                 row.push({
                     value: order.warehouse.buyerTaxCode || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///9. buyerIdType
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///10. buyerIdNo
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///11. buyerLegalName
                 row.push({
                     value: order.warehouse.buyerLegalName || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///12. buyerBankName
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///13. buyerBankAccount
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///14. payMethod
                 row.push({
                     value: 'CK',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///15. payStatus
                 row.push({
                     value: '1',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///16. currencyCode
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///17. selection
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///18. itemCode
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///19. itemName
                 row.push({
                     value: name[item.itemName] || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///20. itemNote
                 row.push({
                     value: order.itemNote || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///21. batchNo
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///22. expDate
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///23. itemUnit
                 row.push({
@@ -325,16 +326,16 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignCenter
-                    }
+                        alignment: styles.alignCenter,
+                    },
                 })
                 ///24. itemQuantity
                 row.push({
                     value: itemQuantity || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///25. itemPrice
                 row.push({
@@ -342,8 +343,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///26. amountBeforeTax
                 row.push({
@@ -351,32 +352,32 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///27. taxPercentag
                 row.push({
                     value: -2,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///28. taxAmount
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///29. discount
                 row.push({
                     value: '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 data.push(row)
             })
@@ -412,24 +413,32 @@ export default class DownloadExcel extends Component {
                     'Thành tiền (*)', /// 26
                     'Thuế suất % (*)', /// 27
                     'Tiền thuế', /// 28
-                    'Chiết khấu %' /// 29
+                    'Chiết khấu %', /// 29
                 ],
-                data
-            }
+                data,
+            },
         ]
-        return (
-            <div>
+        if (exportable)
+            return (
                 <ExcelFile
                     filename="HoaDon"
                     element={
-                        <Button {...this.props}>
-                            <ArrowUpwardIcon />
-                            Xuất Hoá Đơn
-                        </Button>
+                        <Tooltip title="Xuất hoá đơn">
+                            <IconButton {...this.props}>
+                                <Receipt />
+                            </IconButton>
+                        </Tooltip>
                     }>
                     <ExcelSheet dataSet={multiDataSet} name="Hoa don" />
                 </ExcelFile>
-            </div>
-        )
+            )
+        else
+            return (
+                <Tooltip title="Xuất hoá đơn">
+                    <IconButton {...this.props}>
+                        <Receipt />
+                    </IconButton>
+                </Tooltip>
+            )
     }
 }

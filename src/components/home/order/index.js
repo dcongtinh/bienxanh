@@ -235,9 +235,13 @@ class Order extends Component {
             },
             customToolbarSelect: (selectedRows) => {
                 let rowsSelected = [],
+                    ordersSelected = [],
+                    ordersListId = [],
                     exportable = true
                 selectedRows.data.forEach((row) => {
                     rowsSelected.push(row.dataIndex)
+                    ordersSelected.push(orders[row.dataIndex])
+                    ordersListId.push(orders[row.dataIndex]._id)
                     let buyName_slpitted = orders[
                         row.dataIndex
                     ].buyerName.split('/')
@@ -312,6 +316,29 @@ class Order extends Component {
                                 <ImportExportIcon />
                             </IconButton>
                         </Tooltip>
+                        <DownloadExcel
+                            // className={classes.exportButton}
+                            exportable={exportable}
+                            variant="outlined"
+                            orders={ordersSelected}
+                            items={items}
+                            name={itemName}
+                            onClick={() => {
+                                if (exportable) {
+                                    this.setState({
+                                        selectedRows: selectedRows.data,
+                                        rowsSelected,
+                                    })
+                                    this.props.exportOrders({ ordersListId })
+                                } else {
+                                    this.props.showAlert({
+                                        message:
+                                            'Vui lòng nhập đầy đủ SỐ HOÁ ĐƠN',
+                                        variant: 'error',
+                                    })
+                                }
+                            }}
+                        />
                         <Tooltip title="Xoá">
                             <IconButton
                                 onClick={() => {
@@ -332,19 +359,19 @@ class Order extends Component {
             <>
                 <span className={classes.spacer} />
                 <div className={classes.row}>
-                    {orders.length ? (
+                    {/* {orders.length ? (
                         <DownloadExcel
                             className={classes.exportButton}
                             size="small"
                             variant="outlined"
-                            orders={orders}
+                            orders={exportList}
                             items={items}
                             name={itemName}
                             onClick={() => {
-                                this.props.exportOrders({ ordersListId })
+                                this.props.exportOrders({ exportIdList })
                             }}
                         />
-                    ) : null}
+                    ) : null} */}
                     <Button
                         color="primary"
                         size="small"

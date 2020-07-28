@@ -46,7 +46,7 @@ const tableIcons = {
 
 class Editable extends React.Component {
     render() {
-        let { title, data, columns } = this.props
+        let { title, data, columns, pageSize } = this.props
         return (
             <MaterialTable
                 icons={tableIcons}
@@ -54,7 +54,7 @@ class Editable extends React.Component {
                 columns={columns}
                 options={{
                     toolbarButtonAlignment: 'left',
-                    pageSize: 10,
+                    pageSize,
                 }}
                 data={data}
                 editable={{

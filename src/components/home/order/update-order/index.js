@@ -16,17 +16,17 @@ import NumberFormat from 'react-number-format'
 import Editable from 'components/Editable'
 import moment from 'moment'
 
-const NumberFormatCustom = props => {
+const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
     return (
         <NumberFormat
             {...other}
             getInputRef={inputRef}
-            onValueChange={values => {
+            onValueChange={(values) => {
                 onChange({
                     target: {
-                        value: values.value
-                    }
+                        value: values.value,
+                    },
                 })
             }}
             thousandSeparator
@@ -34,44 +34,44 @@ const NumberFormatCustom = props => {
     )
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
+        height: '24px !important',
     },
     buttonSubmit: {
         display: 'flex',
         justifyContent: 'center',
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
     },
     supplierName: {
         padding: '4px 0',
         maxWidth: 120,
         overflow: 'hidden',
-        textOverflow: 'ellipsis'
+        textOverflow: 'ellipsis',
     },
     itemName: {
-        width: 250
-    }
+        width: 250,
+    },
 })
 
 class UpdateOrder extends React.Component {
@@ -86,21 +86,21 @@ class UpdateOrder extends React.Component {
             date: props.order.date || new Date(),
             itemNote: props.order.itemNote || '',
             buyerName,
-            data: props.order.orders || []
+            data: props.order.orders || [],
         }
     }
-    handleDateChange = date => {
+    handleDateChange = (date) => {
         this.setState({ date })
     }
-    handleChange = data => {
+    handleChange = (data) => {
         this.setState({ data })
     }
-    handleChangeText = e => {
+    handleChangeText = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
     render() {
         let { buyerCode, warehouse, buyerName, itemNote, data } = this.state
-        console.log(data)
+        // console.log(data)
         let {
             classes,
             isRequesting,
@@ -109,45 +109,45 @@ class UpdateOrder extends React.Component {
             me,
             order,
             suppliers,
-            users
+            users,
         } = this.props
         let idOrder = this.props.match.params.idOrder
         let optionsWarehouse = [],
             warehouseName = {}
-        wareHouses.forEach(warehouse => {
+        wareHouses.forEach((warehouse) => {
             warehouseName[
                 warehouse._id
             ] = `${warehouse.warehouseName} (${warehouse.warehouse})`
             optionsWarehouse.push({
                 value: warehouse._id,
-                label: `${warehouse.warehouseName} (${warehouse.warehouse})`
+                label: `${warehouse.warehouseName} (${warehouse.warehouse})`,
             })
         })
         let optionsItem = [],
             itemName = {}
-        items.forEach(item => {
+        items.forEach((item) => {
             itemName[item._id] = item.itemName
             optionsItem.push({
                 value: item._id,
-                label: item.itemName
+                label: item.itemName,
             })
         })
         let supplierList = [],
             name = {}
-        suppliers.forEach(supplier => {
+        suppliers.forEach((supplier) => {
             supplierList.push({
                 value: supplier._id,
-                label: supplier.supplierName
+                label: supplier.supplierName,
             })
             name[supplier._id] = supplier.supplierName
         })
 
         let userList = [],
             nameUser = {}
-        users.forEach(user => {
+        users.forEach((user) => {
             userList.push({
                 value: user._id,
-                label: user.username
+                label: user.username,
             })
             nameUser[user._id] = user.username
         })
@@ -156,23 +156,23 @@ class UpdateOrder extends React.Component {
                 title: 'Hàng hoá',
                 field: 'itemName',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return <div>{itemName[rowData.itemName]}</div>
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let value
                     if (props.value)
                         value = {
                             value: props.value,
-                            label: itemName[props.value]
+                            label: itemName[props.value],
                         }
                     return (
                         <Select
                             name="itemName"
                             value={value}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={optionsItem}
@@ -180,26 +180,26 @@ class UpdateOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn hàng hoá"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'Số lượng',
                 field: 'itemQuantity',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemQuantity
@@ -210,22 +210,22 @@ class UpdateOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 60 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemQuantity"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'Hao hụt',
                 field: 'itemLoss',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemLoss
@@ -236,44 +236,44 @@ class UpdateOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 60 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemLoss"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'NCC',
                 field: 'itemSupplier',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {name[rowData.itemSupplier]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: name[props.value]
+                            label: name[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemSupplier"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={supplierList}
@@ -281,48 +281,48 @@ class UpdateOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn NCC"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'NVGH',
                 field: 'itemShipper',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {nameUser[rowData.itemShipper]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: nameUser[props.value]
+                            label: nameUser[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemShipper"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={userList}
@@ -330,26 +330,26 @@ class UpdateOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn nhân viên"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'Phí GH',
                 field: 'itemFeeShip',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemFeeShip
@@ -360,22 +360,22 @@ class UpdateOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemFeeShip"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'Phí VC',
                 field: 'itemFeeNorth',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemFeeNorth
@@ -386,22 +386,22 @@ class UpdateOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemFeeNorth"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'Giá VCHK',
                 field: 'itemFeeCentral',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemFeeCentral
@@ -412,22 +412,22 @@ class UpdateOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemFeeCentral"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'TL kiện',
                 field: 'itemWeight',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemWeight
@@ -438,44 +438,44 @@ class UpdateOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 60 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemWeight"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'NCC VC',
                 field: 'itemTransfer',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {name[rowData.itemTransfer]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: name[props.value]
+                            label: name[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemTransfer"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={supplierList}
@@ -483,39 +483,39 @@ class UpdateOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn NCC VC"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
-            }
+                },
+            },
         ]
         data.forEach((_order, index) => {
             delete _order._id
             if (order.itemName) {
                 let idItem = _order.itemName
                 let idWarehouse = this.state.warehouse || wareHouses[0]._id
-                let item = items.filter(item => {
+                let item = items.filter((item) => {
                     return item._id === idItem
                 })
                 let prices = []
                 item = item[0]
-                item.itemPrices.forEach(itemPrice => {
+                item.itemPrices.forEach((itemPrice) => {
                     let match = itemPrice[idWarehouse] ? true : false
                     if (match)
                         prices.push({
                             dateApply: itemPrice.dateApply,
-                            itemPrice: itemPrice[idWarehouse]
+                            itemPrice: itemPrice[idWarehouse],
                         })
                 })
                 prices.sort((a, b) => {
@@ -542,11 +542,11 @@ class UpdateOrder extends React.Component {
         else {
             warehouse = {
                 value: warehouse,
-                label: warehouseName[warehouse]
+                label: warehouseName[warehouse],
             }
         }
         let disabled = !data.length
-        data.forEach(item => {
+        data.forEach((item) => {
             disabled |= !item.itemQuantity
         })
         return (
@@ -568,7 +568,7 @@ class UpdateOrder extends React.Component {
                                                 <InputAdornment position="start">
                                                     {`26296/WH${buyerCode}/`}
                                                 </InputAdornment>
-                                            )
+                                            ),
                                         }}
                                     />
                                 </Grid>
@@ -591,9 +591,9 @@ class UpdateOrder extends React.Component {
                                         name="warehouse"
                                         value={warehouse}
                                         label="Nhập kho"
-                                        onChange={data => {
+                                        onChange={(data) => {
                                             this.props.wareHouses.forEach(
-                                                wareHouse => {
+                                                (wareHouse) => {
                                                     if (
                                                         wareHouse._id ===
                                                         data.value
@@ -602,7 +602,7 @@ class UpdateOrder extends React.Component {
                                                             buyerCode:
                                                                 wareHouse.buyerCode,
                                                             warehouse:
-                                                                data.value
+                                                                data.value,
                                                         })
                                                     }
                                                 }
@@ -630,6 +630,7 @@ class UpdateOrder extends React.Component {
                     data={data}
                     columns={columns}
                     handleChange={this.handleChange}
+                    pageSize={data.length}
                 />
                 <Grid item container spacing={2}>
                     <Grid item xs={12} className={classes.buttonSubmit}>
@@ -647,8 +648,8 @@ class UpdateOrder extends React.Component {
                                         orders: data,
                                         owner: me._id,
                                         itemNote,
-                                        date: this.state.date
-                                    }
+                                        date: this.state.date,
+                                    },
                                 })
                             }}
                             disabled={Boolean(isRequesting || disabled)}
