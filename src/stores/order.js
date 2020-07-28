@@ -1,4 +1,7 @@
-import { observable, action } from 'mobx'
+import {
+    observable,
+    action
+} from 'mobx'
 import orderAPI from 'api/order.api'
 
 class OrderStore {
@@ -24,7 +27,10 @@ class OrderStore {
         callback
     }) {
         this.isRequesting = true
-        const { success, data } = await orderAPI.addOrder({
+        const {
+            success,
+            data
+        } = await orderAPI.addOrder({
             group,
             warehouse,
             buyerName,
@@ -50,10 +56,16 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async addOrders({ arrayOrders, callback }) {
+    async addOrders({
+        arrayOrders,
+        callback
+    }) {
         this.isRequesting = true
         // console.log(arrayOrders)
-        const { success, data } = await orderAPI.addOrders({
+        const {
+            success,
+            data
+        } = await orderAPI.addOrders({
             arrayOrders
         })
 
@@ -87,7 +99,10 @@ class OrderStore {
     @action
     async fetchAllOrders() {
         this.isRequesting = true
-        const { success, data } = await orderAPI.getAllOrders()
+        const {
+            success,
+            data
+        } = await orderAPI.getAllOrders()
         if (success) {
             this.group = data.group[0].group
             this.orders = data.orders
@@ -95,19 +110,31 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async fetchOrder({ idOrder }) {
+    async fetchOrder({
+        idOrder
+    }) {
         this.isRequesting = true
         this.order = null
-        const { success, data } = await orderAPI.getOrder({
+        const {
+            success,
+            data
+        } = await orderAPI.getOrder({
             idOrder
         })
         if (success) this.order = data.order
         this.isRequesting = false
     }
     @action
-    async updateOrder({ idOrder, data: updateData, callback }) {
+    async updateOrder({
+        idOrder,
+        data: updateData,
+        callback
+    }) {
         // this.isRequesting = true
-        const { success, data } = await orderAPI.updateOrder({
+        const {
+            success,
+            data
+        } = await orderAPI.updateOrder({
             idOrder,
             data: updateData
         })
@@ -126,9 +153,16 @@ class OrderStore {
         // this.isRequesting = false
     }
     @action
-    async mergeOrders({ ordersListId, enabled, callback }) {
+    async mergeOrders({
+        ordersListId,
+        enabled,
+        callback
+    }) {
         this.isRequesting = true
-        const { success, data } = await orderAPI.mergeOrders({
+        const {
+            success,
+            data
+        } = await orderAPI.mergeOrders({
             ordersListId,
             enabled
         })
@@ -148,9 +182,15 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async exportOrders({ ordersListId, callback }) {
+    async exportOrders({
+        ordersListId,
+        callback
+    }) {
         this.isRequesting = true
-        const { success, data } = await orderAPI.exportOrders({
+        const {
+            success,
+            data
+        } = await orderAPI.exportOrders({
             ordersListId
         })
         if (success) {
@@ -169,9 +209,15 @@ class OrderStore {
         this.isRequesting = false
     }
     @action
-    async deleteOrders({ ordersListId, callback }) {
+    async deleteOrders({
+        ordersListId,
+        callback
+    }) {
         this.isRequesting = true
-        const { success, data } = await orderAPI.deleteOrders({
+        const {
+            success,
+            data
+        } = await orderAPI.deleteOrders({
             ordersListId
         })
         if (success) {

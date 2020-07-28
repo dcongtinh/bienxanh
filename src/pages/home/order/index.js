@@ -7,17 +7,17 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @canReachAccess({ access: 'order' })
-@inject(({ order, item, auth, exported }) => ({
+@inject(({ order, item, auth, exported, alert }) => ({
     fetchMe: () => auth.fetchMe(),
     fetchAllOrders: () => order.fetchAllOrders(),
-    addOrder: object => order.addOrder(object),
-    addOrders: object => order.addOrders(object),
+    addOrder: (object) => order.addOrder(object),
+    addOrders: (object) => order.addOrders(object),
     deleteOrders: ({ ordersListId, callback }) =>
         order.deleteOrders({ ordersListId, callback }),
     mergeOrders: ({ ordersListId, enabled, callback }) =>
         order.mergeOrders({ ordersListId, enabled, callback }),
-    updateOrder: object => order.updateOrder(object),
-    exportOrders: object => order.exportOrders(object),
+    updateOrder: (object) => order.updateOrder(object),
+    exportOrders: (object) => order.exportOrders(object),
     orders: JSON.parse(JSON.stringify(order.orders)),
     group: order.group,
     hasFetched: order.hasFetched,
@@ -27,7 +27,8 @@ import { inject, observer } from 'mobx-react'
     fetchAllItems: () => item.fetchAllItems(),
     items: JSON.parse(JSON.stringify(item.items)),
     exportReport: ({ exportIdList, callback }) =>
-        exported.exportReport({ exportIdList, callback })
+        exported.exportReport({ exportIdList, callback }),
+    showAlert: ({ message, variant }) => alert.show({ message, variant }),
 }))
 @observer
 class OrderPage extends Component {

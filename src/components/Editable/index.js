@@ -41,7 +41,7 @@ const tableIcons = {
     ThirdStateCheck: forwardRef((props, ref) => (
         <Remove {...props} ref={ref} />
     )),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 }
 
 class Editable extends React.Component {
@@ -53,11 +53,12 @@ class Editable extends React.Component {
                 title={title || ''}
                 columns={columns}
                 options={{
-                    toolbarButtonAlignment: 'left'
+                    toolbarButtonAlignment: 'left',
+                    pageSize: 10,
                 }}
                 data={data}
                 editable={{
-                    onRowAdd: newData =>
+                    onRowAdd: (newData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
                                 data.push(newData)
@@ -74,7 +75,7 @@ class Editable extends React.Component {
                                 resolve()
                             }, true)
                         }),
-                    onRowDelete: oldData =>
+                    onRowDelete: (oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
                                 const index = data.indexOf(oldData)
@@ -82,7 +83,7 @@ class Editable extends React.Component {
                                 this.props.handleChange(data)
                                 resolve()
                             }, true)
-                        })
+                        }),
                 }}
                 localization={{
                     pagination: {
@@ -91,27 +92,27 @@ class Editable extends React.Component {
                         firstTooltip: 'Trang đầu',
                         nextTooltip: 'Trang sau',
                         previousTooltip: 'Trang trước',
-                        lastTooltip: 'Trang cuối'
+                        lastTooltip: 'Trang cuối',
                     },
                     toolbar: {
                         nRowsSelected: '{0} dòng được chọn!',
                         searchTooltip: 'Tìm kiếm',
-                        searchPlaceholder: 'Tìm kiếm'
+                        searchPlaceholder: 'Tìm kiếm',
                     },
                     header: {
-                        actions: ''
+                        actions: '',
                     },
                     body: {
                         emptyDataSourceMessage: 'Không tìm thấy dữ liệu!',
                         filterRow: {
-                            filterTooltip: 'Filter'
+                            filterTooltip: 'Filter',
                         },
                         editRow: {
                             deleteText: 'Bạn có muốn xoá dòng này?',
                             cancelTooltip: 'Huỷ',
-                            saveTooltip: 'Lưu'
-                        }
-                    }
+                            saveTooltip: 'Lưu',
+                        },
+                    },
                 }}
                 style={{ marginTop: 16 }}
             />

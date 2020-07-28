@@ -19,7 +19,7 @@ class UpdateExport extends Component {
             selectedRows: [],
             rowsSelected: [],
             openConfirm: false,
-            openConfirmExport: false
+            openConfirmExport: false,
         }
     }
     handleOpen = () => {
@@ -36,27 +36,27 @@ class UpdateExport extends Component {
             items,
             wareHouses,
             suppliers,
-            users
+            users,
         } = this.props
         let orders = exported.exportedList
         let itemName = {},
             whName = {},
             supplierName = {},
             userName = {}
-        items.forEach(item => {
+        items.forEach((item) => {
             itemName[item._id] = item.itemName
         })
-        wareHouses.forEach(warehouse => {
+        wareHouses.forEach((warehouse) => {
             whName[warehouse._id] = {
                 warehouse: warehouse.warehouse,
                 warehouseName: warehouse.warehouseName,
-                buyerCode: warehouse.buyerCode
+                buyerCode: warehouse.buyerCode,
             }
         })
-        suppliers.forEach(supplier => {
+        suppliers.forEach((supplier) => {
             supplierName[supplier._id] = supplier.supplierCode
         })
-        users.forEach(user => {
+        users.forEach((user) => {
             userName[user._id] = user.lastname
         })
         const columns = [
@@ -85,8 +85,8 @@ class UpdateExport extends Component {
                                 })}
                             </div>
                         )
-                    }
-                }
+                    },
+                },
             },
             {
                 name: 'Số lượng',
@@ -109,8 +109,8 @@ class UpdateExport extends Component {
                                 })}
                             </div>
                         )
-                    }
-                }
+                    },
+                },
             },
             'Ngày áp dụng',
             'Cập nhật',
@@ -130,9 +130,9 @@ class UpdateExport extends Component {
                                 updateValue={updateValue}
                             />
                         )
-                    }
-                }
-            }
+                    },
+                },
+            },
         ]
         let data = [],
             exportedList = []
@@ -149,7 +149,7 @@ class UpdateExport extends Component {
             )
             let itemList = '',
                 quantityList = ''
-            order.orders.forEach(item => {
+            order.orders.forEach((item) => {
                 itemList += itemName[item.itemName] + ';'
                 quantityList += item.itemQuantity + ' KG;'
             })
@@ -168,7 +168,7 @@ class UpdateExport extends Component {
         let rowsSelected = [],
             exportList = [],
             exportIdList = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
             exportList.push(orders[row.dataIndex])
             exportIdList.push(orders[row.dataIndex]._id)
@@ -183,35 +183,35 @@ class UpdateExport extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
             customToolbar: () => {
                 return (
@@ -222,10 +222,17 @@ class UpdateExport extends Component {
                     </Tooltip>
                 )
             },
-            customToolbarSelect: selectedRows => {
-                let rowsSelected = []
-                selectedRows.data.forEach(row => {
+            customToolbarSelect: (selectedRows) => {
+                let rowsSelected = [],
+                    exportable = true
+                selectedRows.data.forEach((row) => {
                     rowsSelected.push(row.dataIndex)
+                    let buyName_slpitted = orders[
+                        row.dataIndex
+                    ].buyerName.split('/')
+                    if (!buyName_slpitted[2]) {
+                        exportable = false
+                    }
                 })
                 rowsSelected.sort()
                 return (
@@ -233,18 +240,26 @@ class UpdateExport extends Component {
                         <Tooltip title="Xuất báo cáo">
                             <IconButton
                                 onClick={() => {
-                                    this.setState({
-                                        openConfirmExport: true,
-                                        selectedRows: selectedRows.data,
-                                        rowsSelected
-                                    })
+                                    if (exportable) {
+                                        this.setState({
+                                            openConfirmExport: true,
+                                            selectedRows: selectedRows.data,
+                                            rowsSelected,
+                                        })
+                                    } else {
+                                        this.props.showAlert({
+                                            message:
+                                                'Vui lòng nhập đầy đủ SỐ HOÁ ĐƠN',
+                                            variant: 'error',
+                                        })
+                                    }
                                 }}>
                                 <ImportExportIcon />
                             </IconButton>
                         </Tooltip>
                     </div>
                 )
-            }
+            },
         }
         return (
             <>
@@ -273,7 +288,7 @@ class UpdateExport extends Component {
                                     exportIdList,
                                     callback: () => {
                                         window.location.reload()
-                                    }
+                                    },
                                 })
                             }}
                         />
@@ -291,7 +306,7 @@ class UpdateExport extends Component {
                             idExported: exported._id,
                             exportedList,
                             callback: () =>
-                                this.props.history.push('/dashboard/orders')
+                                this.props.history.push('/dashboard/orders'),
                         })
                         this.handleClose()
                     }}

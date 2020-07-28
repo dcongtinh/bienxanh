@@ -15,17 +15,17 @@ import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import Editable from 'components/Editable'
 import moment from 'moment'
-const NumberFormatCustom = props => {
+const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
     return (
         <NumberFormat
             {...other}
             getInputRef={inputRef}
-            onValueChange={values => {
+            onValueChange={(values) => {
                 onChange({
                     target: {
-                        value: values.value
-                    }
+                        value: values.value,
+                    },
                 })
             }}
             thousandSeparator
@@ -33,41 +33,41 @@ const NumberFormatCustom = props => {
     )
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
+        height: '24px !important',
     },
     buttonSubmit: {
         display: 'flex',
         justifyContent: 'center',
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
     },
     supplierName: {
         padding: '4px 0',
         maxWidth: 200,
         overflow: 'hidden',
-        textOverflow: 'ellipsis'
-    }
+        textOverflow: 'ellipsis',
+    },
 })
 
 class AddOrder extends React.Component {
@@ -76,28 +76,28 @@ class AddOrder extends React.Component {
         let { wareHouses, items } = props
         let optionsWarehouse = [],
             warehouseName = {}
-        wareHouses.forEach(warehouse => {
+        wareHouses.forEach((warehouse) => {
             warehouseName[warehouse._id] = {
                 wh: `${warehouse.warehouseName} (${warehouse.warehouse})`,
-                buyerName: warehouse.buyerName
+                buyerName: warehouse.buyerName,
             }
             optionsWarehouse.push({
                 value: warehouse._id,
-                label: `${warehouse.warehouseName} (${warehouse.warehouse})`
+                label: `${warehouse.warehouseName} (${warehouse.warehouse})`,
             })
         })
         let optionsItem = [],
             itemName = {}
-        items.forEach(item => {
+        items.forEach((item) => {
             itemName[item._id] = item.itemName
             optionsItem.push({
                 value: item._id,
-                label: item.itemName
+                label: item.itemName,
             })
         })
 
         let data = []
-        for (let i = 0; i < 5; ++i) data.push({})
+        for (let i = 0; i < 10; ++i) data.push({})
         this.state = {
             data,
             warehouse: optionsWarehouse[0].value,
@@ -108,16 +108,16 @@ class AddOrder extends React.Component {
             optionsWarehouse,
             warehouseName,
             optionsItem,
-            itemName
+            itemName,
         }
     }
-    handleDateChange = date => {
+    handleDateChange = (date) => {
         this.setState({ date })
     }
-    handleChange = data => {
+    handleChange = (data) => {
         this.setState({ data })
     }
-    handleChangeText = e => {
+    handleChangeText = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
     render() {
@@ -130,7 +130,7 @@ class AddOrder extends React.Component {
             optionsWarehouse,
             warehouseName,
             optionsItem,
-            itemName
+            itemName,
         } = this.state
         let {
             classes,
@@ -139,23 +139,23 @@ class AddOrder extends React.Component {
             items,
             suppliers,
             users,
-            me
+            me,
         } = this.props
         let supplierList = [],
             nameSupplier = {}
-        suppliers.forEach(supplier => {
+        suppliers.forEach((supplier) => {
             supplierList.push({
                 value: supplier._id,
-                label: supplier.supplierName
+                label: supplier.supplierName,
             })
             nameSupplier[supplier._id] = supplier.supplierName
         })
         let userList = [],
             nameUser = {}
-        users.forEach(user => {
+        users.forEach((user) => {
             userList.push({
                 value: user._id,
-                label: user.username
+                label: user.username,
             })
             nameUser[user._id] = user.username
         })
@@ -164,27 +164,27 @@ class AddOrder extends React.Component {
                 title: 'Hàng hoá',
                 field: 'itemName',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {itemName[rowData.itemName]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value)
                         data = {
                             value: props.value,
-                            label: itemName[props.value]
+                            label: itemName[props.value],
                         }
                     return (
                         <Select
                             name="itemName"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={optionsItem}
@@ -192,26 +192,26 @@ class AddOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn hàng hoá"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'Số lượng',
                 field: 'itemQuantity',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemQuantity
@@ -222,28 +222,28 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 60 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemQuantity"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'Hao hụt',
                 headerStyle: {
-                    padding: 0
+                    padding: 0,
                 },
                 cellStyle: {
-                    padding: 0
+                    padding: 0,
                 },
                 field: 'itemLoss',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemLoss
@@ -254,44 +254,44 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 60 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemLoss"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'NCC',
                 headerStyle: {
-                    padding: 0
+                    padding: 0,
                 },
                 field: 'itemSupplier',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {nameSupplier[rowData.itemSupplier]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: nameSupplier[props.value]
+                            label: nameSupplier[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemSupplier"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={supplierList}
@@ -299,48 +299,48 @@ class AddOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn NCC"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'NVGH',
                 field: 'itemShipper',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {nameUser[rowData.itemShipper]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: nameUser[props.value]
+                            label: nameUser[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemShipper"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={userList}
@@ -348,26 +348,26 @@ class AddOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn nhân viên"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'Phí GH',
                 field: 'itemFeeShip',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemFeeShip
@@ -378,22 +378,22 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemFeeShip"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'Phí VC',
                 field: 'itemFeeNorth',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemFeeNorth
@@ -404,22 +404,22 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemFeeNorth"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'Giá VCHK',
                 field: 'itemFeeCentral',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemFeeCentral
@@ -430,17 +430,17 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemFeeCentral"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             // {
             //     title: 'Phí GHMN',
@@ -471,7 +471,7 @@ class AddOrder extends React.Component {
             {
                 title: 'TL kiện',
                 field: 'itemWeight',
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {rowData.itemWeight
@@ -482,44 +482,44 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 60 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="itemWeight"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             },
             {
                 title: 'NCC VC',
                 field: 'itemTransfer',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {nameSupplier[rowData.itemTransfer]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: nameSupplier[props.value]
+                            label: nameSupplier[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemTransfer"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={supplierList}
@@ -527,47 +527,47 @@ class AddOrder extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn NCC VC"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
-            }
+                },
+            },
         ]
         data.forEach((order, index) => {
             // delete order.tableData
             if (order.itemName) {
                 let idItem = order.itemName
                 let idWarehouse = this.state.warehouse || wareHouses[0]._id
-                let item = items.filter(item => {
+                let item = items.filter((item) => {
                     return item._id === idItem
                 })
                 let prices = [],
                     tradePrices = []
                 item = item[0]
-                item.itemPrices.forEach(itemPrice => {
+                item.itemPrices.forEach((itemPrice) => {
                     let match = itemPrice[idWarehouse] ? true : false
                     if (match)
                         prices.push({
                             dateApply: itemPrice.dateApply,
-                            itemPrice: itemPrice[idWarehouse]
+                            itemPrice: itemPrice[idWarehouse],
                         })
                 })
-                item.itemTradePrices.forEach(itemTradePrice => {
+                item.itemTradePrices.forEach((itemTradePrice) => {
                     let match = itemTradePrice[idWarehouse] ? true : false
-                    match &= suppliers.some(supplier => {
+                    match &= suppliers.some((supplier) => {
                         return supplier._id === order.itemSupplier
-                            ? supplier.supplierItems.some(item => {
+                            ? supplier.supplierItems.some((item) => {
                                   return item.value === order.itemName
                               })
                             : false
@@ -575,7 +575,7 @@ class AddOrder extends React.Component {
                     if (match)
                         tradePrices.push({
                             dateApply: itemTradePrice.dateApply,
-                            itemTradePrice: itemTradePrice[idWarehouse]
+                            itemTradePrice: itemTradePrice[idWarehouse],
                         })
                 })
                 prices.sort((a, b) => {
@@ -616,7 +616,7 @@ class AddOrder extends React.Component {
         })
         warehouse = {
             value: warehouse,
-            label: warehouseName[warehouse].wh
+            label: warehouseName[warehouse].wh,
         }
         // let disabled = !data.length
         // data.forEach(item => {
@@ -642,7 +642,7 @@ class AddOrder extends React.Component {
                                                 <InputAdornment position="start">
                                                     {`26296/WH${buyerCode}/`}
                                                 </InputAdornment>
-                                            )
+                                            ),
                                         }}
                                     />
                                 </Grid>
@@ -665,9 +665,9 @@ class AddOrder extends React.Component {
                                         name="warehouse"
                                         value={warehouse}
                                         label="Nhập kho"
-                                        onChange={data => {
+                                        onChange={(data) => {
                                             this.props.wareHouses.forEach(
-                                                wareHouse => {
+                                                (wareHouse) => {
                                                     if (
                                                         wareHouse._id ===
                                                         data.value
@@ -676,7 +676,7 @@ class AddOrder extends React.Component {
                                                             buyerCode:
                                                                 wareHouse.buyerCode,
                                                             warehouse:
-                                                                data.value
+                                                                data.value,
                                                         })
                                                     }
                                                 }
@@ -712,12 +712,12 @@ class AddOrder extends React.Component {
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
                                 let { date } = this.state
-                                let _data = data.filter(item => {
+                                let _data = data.filter((item) => {
                                     return item.itemName
                                 })
                                 let buyerName = `26296/WH${buyerCode}/${this.state.buyerName}`
                                 let initData = []
-                                for (let i = 0; i < 5; ++i) initData.push({})
+                                for (let i = 0; i < 10; ++i) initData.push({})
                                 this.props.addOrder({
                                     warehouse,
                                     buyerName,
@@ -729,9 +729,9 @@ class AddOrder extends React.Component {
                                         this.setState({
                                             data: initData,
                                             date: new Date(),
-                                            itemNote: ''
+                                            itemNote: '',
                                         })
-                                    }
+                                    },
                                 })
                             }}
                             disabled={Boolean(isRequesting)}

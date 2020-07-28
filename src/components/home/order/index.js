@@ -30,7 +30,7 @@ class Order extends Component {
             openConfirmExport: false,
             selectedRows: [],
             rowsSelected: [],
-            unMerge1: false
+            unMerge1: false,
         }
     }
     handleClose = () => {
@@ -39,7 +39,7 @@ class Order extends Component {
             openConfirmMerge: false,
             openConfirmUnMerge: false,
             openConfirmExport: false,
-            unMerge1: false
+            unMerge1: false,
         })
     }
 
@@ -49,12 +49,12 @@ class Order extends Component {
             openConfirmMerge,
             openConfirmUnMerge,
             openConfirmExport,
-            unMerge1
+            unMerge1,
         } = this.state
         let { classes, me, items, orders } = this.props
 
         let itemName = {}
-        items.forEach(item => {
+        items.forEach((item) => {
             itemName[item._id] = item.itemName
         })
         let ordersListId = []
@@ -63,8 +63,8 @@ class Order extends Component {
             {
                 name: 'Nhóm',
                 options: {
-                    filter: false
-                }
+                    filter: false,
+                },
             },
             'Mã',
             {
@@ -77,7 +77,7 @@ class Order extends Component {
                                 ? tableMeta.rowData[9]
                                 : 0
                         let mark = {}
-                        orders.forEach(order => {
+                        orders.forEach((order) => {
                             if (order.buyerName) mark[order.buyerName] = true
                         })
                         return (
@@ -90,8 +90,8 @@ class Order extends Component {
                                 updateOrder={this.props.updateOrder}
                             />
                         )
-                    }
-                }
+                    },
+                },
             },
             'Tên đơn vị',
             {
@@ -102,7 +102,7 @@ class Order extends Component {
                         let itemList = value.split(';')
                         return (
                             <div>
-                                {itemList.map(item => {
+                                {itemList.map((item) => {
                                     if (item)
                                         return (
                                             <div className={classes.items}>
@@ -113,8 +113,8 @@ class Order extends Component {
                                 })}
                             </div>
                         )
-                    }
-                }
+                    },
+                },
             },
             {
                 name: 'Số lượng',
@@ -124,7 +124,7 @@ class Order extends Component {
                         let quantityList = value.split(';')
                         return (
                             <div>
-                                {quantityList.map(item => {
+                                {quantityList.map((item) => {
                                     if (item)
                                         return (
                                             <div className={classes.items}>
@@ -135,8 +135,8 @@ class Order extends Component {
                                 })}
                             </div>
                         )
-                    }
-                }
+                    },
+                },
             },
             'Ngày áp dụng',
             'Cập nhật',
@@ -153,9 +153,9 @@ class Order extends Component {
                             idOrder={orders[value]._id}
                             checked={orders[value].payStatus}
                         />
-                    )
-                }
-            }
+                    ),
+                },
+            },
         ]
 
         let data = []
@@ -163,7 +163,7 @@ class Order extends Component {
         let rowsSelected = [],
             exportList = [],
             exportIdList = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
             exportList.push(orders[row.dataIndex])
             exportIdList.push(orders[row.dataIndex]._id)
@@ -180,7 +180,7 @@ class Order extends Component {
             )
             let itemList = '',
                 quantityList = ''
-            order.orders.forEach(item => {
+            order.orders.forEach((item) => {
                 itemList += itemName[item.itemName] + ';'
                 quantityList += item.itemQuantity + ' KG;'
             })
@@ -203,40 +203,47 @@ class Order extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
-            customToolbarSelect: selectedRows => {
-                let rowsSelected = []
-                selectedRows.data.forEach(row => {
+            customToolbarSelect: (selectedRows) => {
+                let rowsSelected = [],
+                    exportable = true
+                selectedRows.data.forEach((row) => {
                     rowsSelected.push(row.dataIndex)
+                    let buyName_slpitted = orders[
+                        row.dataIndex
+                    ].buyerName.split('/')
+                    if (!buyName_slpitted[2]) {
+                        exportable = false
+                    }
                 })
                 rowsSelected.sort()
                 let length = rowsSelected.length
@@ -263,7 +270,7 @@ class Order extends Component {
                                             openConfirmUnMerge: true,
                                             selectedRows: selectedRows.data,
                                             rowsSelected,
-                                            unMerge1
+                                            unMerge1,
                                         })
                                     }}>
                                     <UndoIcon />
@@ -277,7 +284,7 @@ class Order extends Component {
                                         this.setState({
                                             openConfirmMerge: true,
                                             selectedRows: selectedRows.data,
-                                            rowsSelected
+                                            rowsSelected,
                                         })
                                     }}>
                                     <MergeTypeIcon />
@@ -287,11 +294,20 @@ class Order extends Component {
                         <Tooltip title="Xuất báo cáo">
                             <IconButton
                                 onClick={() => {
-                                    this.setState({
-                                        openConfirmExport: true,
-                                        selectedRows: selectedRows.data,
-                                        rowsSelected
-                                    })
+                                    if (exportable) {
+                                        this.setState({
+                                            openConfirmExport: true,
+                                            selectedRows: selectedRows.data,
+                                            rowsSelected,
+                                        })
+                                    } else {
+                                        this.props.showAlert({
+                                            message:
+                                                'Vui lòng nhập đầy đủ SỐ HOÁ ĐƠN',
+                                            variant: 'error',
+                                        })
+                                    }
+                                    // alert('Vui lòng nhập đầy đủ SỐ HOÁ ĐƠN')
                                 }}>
                                 <ImportExportIcon />
                             </IconButton>
@@ -302,7 +318,7 @@ class Order extends Component {
                                     this.setState({
                                         openConfirmDelete: true,
                                         selectedRows: selectedRows.data,
-                                        rowsSelected
+                                        rowsSelected,
                                     })
                                 }}>
                                 <RemoveCircleIcon />
@@ -310,7 +326,7 @@ class Order extends Component {
                         </Tooltip>
                     </div>
                 )
-            }
+            },
         }
         return (
             <>
@@ -351,7 +367,7 @@ class Order extends Component {
                     onOK={() => {
                         let ordersListId = [],
                             mergeList = []
-                        rowsSelected.forEach(index => {
+                        rowsSelected.forEach((index) => {
                             ordersListId.push(orders[index]._id)
                             mergeList = mergeList.concat(
                                 orders[index].mergeList
@@ -366,17 +382,17 @@ class Order extends Component {
                                 warehouse,
                                 buyerName,
                                 date,
-                                owner
+                                owner,
                             } = ordersFirst
                             // console.log(group)
-                            ordersFirst.orders.forEach(order => {
+                            ordersFirst.orders.forEach((order) => {
                                 arrayOrders.push({
                                     group: group++,
                                     warehouse: warehouse._id,
                                     buyerName,
                                     orders: [order],
                                     date,
-                                    owner: owner._id
+                                    owner: owner._id,
                                 })
                             })
                             this.props.deleteOrders({
@@ -385,9 +401,9 @@ class Order extends Component {
                                     this.props.addOrders({
                                         arrayOrders,
                                         callback: () =>
-                                            this.props.fetchAllOrders()
+                                            this.props.fetchAllOrders(),
                                     })
-                                }
+                                },
                             })
                         } else {
                             this.props.deleteOrders({
@@ -395,8 +411,8 @@ class Order extends Component {
                                 callback: () =>
                                     this.props.mergeOrders({
                                         ordersListId: mergeList,
-                                        enabled: true
-                                    })
+                                        enabled: true,
+                                    }),
                             })
                         }
 
@@ -413,7 +429,7 @@ class Order extends Component {
                     onOK={() => {
                         let ordersListId = []
                         let { rowsSelected } = this.state
-                        rowsSelected.forEach(index => {
+                        rowsSelected.forEach((index) => {
                             ordersListId.push(orders[index]._id)
                         })
 
@@ -434,13 +450,13 @@ class Order extends Component {
                         }
                         let marks = {},
                             _orderList = []
-                        _orders.forEach(item => {
+                        _orders.forEach((item) => {
                             if (!marks[item.itemName]) {
                                 marks[item.itemName] = true
                                 delete item._id
                                 _orderList.push(item)
                             } else {
-                                _orderList.forEach(_item => {
+                                _orderList.forEach((_item) => {
                                     if (_item.itemName === item.itemName) {
                                         _item.itemQuantity += item.itemQuantity
                                     }
@@ -459,8 +475,8 @@ class Order extends Component {
                                     owner: me._id,
                                     date,
                                     mergeList,
-                                    callback: () => this.props.fetchAllOrders()
-                                })
+                                    callback: () => this.props.fetchAllOrders(),
+                                }),
                         })
 
                         this.handleClose()
@@ -485,7 +501,7 @@ class Order extends Component {
                                     exportIdList,
                                     callback: () => {
                                         window.location.reload()
-                                    }
+                                    },
                                 })
                             }}
                         />
@@ -500,7 +516,7 @@ class Order extends Component {
                     onHide={this.handleClose}
                     onOK={() => {
                         let ordersListId = []
-                        this.state.rowsSelected.forEach(index => {
+                        this.state.rowsSelected.forEach((index) => {
                             ordersListId.push(orders[index]._id)
                             if (orders[index].mergeList.length)
                                 ordersListId = ordersListId.concat(

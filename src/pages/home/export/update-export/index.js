@@ -8,11 +8,11 @@ import { inject, observer } from 'mobx-react'
 
 @createIsAuthenticated({})
 @canReachAccess({ access: 'order' })
-@inject(({ order, item, wareHouse, exported, supplier, auth }) => ({
-    updateOrder: object => order.updateOrder(object),
+@inject(({ order, item, wareHouse, exported, supplier, auth, alert }) => ({
+    updateOrder: (object) => order.updateOrder(object),
     fetchExport: ({ idExported }) => exported.fetchExport({ idExported }),
     exported: JSON.parse(JSON.stringify(exported.exported)),
-    setExport: object => exported.setExport(object),
+    setExport: (object) => exported.setExport(object),
     isRequesting: exported.isRequesting,
     fetchAllItems: () => item.fetchAllItems(),
     items: JSON.parse(JSON.stringify(item.items)),
@@ -23,7 +23,8 @@ import { inject, observer } from 'mobx-react'
     fetchAllUser: () => auth.fetchAllUser(),
     users: JSON.parse(JSON.stringify(auth.users)),
     exportReport: ({ exportIdList, callback }) =>
-        exported.exportReport({ exportIdList, callback })
+        exported.exportReport({ exportIdList, callback }),
+    showAlert: ({ message, variant }) => alert.show({ message, variant }),
 }))
 @observer
 class UpdateExportPage extends Component {
@@ -33,7 +34,7 @@ class UpdateExportPage extends Component {
         this.props.fetchAllSuppliers()
         this.props.fetchAllUser()
         this.props.fetchExport({
-            idExported: this.props.match.params.idExported
+            idExported: this.props.match.params.idExported,
         })
     }
 

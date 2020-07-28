@@ -1,25 +1,25 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
+import PropTypes, { string } from 'prop-types'
 import styled from 'styled-components'
 import CloseIcon from '@material-ui/icons/Close'
 import CheckIcon from '@material-ui/icons/Check'
 import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-const styles = theme => ({
+const styles = (theme) => ({
     closeIcon: {
         height: 20,
         width: 20,
         cursor: 'pointer',
-        color: theme.palette.danger.dark
+        color: theme.palette.danger.dark,
     },
     checkIcon: {
         height: 20,
         width: 20,
         cursor: 'pointer',
-        color: theme.palette.success.dark
-    }
+        color: theme.palette.success.dark,
+    },
 })
 const View = styled.div`
     cursor: pointer;
@@ -43,7 +43,7 @@ class RowItem extends Component {
     static propTypes = {
         value: PropTypes.string,
         tableMeta: PropTypes.any,
-        updateValue: PropTypes.func
+        updateValue: PropTypes.func,
     }
 
     constructor(props) {
@@ -53,16 +53,17 @@ class RowItem extends Component {
             prefix: '',
             code: '',
             value: '',
-            error: false
+            error: false,
+            valid6: null,
         }
     }
-    getPrefix = value => {
+    getPrefix = (value) => {
         const values = this.state.value.split('/')
         const prefix = values[0] + '/' + values[1] + '/'
         return prefix
     }
 
-    getCode = value => {
+    getCode = (value) => {
         const values = this.state.value.split('/')
         return values[2]
     }
@@ -91,28 +92,35 @@ class RowItem extends Component {
             callback: () => {
                 this.props.updateValue(buyerName)
                 this.setState({ readOnly: true })
-            }
+            },
         })
     }
 
-    handleKeyPress = e => {
+    handleKeyPress = (e) => {
         if (e.key === 'Enter' && !this.state.error) {
             this.handleSave()
         }
     }
 
-    handleChangeValue = event => {
+    handleChangeValue = (event) => {
         const value = event.target.value
+        let inputValue = value
         const { updateValue, mark } = this.props
 
         this.setState(
             {
-                code: value
+                code: value,
             },
             () => {
                 const value = this.getValue()
                 updateValue(value)
-                if (mark[value]) this.setState({ error: true })
+                if (mark[value] || inputValue.length !== 6)
+                    this.setState({
+                        error:
+                            inputValue.length !== 6
+                                ? '* 6 ký tự'
+                                : '* Trùng mã số',
+                    })
                 else this.setState({ error: false })
             }
         )
@@ -122,9 +130,9 @@ class RowItem extends Component {
         this.setState({
             prefix: values[0] + '/' + values[1] + '/',
             code: values[2],
-            value: this.props.order.buyerName
+            value: this.props.order.buyerName,
         })
-        window.addEventListener('keydown', e => {
+        window.addEventListener('keydown', (e) => {
             if (e.keyCode === 27) this.handleClose()
         })
     }
@@ -135,7 +143,7 @@ class RowItem extends Component {
             this.setState({
                 prefix: values[0] + '/' + values[1] + '/',
                 code: values[2],
-                value: nextProps.value
+                value: nextProps.value,
             })
         }
         return true
@@ -162,7 +170,7 @@ class RowItem extends Component {
                         {error ? (
                             <FormHelperText
                                 style={{ margin: error && '4px 0' }}>
-                                * Trùng mã số
+                                {error}
                             </FormHelperText>
                         ) : null}
                     </FormControl>
