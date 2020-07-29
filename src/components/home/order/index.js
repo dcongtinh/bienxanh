@@ -339,18 +339,20 @@ class Order extends Component {
                                 }
                             }}
                         />
-                        <Tooltip title="Xoá">
-                            <IconButton
-                                onClick={() => {
-                                    this.setState({
-                                        openConfirmDelete: true,
-                                        selectedRows: selectedRows.data,
-                                        rowsSelected,
-                                    })
-                                }}>
-                                <RemoveCircleIcon />
-                            </IconButton>
-                        </Tooltip>
+                        {me.siteAdmin ? (
+                            <Tooltip title="Xoá">
+                                <IconButton
+                                    onClick={() => {
+                                        this.setState({
+                                            openConfirmDelete: true,
+                                            selectedRows: selectedRows.data,
+                                            rowsSelected,
+                                        })
+                                    }}>
+                                    <RemoveCircleIcon />
+                                </IconButton>
+                            </Tooltip>
+                        ) : null}
                     </div>
                 )
             },

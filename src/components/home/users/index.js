@@ -15,7 +15,7 @@ class Users extends Component {
         this.state = {
             openConfirm: false,
             selectedRows: [],
-            rowsSelected: []
+            rowsSelected: [],
         }
     }
     handleClose = () => {
@@ -43,9 +43,9 @@ class Users extends Component {
                                 <EditIcon />
                             </IconButton>
                         </div>
-                    )
-                }
-            }
+                    ),
+                },
+            },
         ]
         let data = []
         users.forEach((user, index) => {
@@ -57,10 +57,10 @@ class Users extends Component {
             row.push(index)
             data.push(row)
         })
-
+        console.log(data)
         let { selectedRows } = this.state
         let rowsSelected = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
         })
         rowsSelected.sort()
@@ -73,48 +73,48 @@ class Users extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
-            customToolbarSelect: selectedRows => (
+            customToolbarSelect: (selectedRows) => (
                 <IconButton
                     onClick={() => {
                         let rowsSelected = []
-                        selectedRows.data.forEach(row => {
+                        selectedRows.data.forEach((row) => {
                             rowsSelected.push(row.dataIndex)
                         })
                         rowsSelected.sort()
                         this.setState({
                             openConfirm: true,
                             selectedRows: selectedRows.data,
-                            rowsSelected
+                            rowsSelected,
                         })
                     }}>
                     <RemoveCircleIcon />
@@ -122,7 +122,7 @@ class Users extends Component {
             ),
             onRowClick: (rowData, rowMeta) => {
                 this.props.history.push(`/dashboard/profile/${rowData[2]}`)
-            }
+            },
         }
 
         return (
@@ -149,7 +149,7 @@ class Users extends Component {
                     onHide={this.handleClose}
                     onOK={() => {
                         let usernames = []
-                        this.state.rowsSelected.forEach(index => {
+                        this.state.rowsSelected.forEach((index) => {
                             usernames.push(data[index][2])
                         })
                         this.props.deleteUsers({ usernames })

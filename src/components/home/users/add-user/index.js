@@ -21,45 +21,44 @@ const SignUpSchema = Yup.object().shape({
     username: Yup.string()
         .min(6, '* Tên tài khoản chứa ít nhất 6 kí tự')
         .max(50, '* Tên tài khoản chứa tối đa 50 kí tự')
+        .matches(/^[A-Za-z0-9_-]+$/, "* Chỉ bao gồm kí tự chữ, số, '_' và '-'")
         .required('* Bắt buộc'),
-    email: Yup.string()
-        .email('* Email không hợp lệ')
-        .required('* Bắt buộc'),
+    email: Yup.string().email('* Email không hợp lệ').required('* Bắt buộc'),
     password: Yup.string()
         .min(8, '* Mật khẩu chứa ít nhất 8 kí tự')
         .required('* Bắt buộc'),
     repassword: Yup.string()
         .min(8, '* Mật khẩu chứa ít nhất 8 kí tự')
         .oneOf([Yup.ref('password'), null], '* Mật khẩu không khớp')
-        .required('* Bắt buộc')
+        .required('* Bắt buộc'),
 })
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(2, 0)
+        margin: theme.spacing(2, 0),
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 let initialValues = {
@@ -68,7 +67,7 @@ let initialValues = {
     username: '',
     email: '',
     password: '',
-    repassword: ''
+    repassword: '',
 }
 
 class AddUserForm extends React.Component {
@@ -77,7 +76,7 @@ class AddUserForm extends React.Component {
         user: false,
         order: false,
         item: false,
-        warehouse: false
+        warehouse: false,
     }
 
     render() {
@@ -88,7 +87,7 @@ class AddUserForm extends React.Component {
             { value: 'order', label: 'Quản lí hoá đơn' },
             { value: 'item', label: 'Quản lí hàng hoá' },
             { value: 'warehouse', label: 'Quản lí kho' },
-            { value: 'supplier', label: 'Quản lí NCC' }
+            { value: 'supplier', label: 'Quản lí NCC' },
         ]
         return (
             <Container component="main" maxWidth="sm">
@@ -104,10 +103,10 @@ class AddUserForm extends React.Component {
                                     lastname,
                                     username,
                                     email,
-                                    password
+                                    password,
                                 } = values
                                 let list = []
-                                accesses.forEach(access => {
+                                accesses.forEach((access) => {
                                     let { value } = access
                                     if (this.state[value]) list.push(value)
                                 })
@@ -119,7 +118,7 @@ class AddUserForm extends React.Component {
                                     email,
                                     siteAdmin: this.state[`siteAdmin`],
                                     access: list,
-                                    callback: () => resetForm()
+                                    callback: () => resetForm(),
                                 })
                             }}>
                             {({
@@ -128,7 +127,7 @@ class AddUserForm extends React.Component {
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => (
                                 <Form>
                                     <Grid container spacing={2}>
@@ -237,7 +236,7 @@ class AddUserForm extends React.Component {
                                                         (access, index) => {
                                                             let {
                                                                 value,
-                                                                label
+                                                                label,
                                                             } = access
                                                             return (
                                                                 <FormControlLabel
@@ -254,13 +253,15 @@ class AddUserForm extends React.Component {
                                                                             value={
                                                                                 value
                                                                             }
-                                                                            onChange={e => {
+                                                                            onChange={(
+                                                                                e
+                                                                            ) => {
                                                                                 this.setState(
                                                                                     {
                                                                                         [value]:
                                                                                             e
                                                                                                 .target
-                                                                                                .checked
+                                                                                                .checked,
                                                                                     }
                                                                                 )
                                                                             }}
