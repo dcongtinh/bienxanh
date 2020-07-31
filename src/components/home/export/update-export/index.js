@@ -11,6 +11,7 @@ import RowEdit from 'components/home/order/row-edit'
 import { observer } from 'mobx-react'
 import ConfirmDialog from 'components/ConfirmDialog'
 import Export from 'components/DownloadExcel/Export'
+import { debounceSearchRender } from 'utils/DebounceSearchRender'
 @observer
 class UpdateExport extends Component {
     constructor(props) {
@@ -63,9 +64,9 @@ class UpdateExport extends Component {
             'Nhóm',
             'Mã',
             'Họ tên',
-            'Tên đơn vị',
+            // 'Tên đơn vị',
             {
-                name: 'Đơn hàng',
+                name: 'Tên sản phẩm',
                 options: {
                     filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
@@ -112,7 +113,7 @@ class UpdateExport extends Component {
                     },
                 },
             },
-            'Ngày áp dụng',
+            'Ngày giao hàng',
             'Cập nhật',
             'Ngày xuất BC',
             {
@@ -142,11 +143,11 @@ class UpdateExport extends Component {
             row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
             row.push(whName[order.warehouse].buyerCode)
             row.push(order.buyerName)
-            row.push(
-                `${whName[order.warehouse].warehouseName} (${
-                    whName[order.warehouse].warehouse
-                })`
-            )
+            // row.push(
+            //     `${whName[order.warehouse].warehouseName} (${
+            //         whName[order.warehouse].warehouse
+            //     })`
+            // )
             let itemList = '',
                 quantityList = ''
             order.orders.forEach((item) => {
@@ -212,6 +213,30 @@ class UpdateExport extends Component {
                     delete: 'Delete',
                     deleteAria: 'Delete Selected Rows',
                 },
+            },
+            customSearchRender: debounceSearchRender(500),
+            searchPlaceholder: 'Nhập tìm kiếm',
+            customSearch: (searchQuery, currentRow, columns) => {
+                let entire = true
+                let searchQuerySplitted = searchQuery.split(';')
+                searchQuerySplitted = searchQuerySplitted.map((search) =>
+                    search.trim()
+                )
+                searchQuerySplitted.forEach((search) => {
+                    let searchText = search.toString().toUpperCase()
+                    if (search) {
+                        let isFound = false
+                        for (let i = 0; i < currentRow.length; ++i) {
+                            let colString = currentRow[i].toString()
+                            if (colString.indexOf(searchText) >= 0) {
+                                isFound = true
+                                break
+                            }
+                        }
+                        entire &= isFound
+                    }
+                })
+                return Boolean(entire)
             },
             customToolbar: () => {
                 return (

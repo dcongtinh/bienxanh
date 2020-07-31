@@ -18,7 +18,7 @@ import RowEdit from './row-edit'
 import Tooltip from '@material-ui/core/Tooltip'
 import { observer } from 'mobx-react'
 import ExportExcelPage from 'pages/DownloadExcel/Export'
-
+import { debounceSearchRender } from 'utils/DebounceSearchRender'
 @observer
 class Order extends Component {
     constructor(props) {
@@ -74,7 +74,9 @@ class Order extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let idx =
                             typeof tableMeta.rowData !== 'string'
-                                ? tableMeta.rowData[9]
+                                ? tableMeta.rowData[
+                                      tableMeta.rowData.length - 1
+                                  ]
                                 : 0
                         let mark = {}
                         orders.forEach((order) => {
@@ -93,9 +95,9 @@ class Order extends Component {
                     },
                 },
             },
-            'Tên đơn vị',
+            // 'Tên đơn vị',
             {
-                name: 'Đơn hàng',
+                name: 'Tên sản phẩm',
                 options: {
                     filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
@@ -138,7 +140,7 @@ class Order extends Component {
                     },
                 },
             },
-            'Ngày áp dụng',
+            'Ngày giao hàng',
             'Cập nhật',
             'Ngày xuất BC',
             {
@@ -175,9 +177,9 @@ class Order extends Component {
             row.push(`${order.group} ${order.mergeList.length ? '*' : ''}`)
             row.push(order.warehouse.buyerCode)
             row.push(order.buyerName)
-            row.push(
-                `${order.warehouse.warehouseName} (${order.warehouse.warehouse})`
-            )
+            // row.push(
+            //     `${order.warehouse.warehouseName} (${order.warehouse.warehouse})`
+            // )
             let itemList = '',
                 quantityList = ''
             order.orders.forEach((item) => {
@@ -232,6 +234,30 @@ class Order extends Component {
                     delete: 'Delete',
                     deleteAria: 'Delete Selected Rows',
                 },
+            },
+            customSearchRender: debounceSearchRender(500),
+            searchPlaceholder: 'Nhập tìm kiếm',
+            customSearch: (searchQuery, currentRow, columns) => {
+                let entire = true
+                let searchQuerySplitted = searchQuery.split(';')
+                searchQuerySplitted = searchQuerySplitted.map((search) =>
+                    search.trim()
+                )
+                searchQuerySplitted.forEach((search) => {
+                    let searchText = search.toString().toUpperCase()
+                    if (search) {
+                        let isFound = false
+                        for (let i = 0; i < currentRow.length; ++i) {
+                            let colString = currentRow[i].toString()
+                            if (colString.indexOf(searchText) >= 0) {
+                                isFound = true
+                                break
+                            }
+                        }
+                        entire &= isFound
+                    }
+                })
+                return Boolean(entire)
             },
             customToolbarSelect: (selectedRows) => {
                 let rowsSelected = [],

@@ -184,7 +184,7 @@ class ItemPriceForm extends React.Component {
                                     variant="inline"
                                     inputVariant="outlined"
                                     format="DD/MM/YYYY"
-                                    label="Ngày áp dụng"
+                                    label="Ngày giao hàng"
                                     value={states[`dateApply${index}`]}
                                     onChange={date =>
                                         this.props.handleChangeDate(
