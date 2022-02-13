@@ -19,10 +19,10 @@ class Item extends Component {
             openConfirm: false,
             selectedRows: [],
             rowsSelected: [],
-            itemName: ''
+            itemName: '',
         }
     }
-    handleChangeText = e => {
+    handleChangeText = (e) => {
         this.setState({ itemName: e.target.value })
     }
     handleClose = () => {
@@ -30,12 +30,12 @@ class Item extends Component {
     }
     getPrice(idWarehouse, itemPrices) {
         let prices = []
-        itemPrices.forEach(itemPrice => {
+        itemPrices.forEach((itemPrice) => {
             let match = itemPrice[idWarehouse] ? true : false
             if (match)
                 prices.push({
                     dateApply: itemPrice.dateApply,
-                    itemPrice: itemPrice[idWarehouse]
+                    itemPrice: itemPrice[idWarehouse],
                 })
         })
         prices.sort((a, b) => {
@@ -67,8 +67,8 @@ class Item extends Component {
                                 item={items[idx]}
                             />
                         )
-                    }
-                }
+                    },
+                },
             },
             {
                 name: 'AP',
@@ -80,8 +80,8 @@ class Item extends Component {
                                 ? numeral(value).format('(0,0.[0000])')
                                 : '-'}
                         </div>
-                    )
-                }
+                    ),
+                },
             },
             {
                 name: 'TL',
@@ -93,8 +93,8 @@ class Item extends Component {
                                 ? numeral(value).format('(0,0.[0000])')
                                 : '-'}
                         </div>
-                    )
-                }
+                    ),
+                },
             },
             {
                 name: 'DN',
@@ -106,8 +106,8 @@ class Item extends Component {
                                 ? numeral(value).format('(0,0.[0000])')
                                 : '-'}
                         </div>
-                    )
-                }
+                    ),
+                },
             },
             {
                 name: 'Xem',
@@ -120,13 +120,14 @@ class Item extends Component {
                                     this.props.history.push(
                                         `/dashboard/items/view/${items[value]._id}`
                                     )
-                                }}>
+                                }}
+                            >
                                 <VisibilityIcon />
                             </IconButton>
                         )
-                    }
-                }
-            }
+                    },
+                },
+            },
         ]
         let data = []
         items.forEach((item, index) => {
@@ -140,7 +141,7 @@ class Item extends Component {
         })
         let { selectedRows } = this.state
         let rowsSelected = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
         })
         rowsSelected.sort()
@@ -153,35 +154,35 @@ class Item extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
             customToolbar: () => {
                 return (
@@ -190,29 +191,31 @@ class Item extends Component {
                             color="primary"
                             onClick={() => {
                                 this.setState({ openAddItem: true })
-                            }}>
+                            }}
+                        >
                             <AddBox />
                         </IconButton>
                     </Tooltip>
                 )
             },
-            customToolbarSelect: selectedRows => (
+            customToolbarSelect: (selectedRows) => (
                 <IconButton
                     onClick={() => {
                         let rowsSelected = []
-                        selectedRows.data.forEach(row => {
+                        selectedRows.data.forEach((row) => {
                             rowsSelected.push(row.dataIndex)
                         })
                         rowsSelected.sort()
                         this.setState({
                             openConfirm: true,
                             selectedRows: selectedRows.data,
-                            rowsSelected
+                            rowsSelected,
                         })
-                    }}>
+                    }}
+                >
                     <RemoveCircleIcon />
                 </IconButton>
-            )
+            ),
         }
 
         return (
@@ -227,7 +230,7 @@ class Item extends Component {
                     okLabel="Nhập"
                     input={{
                         value: itemName,
-                        onChange: this.handleChangeText
+                        onChange: this.handleChangeText,
                     }}
                     onHide={this.handleClose}
                     onOK={() => {
@@ -244,7 +247,7 @@ class Item extends Component {
                     onHide={this.handleClose}
                     onOK={() => {
                         let itemsListId = []
-                        this.state.rowsSelected.forEach(index => {
+                        this.state.rowsSelected.forEach((index) => {
                             itemsListId.push(items[index]._id)
                         })
                         this.props.deleteItems({ itemsListId })

@@ -20,9 +20,9 @@ class ExportStore {
         const { success, data } = await exportAPI.getAllExports(query)
         if (success) {
             let exportedListId = []
-            data.exportedList.forEach(element => {
+            data.exportedList.forEach((element) => {
                 let array = []
-                element.exportedList.forEach(x => {
+                element.exportedList.forEach((x) => {
                     array.push(x._id)
                 })
                 exportedListId.push(array)
@@ -38,7 +38,7 @@ class ExportStore {
         this.isRequesting = true
         this.exported = null
         const { success, data } = await exportAPI.getExport({
-            idExported
+            idExported,
         })
         if (success) this.exported = data.exported
         this.isRequesting = false
@@ -48,18 +48,18 @@ class ExportStore {
         this.isRequesting = true
         const { success, data } = await exportAPI.setExport({
             idExported,
-            exportedList
+            exportedList,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Khôi phục hoá đơn thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -68,18 +68,18 @@ class ExportStore {
     async exportReport({ exportIdList, callback }) {
         this.isRequesting = true
         const { success, data } = await exportAPI.exportReport({
-            exportIdList
+            exportIdList,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Xuất báo cáo thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -89,19 +89,19 @@ class ExportStore {
         this.isRequesting = true
         const { success, data } = await exportAPI.deleteExports({
             exportedList,
-            exportsList
+            exportsList,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Xoá hoá đơn đã xuất thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
             // this.fetchAllExports({})
         } else
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         this.isRequesting = false
     }

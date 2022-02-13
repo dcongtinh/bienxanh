@@ -19,7 +19,7 @@ class SupplierStore {
         supplierAddress,
         supplierNote,
         supplierItems,
-        callback
+        callback,
     }) {
         this.isRequesting = true
         const { success, data } = await supplierAPI.addSupplier({
@@ -28,19 +28,19 @@ class SupplierStore {
             supplierIdNo,
             supplierAddress,
             supplierNote,
-            supplierItems
+            supplierItems,
         })
 
         if (success) {
             this.rootStore.alert.show({
                 message: `Thêm nhà cung cấp thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -57,7 +57,7 @@ class SupplierStore {
         this.isRequesting = true
         this.supplier = null
         const { success, data } = await supplierAPI.getSupplier({
-            idSupplier
+            idSupplier,
         })
         if (success) this.supplier = data.supplier
         this.isRequesting = false
@@ -68,19 +68,19 @@ class SupplierStore {
         this.isRequesting = true
         const { success, data } = await supplierAPI.updateSupplier({
             idSupplier,
-            data: updateData
+            data: updateData,
         })
 
         if (success) {
             this.rootStore.alert.show({
                 message: `Cập nhật nhà cung cấp thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -89,18 +89,18 @@ class SupplierStore {
     async deleteSuppliers({ suppliersListId }) {
         this.isRequesting = true
         const { success, data } = await supplierAPI.deleteSuppliers({
-            suppliersListId
+            suppliersListId,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Xoá hàng thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             this.fetchAllSuppliers()
         } else
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         this.isRequesting = false
     }

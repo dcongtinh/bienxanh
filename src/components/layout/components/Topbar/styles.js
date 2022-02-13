@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
     root: {
         borderBottom: `1px solid ${theme.palette.border}`,
         backgroundColor: theme.palette.primary.main,
@@ -6,24 +6,24 @@ export default theme => ({
         display: 'flex',
         alignItems: 'center',
         height: '48px',
-        zIndex: theme.zIndex.appBar
+        zIndex: theme.zIndex.appBar,
     },
     toolbar: {
         minHeight: 'auto',
-        width: '100%'
+        width: '100%',
     },
     title: {
         marginLeft: theme.spacing(),
-        color: theme.palette.common.white
+        color: theme.palette.common.white,
     },
     menuButton: {
         marginLeft: '-4px',
-        color: theme.palette.common.white
+        color: theme.palette.common.white,
     },
     notificationsButton: {
-        marginLeft: 'auto'
+        marginLeft: 'auto',
     },
     profileButton: {
-        marginLeft: 'auto'
-    }
+        marginLeft: 'auto',
+    },
 })

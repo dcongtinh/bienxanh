@@ -4,24 +4,24 @@ import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
 import Checkbox from '@material-ui/core/Checkbox'
 
-const styles = theme => ({
+const styles = (theme) => ({
     editOption: {
-        display: 'flex'
-    }
+        display: 'flex',
+    },
 })
 
 class RowEdit extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            checked: props.checked
+            checked: props.checked,
         }
     }
 
     shouldComponentUpdate(nextProps) {
         if (this.state.checked !== nextProps.checked) {
             this.setState({
-                checked: nextProps.checked
+                checked: nextProps.checked,
             })
         }
         return true
@@ -38,7 +38,8 @@ class RowEdit extends Component {
                             this.props.history.push(
                                 `/dashboard/orders/${idOrder}`
                             )
-                        }}>
+                        }}
+                    >
                         <EditIcon />
                     </IconButton>
                 )}
@@ -48,9 +49,9 @@ class RowEdit extends Component {
                         this.props.updateOrder({
                             idOrder,
                             data: {
-                                payStatus: !checked
+                                payStatus: !checked,
                             },
-                            callback: () => {}
+                            callback: () => {},
                         })
                         this.setState({ checked: !checked })
                     }}

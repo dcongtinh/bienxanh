@@ -1,26 +1,26 @@
 import { observable, action } from 'mobx'
-import itemAPI from 'api/item.api'
+import unitAPI from 'api/unit.api'
 
-class WarehouseStore {
+class UnitStore {
     @observable isFetchingMe = true
     @observable hasFetched = false
-    @observable items = []
-    @observable item = null
+    @observable units = []
+    @observable unit = null
     @observable isRequesting = false
 
     constructor(rootStore) {
         this.rootStore = rootStore
     }
     @action
-    async addItem({ itemName, callback }) {
+    async addUnit({ unitName, callback }) {
         this.isRequesting = true
-        const { success, data } = await itemAPI.addItem({
-            itemName,
+        const { success, data } = await unitAPI.addUnit({
+            unitName,
         })
 
         if (success) {
             this.rootStore.alert.show({
-                message: `Thêm hàng thành công!`,
+                message: `Thêm đơn vị tính thành công!`,
                 variant: 'success',
             })
             if (callback) callback()
@@ -33,37 +33,37 @@ class WarehouseStore {
         this.isRequesting = false
     }
     @action
-    async fetchAllItems() {
+    async fetchAllUnits() {
         this.isRequesting = true
-        const { success, data } = await itemAPI.getAllItems()
+        const { success, data } = await unitAPI.getAllUnits()
 
         if (success) {
-            let items = data.items
-            items.sort((a, b) => {
-                if (a.itemName > b.itemName) return 1
-                if (a.itemName < b.itemName) return -1
+            let units = data.units
+            units.sort((a, b) => {
+                if (a.unitName > b.unitName) return 1
+                if (a.unitName < b.unitName) return -1
                 return 0
             })
-            this.items = items
+            this.units = units
         }
         this.isRequesting = false
     }
     @action
-    async fetchItem({ idItem }) {
+    async fetchUnit({ idUnit }) {
         this.isRequesting = true
-        this.item = null
-        const { success, data } = await itemAPI.getItem({
-            idItem,
+        this.unit = null
+        const { success, data } = await unitAPI.getUnit({
+            idUnit,
         })
-        if (success) this.item = data.item
+        if (success) this.unit = data.unit
         this.isRequesting = false
     }
 
     @action
-    async updateItem({ idItem, data: updateData, callback }) {
+    async updateUnit({ idUnit, data: updateData, callback }) {
         // this.isRequesting = true
-        const { success, data } = await itemAPI.updateItem({
-            idItem,
+        const { success, data } = await unitAPI.updateUnit({
+            idUnit,
             data: updateData,
         })
 
@@ -71,10 +71,10 @@ class WarehouseStore {
             if (callback) return callback()
 
             this.rootStore.alert.show({
-                message: `Cập nhật hàng thành công!`,
+                message: `Cập nhật đơn vị tính thành công!`,
                 variant: 'success',
             })
-            // this.fetchItem({ idItem })
+            // this.fetchUnit({ idUnit })
         } else {
             this.rootStore.alert.show({
                 message: data.message,
@@ -84,17 +84,17 @@ class WarehouseStore {
         // this.isRequesting = false
     }
     @action
-    async deleteItems({ itemsListId }) {
+    async deleteUnits({ unitsListId }) {
         this.isRequesting = true
-        const { success, data } = await itemAPI.deleteItems({
-            itemsListId,
+        const { success, data } = await unitAPI.deleteUnits({
+            unitsListId,
         })
         if (success) {
             this.rootStore.alert.show({
-                message: `Xoá hàng thành công!`,
+                message: `Xoá đơn vị tính thành công!`,
                 variant: 'success',
             })
-            this.fetchAllItems()
+            this.fetchAllUnits()
         } else
             this.rootStore.alert.show({
                 message: data.message,
@@ -104,4 +104,4 @@ class WarehouseStore {
     }
 }
 
-export default WarehouseStore
+export default UnitStore

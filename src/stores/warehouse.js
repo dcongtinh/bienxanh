@@ -20,7 +20,7 @@ class WarehouseStore {
         buyerArea,
         buyerLegalName,
         buyerTaxCode,
-        callback
+        callback,
     }) {
         this.isRequesting = true
         const { success, data } = await wareHouseAPI.addWarehouse({
@@ -30,19 +30,19 @@ class WarehouseStore {
             buyerAddress,
             buyerArea,
             buyerLegalName,
-            buyerTaxCode
+            buyerTaxCode,
         })
 
         if (success) {
             this.rootStore.alert.show({
                 message: `Thêm kho thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -72,7 +72,7 @@ class WarehouseStore {
         this.isRequesting = true
         this.wareHouse = null
         const { success, data } = await wareHouseAPI.getWarehouse({
-            idWarehouse
+            idWarehouse,
         })
         if (success) this.wareHouse = data.wareHouse
         this.isRequesting = false
@@ -88,7 +88,7 @@ class WarehouseStore {
         buyerArea,
         buyerLegalName,
         buyerTaxCode,
-        callback
+        callback,
     }) {
         this.isRequesting = true
         const { success, data } = await wareHouseAPI.updateWarehouse({
@@ -99,19 +99,19 @@ class WarehouseStore {
             buyerAddress,
             buyerArea,
             buyerLegalName,
-            buyerTaxCode
+            buyerTaxCode,
         })
 
         if (success) {
             this.rootStore.alert.show({
                 message: `Cập nhật kho thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -120,18 +120,18 @@ class WarehouseStore {
     async deleteWareHouses({ wareHousesListId, callback }) {
         this.isRequesting = true
         const { success, data } = await wareHouseAPI.deleteWareHouses({
-            wareHousesListId
+            wareHousesListId,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Xoá tài khoản thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         this.isRequesting = false
     }

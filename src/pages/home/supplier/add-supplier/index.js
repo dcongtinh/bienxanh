@@ -10,8 +10,8 @@ import { inject, observer } from 'mobx-react'
 @inject(({ item, supplier }) => ({
     fetchAllItems: () => item.fetchAllItems(),
     items: JSON.parse(JSON.stringify(item.items)),
-    addSupplier: object => supplier.addSupplier(object),
-    isRequesting: supplier.isRequesting
+    addSupplier: (object) => supplier.addSupplier(object),
+    isRequesting: supplier.isRequesting,
 }))
 @observer
 class AddSupplierPage extends Component {

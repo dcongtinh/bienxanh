@@ -7,30 +7,30 @@ import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import PriceTable from './PriceTable'
 import Select from 'react-select'
-const NumberFormatCustom = props => {
+const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
     return (
         <NumberFormat
             {...other}
             getInputRef={inputRef}
-            onValueChange={values => {
+            onValueChange={(values) => {
                 onChange({
                     target: {
-                        value: values.value
-                    }
+                        value: values.value,
+                    },
                 })
             }}
             thousandSeparator
         />
     )
 }
-const styles = theme => ({
+const styles = (theme) => ({
     supplierName: {
         padding: '4px 0',
         maxWidth: 200,
         overflow: 'hidden',
-        textOverflow: 'ellipsis'
-    }
+        textOverflow: 'ellipsis',
+    },
 })
 
 class ViewItemInfo extends React.Component {
@@ -39,12 +39,12 @@ class ViewItemInfo extends React.Component {
         let { idItem } = this.props.match.params
         let supplierList = [],
             nameSupplier = {}
-        suppliers.forEach(supplier => {
+        suppliers.forEach((supplier) => {
             for (let i in supplier.supplierItems) {
                 if (supplier.supplierItems[i].value === idItem) {
                     supplierList.push({
                         value: supplier._id,
-                        label: supplier.supplierName
+                        label: supplier.supplierName,
                     })
                     nameSupplier[supplier._id] = supplier.supplierName
                     break
@@ -56,108 +56,108 @@ class ViewItemInfo extends React.Component {
                 title: 'Ngày bán',
                 field: 'dateApply',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {moment(rowData.dateApply).format('DD/MM/YYYY')}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     return (
                         <DatePicker
                             name="dateApply"
                             format="DD/MM/YYYY"
                             variant="inline"
                             value={props.value}
-                            onChange={date => {
+                            onChange={(date) => {
                                 props.onChange(date)
                             }}
                             autoOk
                         />
                     )
-                }
+                },
             },
             {
                 title: 'Đồng giá',
                 field: 'equalPrice',
-                render: rowData => (
+                render: (rowData) => (
                     <div>
                         {rowData.equalPrice
                             ? numeral(rowData.equalPrice).format('(0,0')
                             : '-'}
                     </div>
                 ),
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="equalPrice"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
-            }
+                ),
+            },
         ]
         let columns2 = [
             {
                 title: 'Ngày mua',
                 field: 'dateApply',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div>
                             {moment(rowData.dateApply).format('DD/MM/YYYY')}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     return (
                         <DatePicker
                             name="dateApply"
                             format="DD/MM/YYYY"
                             variant="inline"
                             value={props.value}
-                            onChange={date => {
+                            onChange={(date) => {
                                 props.onChange(date)
                             }}
                             autoOk
                         />
                     )
-                }
+                },
             },
             {
                 title: 'NCC',
                 field: 'itemSupplier',
                 headerStyle: {
-                    marginBottom: 4
+                    marginBottom: 4,
                 },
-                render: rowData => {
+                render: (rowData) => {
                     return (
                         <div className={classes.supplierName}>
                             {nameSupplier[rowData.itemSupplier]}
                         </div>
                     )
                 },
-                editComponent: props => {
+                editComponent: (props) => {
                     let data
                     if (props.value) {
                         data = {
                             value: props.value,
-                            label: nameSupplier[props.value]
+                            label: nameSupplier[props.value],
                         }
                     }
                     return (
                         <Select
                             name="itemSupplier"
                             value={data}
-                            onChange={data => {
+                            onChange={(data) => {
                                 props.onChange(data.value)
                             }}
                             options={supplierList}
@@ -165,93 +165,93 @@ class ViewItemInfo extends React.Component {
                             classNamePrefix={'select'}
                             placeholder="Chọn NCC"
                             styles={{
-                                multiValue: base => ({
+                                multiValue: (base) => ({
                                     ...base,
-                                    borderRadius: 16
+                                    borderRadius: 16,
                                 }),
-                                option: base => ({
+                                option: (base) => ({
                                     ...base,
                                     maxWidth: '100%',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                })
+                                    whiteSpace: 'nowrap',
+                                }),
                             }}
                         />
                     )
-                }
+                },
             },
             {
                 title: 'Đồng giá',
                 field: 'equalPrice',
-                render: rowData => (
+                render: (rowData) => (
                     <div>
                         {rowData.equalPrice
                             ? numeral(rowData.equalPrice).format('(0,0')
                             : '-'}
                     </div>
                 ),
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name="equalPrice"
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
-            }
+                ),
+            },
         ]
 
         let warehouseList = []
-        wareHouses.forEach(warehouse => {
+        wareHouses.forEach((warehouse) => {
             let idWh = warehouse._id
             warehouseList.push(idWh)
             columns.push({
                 title: warehouse.warehouse,
                 field: idWh,
-                render: rowData => (
+                render: (rowData) => (
                     <div>
                         {rowData[idWh] && !rowData.equalPrice
                             ? numeral(rowData[idWh]).format('(0,0')
                             : '-'}
                     </div>
                 ),
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name={idWh}
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             })
             columns2.push({
                 title: warehouse.warehouse,
                 field: idWh,
-                render: rowData => (
+                render: (rowData) => (
                     <div>
                         {rowData[idWh] && !rowData.equalPrice
                             ? numeral(rowData[idWh]).format('(0,0')
                             : '-'}
                     </div>
                 ),
-                editComponent: props => (
+                editComponent: (props) => (
                     <TextField
                         style={{ width: 70 }}
-                        onChange={e => props.onChange(e.target.value)}
+                        onChange={(e) => props.onChange(e.target.value)}
                         value={props.value}
                         name={idWh}
                         InputProps={{
-                            inputComponent: NumberFormatCustom
+                            inputComponent: NumberFormatCustom,
                         }}
                     />
-                )
+                ),
             })
         })
         return (

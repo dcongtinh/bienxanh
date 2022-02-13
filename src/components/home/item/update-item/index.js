@@ -12,35 +12,35 @@ import SendIcon from '@material-ui/icons/Send'
 import ItemPriceForm from 'components/home/item/add-item/ItemPriceForm'
 import moment from 'moment'
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     submit: {
         margin: theme.spacing(2, 0),
         position: 'absolute',
-        right: 0
+        right: 0,
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 class UpdateItem extends React.Component {
@@ -71,7 +71,7 @@ class UpdateItem extends React.Component {
             count: Math.max(itemPrices.length, 1),
             itemName: props.item.itemName,
             itemPrices,
-            datas
+            datas,
         }
 
         let state = {}
@@ -80,16 +80,16 @@ class UpdateItem extends React.Component {
         })
         this.state = Object.assign({}, this.state, state)
     }
-    handleChangeCount = count => {
+    handleChangeCount = (count) => {
         this.setState({ count })
     }
     handleCheckbox = (name, value) => {
         this.setState({ [name]: value })
     }
-    handleSelect = datas => {
+    handleSelect = (datas) => {
         this.setState({ datas })
     }
-    handleChangeOption = data => {
+    handleChangeOption = (data) => {
         this.setState({ data: data || [] })
     }
     handleChangeDate = (name, value) => {
@@ -103,10 +103,10 @@ class UpdateItem extends React.Component {
         for (let i = 0; i < count; ++i) array.push('')
 
         let initialValues = {
-                itemName
+                itemName,
             },
             _AddItemSchema = {
-                itemName: Yup.string().required('* Bắt buộc')
+                itemName: Yup.string().required('* Bắt buộc'),
             }
         array.forEach((item, index) => {
             let _initialValues = {
@@ -115,14 +115,13 @@ class UpdateItem extends React.Component {
                     : [],
                 [`dateApply${index}`]: itemPrices[index]
                     ? itemPrices[index].dateApply
-                    : new Date()
+                    : new Date(),
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
 
             let _addItemSchema = {
-                [`itemPrice${index}`]: Yup.number('Not a numbBar').required(
-                    '* Bắt buộc'
-                )
+                [`itemPrice${index}`]:
+                    Yup.number('Not a numbBar').required('* Bắt buộc'),
             }
             _AddItemSchema = Object.assign({}, _AddItemSchema, _addItemSchema)
         })
@@ -130,17 +129,17 @@ class UpdateItem extends React.Component {
 
         let area = []
         for (let i = 0; i < 3; ++i) {
-            area[i] = wareHouses.filter(warehouse => {
+            area[i] = wareHouses.filter((warehouse) => {
                 return warehouse.buyerArea === i
             })
         }
         let options = []
         for (let i = 0; i < 3; ++i) {
             options[i] = []
-            area[i].forEach(warehouse => {
+            area[i].forEach((warehouse) => {
                 options[i].push({
                     value: warehouse._id,
-                    label: warehouse.warehouseName
+                    label: warehouse.warehouseName,
                 })
             })
         }
@@ -164,25 +163,25 @@ class UpdateItem extends React.Component {
                                     itemPrices.push({
                                         itemPrice: values[`itemPrice${index}`],
                                         wareHouses: datas[index],
-                                        customDateApply: moment(date).format(
-                                            'YYYY/MM/DD'
-                                        ),
-                                        dateApply: date
+                                        customDateApply:
+                                            moment(date).format('YYYY/MM/DD'),
+                                        dateApply: date,
                                     })
                                 })
                                 this.props.updateItem({
                                     idItem,
                                     itemName,
-                                    itemPrices
+                                    itemPrices,
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => {
                                 let disabled = false
                                 array.forEach((item, index) => {
@@ -200,7 +199,8 @@ class UpdateItem extends React.Component {
                                                 md={6}
                                                 xl={6}
                                                 xs={12}
-                                                spacing={2}>
+                                                spacing={2}
+                                            >
                                                 <Grid item xs={12}>
                                                     <TextField
                                                         onChange={handleChange}
@@ -256,7 +256,8 @@ class UpdateItem extends React.Component {
                                                 lg={6}
                                                 md={6}
                                                 xl={6}
-                                                xs={12}>
+                                                xs={12}
+                                            >
                                                 abc
                                             </Grid>
                                         </Grid>
@@ -269,7 +270,8 @@ class UpdateItem extends React.Component {
                                             type="submit"
                                             variant="contained"
                                             color="primary"
-                                            className={classes.submit}>
+                                            className={classes.submit}
+                                        >
                                             <SendIcon
                                                 className={classes.iconSubmit}
                                             />

@@ -12,63 +12,63 @@ import Checkbox from '@material-ui/core/Checkbox'
 import NumberFormat from 'react-number-format'
 import { DatePicker } from '@material-ui/pickers'
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
+        height: '24px !important',
     },
     root: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     groupOrder: {
         position: 'relative',
         margin: theme.spacing(1),
         border: '1px solid ' + theme.palette.border,
-        paddingTop: theme.spacing(2) + 'px !important'
+        paddingTop: theme.spacing(2) + 'px !important',
     },
     legend: {
         position: 'absolute',
         backgroundColor: 'white',
         top: -8,
-        padding: '0 4px'
+        padding: '0 4px',
     },
     removeCircleIcon: {
         position: 'absolute',
         top: -21,
         right: -21,
-        color: theme.palette.danger.dark
+        color: theme.palette.danger.dark,
     },
     fab: {
-        marginLeft: theme.spacing(1)
+        marginLeft: theme.spacing(1),
     },
     checkbox: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     label: {
-        cursor: 'pointer'
-    }
+        cursor: 'pointer',
+    },
 })
 
-const NumberFormatCustom = props => {
+const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
     return (
         <NumberFormat
             {...other}
             getInputRef={inputRef}
-            onValueChange={values => {
+            onValueChange={(values) => {
                 onChange({
                     target: {
                         name: props.name,
-                        value: values.value
-                    }
+                        value: values.value,
+                    },
                 })
             }}
             thousandSeparator
@@ -82,9 +82,9 @@ class ItemPriceForm extends React.Component {
         openConfirm: false,
         openChooseWarehouse: false,
         area: 0,
-        index: 0
+        index: 0,
     }
-    handleOpen = indexItem => {
+    handleOpen = (indexItem) => {
         this.setState({ openConfirm: true, indexItem })
     }
     handleClose = () => {
@@ -98,7 +98,7 @@ class ItemPriceForm extends React.Component {
         let count = Math.max(this.props.array.length - 1, 1)
         this.props.handleChangeCount(count)
     }
-    handleChangeOption = data => {
+    handleChangeOption = (data) => {
         let { states } = this.props
         let { index, area } = this.state
         if (!states.datas[index]) {
@@ -128,7 +128,7 @@ class ItemPriceForm extends React.Component {
             idItem,
             prices,
             itemName,
-            options
+            options,
         } = this.props
         array.forEach((item, index) => {
             if (!states.datas[index]) {
@@ -147,16 +147,19 @@ class ItemPriceForm extends React.Component {
                             item
                             container
                             spacing={2}
-                            className={classes.groupOrder}>
-                            <div className={classes.legend}>{`Đơn giá ${index +
-                                1}`}</div>
+                            className={classes.groupOrder}
+                        >
+                            <div className={classes.legend}>{`Đơn giá ${
+                                index + 1
+                            }`}</div>
                             {(isUpdateItem || array.length > 1) && (
                                 <IconButton
                                     className={classes.removeCircleIcon}
                                     onClick={() => {
                                         if (isUpdateItem) this.handleOpen(index)
                                         else this.handleSub()
-                                    }}>
+                                    }}
+                                >
                                     <RemoveCircleIcon />
                                 </IconButton>
                             )}
@@ -173,7 +176,7 @@ class ItemPriceForm extends React.Component {
                                     }
                                     message={errors[`itemPrice${index}`]}
                                     InputProps={{
-                                        inputComponent: NumberFormatCustom
+                                        inputComponent: NumberFormatCustom,
                                     }}
                                 />
                             </Grid>
@@ -186,7 +189,7 @@ class ItemPriceForm extends React.Component {
                                     format="DD/MM/YYYY"
                                     label="Ngày giao hàng"
                                     value={states[`dateApply${index}`]}
-                                    onChange={date =>
+                                    onChange={(date) =>
                                         this.props.handleChangeDate(
                                             `dateApply${index}`,
                                             date
@@ -235,9 +238,10 @@ class ItemPriceForm extends React.Component {
                                                     this.setState({
                                                         openChooseWarehouse: true,
                                                         index,
-                                                        area: index1
+                                                        area: index1,
                                                     })
-                                                }}>{`${label} (${count}/${total})`}</Typography>
+                                                }}
+                                            >{`${label} (${count}/${total})`}</Typography>
                                         </div>
                                     </Grid>
                                 )
@@ -250,8 +254,9 @@ class ItemPriceForm extends React.Component {
                     title={
                         prices && prices.length === 1
                             ? `Bạn có chắc muốn xoá hàng?`
-                            : `Bạn có chắc muốn xoá Đơn giá ${this.state
-                                  .indexItem + 1}?`
+                            : `Bạn có chắc muốn xoá Đơn giá ${
+                                  this.state.indexItem + 1
+                              }?`
                     }
                     cancelLabel="Huỷ"
                     okLabel="Xoá"
@@ -268,7 +273,7 @@ class ItemPriceForm extends React.Component {
                             this.props.updateItem({
                                 idItem,
                                 itemName,
-                                itemPrices: prices
+                                itemPrices: prices,
                             })
                         }
                         this.handleClose()
@@ -288,14 +293,15 @@ class ItemPriceForm extends React.Component {
                         area,
                         options: options[area],
                         multiple: true,
-                        placeholder: 'Tìm kiếm'
+                        placeholder: 'Tìm kiếm',
                     }}
                 />
                 <Fab
                     color="primary"
                     aria-label="Add"
                     className={classes.fab}
-                    onClick={this.handleAdd}>
+                    onClick={this.handleAdd}
+                >
                     <AddIcon />
                 </Fab>
             </>

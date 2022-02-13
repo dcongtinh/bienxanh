@@ -1,9 +1,9 @@
-export default theme => ({
+export default (theme) => ({
     root: {
         backgroundColor: theme.palette.common.white,
         display: 'flex',
         flexDirection: 'column',
-        height: '100%'
+        height: '100%',
         // paddingLeft: theme.spacing.unit,
         // paddingRight: theme.spacing.unit
     },
@@ -12,37 +12,37 @@ export default theme => ({
         justifyContent: 'center',
         alignItems: 'center',
         height: '63px',
-        flexShrink: 0
+        flexShrink: 0,
     },
     logoLink: {
-        fontSize: 0
+        fontSize: 0,
     },
     logoImage: {
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     logoDivider: {
-        marginBottom: theme.spacing(2)
+        marginBottom: theme.spacing(2),
     },
     profile: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        minHeight: 'fit-content'
+        minHeight: 'fit-content',
     },
     avatar: {
         width: '100px',
-        height: '100px'
+        height: '100px',
     },
     nameText: {
-        marginTop: theme.spacing()
+        marginTop: theme.spacing(),
     },
     bioText: {},
     profileDivider: {
         marginBottom: theme.spacing(2),
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
     },
     listSubheader: {
-        color: theme.palette.text.secondary
+        color: theme.palette.text.secondary,
     },
     listItem: {
         cursor: 'pointer',
@@ -51,33 +51,33 @@ export default theme => ({
             borderLeft: `4px solid ${theme.palette.primary.main}`,
             '& $listItemIcon': {
                 color: theme.palette.primary.main,
-                marginLeft: '-4px'
-            }
+                marginLeft: '-4px',
+            },
         },
         '& + &': {
-            marginTop: theme.spacing()
-        }
+            marginTop: theme.spacing(),
+        },
     },
     activeListItem: {
         borderLeft: `4px solid ${theme.palette.primary.main}`,
         backgroundColor: theme.palette.action.selected,
         '& $listItemText': {
-            color: theme.palette.text.primary
+            color: theme.palette.text.primary,
         },
         '& $listItemIcon': {
             color: theme.palette.primary.main,
-            marginLeft: '-4px'
-        }
+            marginLeft: '-4px',
+        },
     },
     listItemIcon: {
-        marginRight: 0
+        marginRight: 0,
     },
     listItemText: {
         fontWeight: 500,
-        color: theme.palette.text.secondary
+        color: theme.palette.text.secondary,
     },
     listDivider: {
         marginBottom: theme.spacing(2),
-        marginTop: theme.spacing(2)
-    }
+        marginTop: theme.spacing(2),
+    },
 })

@@ -15,27 +15,27 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import SaveIcon from '@material-ui/icons/Save'
 
-const styles = theme => ({
+const styles = (theme) => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(2, 0)
+        margin: theme.spacing(2, 0),
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 const SignUpSchema = Yup.object().shape({
@@ -45,9 +45,7 @@ const SignUpSchema = Yup.object().shape({
         .min(6, '* Tên tài khoản chứa ít nhất 6 kí tự')
         .max(50, '* Tên tài khoản chứa tối đa 50 kí tự')
         .required('* Bắt buộc'),
-    email: Yup.string()
-        .email('* Email không hợp lệ')
-        .required('* Bắt buộc')
+    email: Yup.string().email('* Email không hợp lệ').required('* Bắt buộc'),
 })
 
 class Profile extends React.Component {
@@ -60,7 +58,7 @@ class Profile extends React.Component {
             order: access.indexOf('order') !== -1,
             item: access.indexOf('item') !== -1,
             warehouse: access.indexOf('warehouse') !== -1,
-            supplier: access.indexOf('supplier') !== -1
+            supplier: access.indexOf('supplier') !== -1,
         }
     }
 
@@ -73,7 +71,7 @@ class Profile extends React.Component {
             { value: 'order', label: 'Quản lí hoá đơn' },
             { value: 'item', label: 'Quản lí hàng hoá' },
             { value: 'warehouse', label: 'Quản lí kho' },
-            { value: 'supplier', label: 'Quản lí NCC' }
+            { value: 'supplier', label: 'Quản lí NCC' },
         ]
         return (
             <Container component="main" maxWidth="sm">
@@ -85,13 +83,13 @@ class Profile extends React.Component {
                                 firstname: user.firstname || '',
                                 lastname: user.lastname || '',
                                 username: user.username || '',
-                                email: user.email || ''
+                                email: user.email || '',
                             }}
                             validationSchema={SignUpSchema}
-                            onSubmit={values => {
+                            onSubmit={(values) => {
                                 let { username, firstname, lastname } = values
                                 let list = []
-                                accesses.forEach(access => {
+                                accesses.forEach((access) => {
                                     let { value } = access
                                     if (this.state[value]) list.push(value)
                                 })
@@ -100,16 +98,17 @@ class Profile extends React.Component {
                                     firstname,
                                     lastname,
                                     siteAdmin,
-                                    access: list
+                                    access: list,
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => (
                                 <Form>
                                     <Grid container spacing={2}>
@@ -120,7 +119,8 @@ class Profile extends React.Component {
                                             md={6}
                                             xl={8}
                                             xs={12}
-                                            spacing={2}>
+                                            spacing={2}
+                                        >
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     onChange={handleChange}
@@ -162,7 +162,7 @@ class Profile extends React.Component {
                                                     }
                                                     message={errors.username}
                                                     InputProps={{
-                                                        readOnly: true
+                                                        readOnly: true,
                                                     }}
                                                 />
                                             </Grid>
@@ -179,7 +179,7 @@ class Profile extends React.Component {
                                                     }
                                                     message={errors.email}
                                                     InputProps={{
-                                                        readOnly: true
+                                                        readOnly: true,
                                                     }}
                                                 />
                                             </Grid>
@@ -190,7 +190,8 @@ class Profile extends React.Component {
                                                 lg={4}
                                                 md={6}
                                                 xl={4}
-                                                xs={12}>
+                                                xs={12}
+                                            >
                                                 <FormControl component="fieldset">
                                                     <FormLabel component="legend">
                                                         Phân quyền
@@ -200,7 +201,7 @@ class Profile extends React.Component {
                                                             (access, index) => {
                                                                 let {
                                                                     value,
-                                                                    label
+                                                                    label,
                                                                 } = access
                                                                 return (
                                                                     <FormControlLabel
@@ -219,13 +220,15 @@ class Profile extends React.Component {
                                                                                 value={
                                                                                     value
                                                                                 }
-                                                                                onChange={e => {
+                                                                                onChange={(
+                                                                                    e
+                                                                                ) => {
                                                                                     this.setState(
                                                                                         {
                                                                                             [value]:
                                                                                                 e
                                                                                                     .target
-                                                                                                    .checked
+                                                                                                    .checked,
                                                                                         }
                                                                                     )
                                                                                 }}
@@ -250,7 +253,8 @@ class Profile extends React.Component {
                                         type="submit"
                                         variant="contained"
                                         color="primary"
-                                        className={classes.submit}>
+                                        className={classes.submit}
+                                    >
                                         <SaveIcon
                                             className={classes.iconSubmit}
                                         />

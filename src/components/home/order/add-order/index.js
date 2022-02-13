@@ -135,15 +135,8 @@ class AddOrder extends React.Component {
             itemName,
             pageSize,
         } = this.state
-        let {
-            classes,
-            isRequesting,
-            wareHouses,
-            items,
-            suppliers,
-            users,
-            me,
-        } = this.props
+        let { classes, isRequesting, wareHouses, items, suppliers, users, me } =
+            this.props
         let supplierList = [],
             nameSupplier = {}
         suppliers.forEach((supplier) => {
@@ -742,7 +735,8 @@ class AddOrder extends React.Component {
                             disabled={Boolean(isRequesting)}
                             type="submit"
                             variant="contained"
-                            color="primary">
+                            color="primary"
+                        >
                             <SendIcon className={classes.iconSubmit} />
                             Gửi
                             {isRequesting ? (

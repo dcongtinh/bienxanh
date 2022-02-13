@@ -1,12 +1,12 @@
-export default theme => ({
+export default (theme) => ({
     exportButton: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     exportIcon: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     addIcon: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     row: {
         height: '42px',
@@ -14,20 +14,20 @@ export default theme => ({
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: theme.spacing(),
-        marginBottom: theme.spacing()
+        marginBottom: theme.spacing(),
     },
     spacer: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     editOption: {
-        display: 'flex'
+        display: 'flex',
     },
     items: {
         paddingBottom: theme.spacing(),
         marginBottom: theme.spacing(),
-        borderBottom: '1px solid ' + theme.palette.border
+        borderBottom: '1px solid ' + theme.palette.border,
     },
     headItems: {
-        minWidth: 200
-    }
+        minWidth: 200,
+    },
 })

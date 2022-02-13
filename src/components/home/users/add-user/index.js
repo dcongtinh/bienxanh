@@ -120,7 +120,8 @@ class AddUserForm extends React.Component {
                                     access: list,
                                     callback: () => resetForm(),
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
@@ -138,7 +139,8 @@ class AddUserForm extends React.Component {
                                             md={6}
                                             xl={8}
                                             xs={12}
-                                            spacing={2}>
+                                            spacing={2}
+                                        >
                                             <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     onChange={handleChange}
@@ -290,7 +292,8 @@ class AddUserForm extends React.Component {
                                         type="submit"
                                         variant="contained"
                                         color="primary"
-                                        className={classes.submit}>
+                                        className={classes.submit}
+                                    >
                                         <PersonAddIcon
                                             className={classes.iconSubmit}
                                         />

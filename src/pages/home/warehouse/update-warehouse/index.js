@@ -10,15 +10,15 @@ import { inject, observer } from 'mobx-react'
 @inject(({ wareHouse }) => ({
     fetchWarehouse: ({ idWarehouse }) =>
         wareHouse.fetchWarehouse({ idWarehouse }),
-    updateWarehouse: object => wareHouse.updateWarehouse(object),
+    updateWarehouse: (object) => wareHouse.updateWarehouse(object),
     wareHouse: JSON.parse(JSON.stringify(wareHouse.wareHouse)),
-    isRequesting: wareHouse.isRequesting
+    isRequesting: wareHouse.isRequesting,
 }))
 @observer
 class UpdateWarehousePage extends Component {
     componentDidMount = () => {
         this.props.fetchWarehouse({
-            idWarehouse: this.props.match.params.idWarehouse
+            idWarehouse: this.props.match.params.idWarehouse,
         })
     }
 

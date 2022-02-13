@@ -28,43 +28,43 @@ class Warehouse extends Component {
             openConfirm: false,
             selectedRows: [],
             rowsSelected: [],
-            isLoading: false
+            isLoading: false,
         }
     }
     handleClose = () => {
         this.setState({ openConfirm: false })
     }
-    changePage = async page => {
+    changePage = async (page) => {
         this.setState({ isLoading: true })
         let { itemPerPage, order, column } = this.state
         const { success, data } = await wareHouseAPI.showAllWarehouses({
             page,
             itemPerPage,
             order,
-            column
+            column,
         })
         if (success) {
             this.setState({
                 page,
                 wareHouses: data.wareHouses,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
-    changeRowsPerPage = async rowsPerPage => {
+    changeRowsPerPage = async (rowsPerPage) => {
         this.setState({ isLoading: true })
         let { order, column } = this.state
         const { success, data } = await wareHouseAPI.showAllWarehouses({
             itemPerPage: rowsPerPage,
             order,
-            column
+            column,
         })
         if (success) {
             this.setState({
                 page: 0,
                 itemPerPage: rowsPerPage,
                 wareHouses: data.wareHouses,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
@@ -75,24 +75,24 @@ class Warehouse extends Component {
             page,
             itemPerPage,
             column,
-            order
+            order,
         })
         if (success) {
             this.setState({
                 column,
                 order,
                 wareHouses: data.wareHouses,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
-    filter = async filterList => {
+    filter = async (filterList) => {
         console.log('Submitting filters: ', filterList)
 
         this.setState({ isLoading: true, filters: filterList })
 
         const { success, data } = await wareHouseAPI.showAllWarehouses({
-            filters: filterList
+            filters: filterList,
         })
         if (success) {
             this.setState({
@@ -101,7 +101,7 @@ class Warehouse extends Component {
                 column: '',
                 order: '',
                 wareHouses: data.wareHouses,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
@@ -116,43 +116,43 @@ class Warehouse extends Component {
             column,
             order,
             searchText,
-            filters
+            filters,
         } = this.state
         const columns = [
             {
                 name: 'Mã kho',
                 options: {
                     sortDirection: column === 0 ? order : null,
-                    filterList: filters[0]
-                }
+                    filterList: filters[0],
+                },
             },
             {
                 name: 'Tên kho',
                 options: {
                     sortDirection: column === 1 ? order : null,
-                    filterList: filters[1]
-                }
+                    filterList: filters[1],
+                },
             },
             {
                 name: 'Tên khách hàng',
                 options: {
                     sortDirection: column === 2 ? order : null,
-                    filterList: filters[2]
-                }
+                    filterList: filters[2],
+                },
             },
             {
                 name: 'Tên đơn vị',
                 options: {
                     sortDirection: column === 3 ? order : null,
-                    filterList: filters[3]
-                }
+                    filterList: filters[3],
+                },
             },
             {
                 name: 'Mã số thuế',
                 options: {
                     sortDirection: column === 4 ? order : null,
-                    filterList: filters[4]
-                }
+                    filterList: filters[4],
+                },
             },
             {
                 name: 'Chỉnh sửa',
@@ -166,13 +166,14 @@ class Warehouse extends Component {
                                     this.props.history.push(
                                         `/dashboard/warehouses/${wareHouses[value]._id}`
                                     )
-                                }}>
+                                }}
+                            >
                                 <EditIcon />
                             </IconButton>
                         </div>
-                    )
-                }
-            }
+                    ),
+                },
+            },
         ]
         let data = []
         wareHouses.forEach((wareHouse, index) => {
@@ -188,7 +189,7 @@ class Warehouse extends Component {
 
         let { selectedRows } = this.state
         let rowsSelected = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
         })
         rowsSelected.sort()
@@ -208,35 +209,35 @@ class Warehouse extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
             customToolbar: () => {
                 return (
@@ -247,26 +248,28 @@ class Warehouse extends Component {
                                 this.props.history.push(
                                     '/dashboard/warehouses/add'
                                 )
-                            }}>
+                            }}
+                        >
                             <AddBox />
                         </IconButton>
                     </Tooltip>
                 )
             },
-            customToolbarSelect: selectedRows => (
+            customToolbarSelect: (selectedRows) => (
                 <IconButton
                     onClick={() => {
                         let rowsSelected = []
-                        selectedRows.data.forEach(row => {
+                        selectedRows.data.forEach((row) => {
                             rowsSelected.push(row.dataIndex)
                         })
                         rowsSelected.sort()
                         this.setState({
                             openConfirm: true,
                             selectedRows: selectedRows.data,
-                            rowsSelected
+                            rowsSelected,
                         })
-                    }}>
+                    }}
+                >
                     <RemoveCircleIcon />
                 </IconButton>
             ),
@@ -311,7 +314,7 @@ class Warehouse extends Component {
                     default:
                         break
                 }
-            }
+            },
         }
 
         return (
@@ -326,7 +329,7 @@ class Warehouse extends Component {
                                     style={{
                                         marginLeft: 15,
                                         position: 'relative',
-                                        top: 4
+                                        top: 4,
                                     }}
                                 />
                             )}
@@ -344,31 +347,29 @@ class Warehouse extends Component {
                     onHide={this.handleClose}
                     onOK={() => {
                         let wareHousesListId = []
-                        this.state.rowsSelected.forEach(index => {
+                        this.state.rowsSelected.forEach((index) => {
                             wareHousesListId.push(wareHouses[index]._id)
                         })
                         this.props.deleteWareHouses({
                             wareHousesListId,
                             callback: async () => {
-                                const {
-                                    success,
-                                    data
-                                } = await wareHouseAPI.showAllWarehouses({
-                                    page,
-                                    itemPerPage,
-                                    column,
-                                    order
-                                })
+                                const { success, data } =
+                                    await wareHouseAPI.showAllWarehouses({
+                                        page,
+                                        itemPerPage,
+                                        column,
+                                        order,
+                                    })
                                 if (success) {
                                     this.setState({
                                         wareHouses: data.wareHouses,
                                         count: data.count,
                                         isLoading: false,
-                                        selectedRows: []
+                                        selectedRows: [],
                                     })
                                     this.handleClose()
                                 }
-                            }
+                            },
                         })
                     }}
                 />

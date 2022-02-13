@@ -4,19 +4,19 @@ import styled from 'styled-components'
 import CloseIcon from '@material-ui/icons/Close'
 import CheckIcon from '@material-ui/icons/Check'
 import TextField from '@material-ui/core/TextField'
-const styles = theme => ({
+const styles = (theme) => ({
     closeIcon: {
         height: 20,
         width: 20,
         cursor: 'pointer',
-        color: theme.palette.danger.dark
+        color: theme.palette.danger.dark,
     },
     checkIcon: {
         height: 20,
         width: 20,
         cursor: 'pointer',
-        color: theme.palette.success.dark
-    }
+        color: theme.palette.success.dark,
+    },
 })
 const View = styled.div`
     cursor: pointer;
@@ -36,7 +36,7 @@ class RowItem extends Component {
         super(props)
         this.state = {
             readOnly: true,
-            value: ''
+            value: '',
         }
     }
 
@@ -59,22 +59,22 @@ class RowItem extends Component {
             callback: () => {
                 this.props.updateValue(this.state.value)
                 this.setState({ readOnly: true })
-            }
+            },
         })
     }
 
-    handleKeyPress = e => {
+    handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.handleSave()
         }
     }
 
-    handleChangeValue = event => {
+    handleChangeValue = (event) => {
         const value = event.target.value
         const { updateValue } = this.props
         this.setState(
             {
-                value
+                value,
             },
             () => {
                 updateValue(value)
@@ -83,9 +83,9 @@ class RowItem extends Component {
     }
     componentDidMount = () => {
         this.setState({
-            value: this.props.value
+            value: this.props.value,
         })
-        window.addEventListener('keydown', e => {
+        window.addEventListener('keydown', (e) => {
             if (e.keyCode === 27) this.handleClose()
         })
     }
@@ -93,7 +93,7 @@ class RowItem extends Component {
     shouldComponentUpdate(nextProps) {
         if (this.state.value !== nextProps.value) {
             this.setState({
-                value: nextProps.value
+                value: nextProps.value,
             })
         }
         return true

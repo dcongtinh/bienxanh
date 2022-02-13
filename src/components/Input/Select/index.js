@@ -7,24 +7,24 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import { withStyles } from '@material-ui/core'
 
-const styles = theme => ({
+const styles = (theme) => ({
     root: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     formControl: {
         minWidth: 120,
-        width: '100%'
+        width: '100%',
     },
     selectEmpty: {
-        marginTop: theme.spacing(2)
-    }
+        marginTop: theme.spacing(2),
+    },
 })
 class SelectCustomized extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            labelWidth: 0
+            labelWidth: 0,
         }
         this.inputLabel = React.createRef()
     }
@@ -39,7 +39,8 @@ class SelectCustomized extends Component {
                 error={error}
                 required
                 variant="outlined"
-                className={classes.formControl}>
+                className={classes.formControl}
+            >
                 <InputLabel ref={this.inputLabel} htmlFor="outlined-age-simple">
                     {label}
                 </InputLabel>
@@ -48,7 +49,8 @@ class SelectCustomized extends Component {
                     onChange={this.props.onChange}
                     input={
                         <OutlinedInput labelWidth={labelWidth} name={name} />
-                    }>
+                    }
+                >
                     {options.map((option, index) => {
                         return (
                             <MenuItem value={option.value} key={index}>

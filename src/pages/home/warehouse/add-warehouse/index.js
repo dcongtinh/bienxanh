@@ -8,8 +8,8 @@ import { inject, observer } from 'mobx-react'
 @createIsAuthenticated({})
 @canReachAccess({ access: 'warehouse' })
 @inject(({ wareHouse }) => ({
-    addWarehouse: object => wareHouse.addWarehouse(object),
-    isRequesting: wareHouse.isRequesting
+    addWarehouse: (object) => wareHouse.addWarehouse(object),
+    isRequesting: wareHouse.isRequesting,
 }))
 @observer
 class AddWarehousePage extends Component {

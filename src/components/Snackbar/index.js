@@ -17,34 +17,34 @@ const variantIcon = {
     success: CheckCircleIcon,
     warning: WarningIcon,
     error: ErrorIcon,
-    info: InfoIcon
+    info: InfoIcon,
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     success: {
-        backgroundColor: green[600]
+        backgroundColor: green[600],
     },
     error: {
-        backgroundColor: theme.palette.error.dark
+        backgroundColor: theme.palette.error.dark,
     },
     info: {
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.primary.main,
     },
     warning: {
-        backgroundColor: amber[700]
+        backgroundColor: amber[700],
     },
     icon: {
-        fontSize: 20
+        fontSize: 20,
     },
     iconVariant: {
         opacity: 0.9,
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
     },
     message: {
         display: 'flex',
         alignItems: 'center',
-        color: theme.palette.common.white
-    }
+        color: theme.palette.common.white,
+    },
 }))
 
 function MySnackbarContentWrapper(props) {
@@ -67,9 +67,10 @@ function MySnackbarContentWrapper(props) {
                     key="close"
                     aria-label="Close"
                     color="inherit"
-                    onClick={onClose}>
+                    onClick={onClose}
+                >
                     <CloseIcon className={classes.icon} />
-                </IconButton>
+                </IconButton>,
             ]}
             {...other}
         />
@@ -80,22 +81,24 @@ MySnackbarContentWrapper.propTypes = {
     className: PropTypes.string,
     message: PropTypes.node,
     onClose: PropTypes.func,
-    variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired
+    variant: PropTypes.oneOf(['success', 'warning', 'error', 'info'])
+        .isRequired,
 }
 
-const CustomizedSnackbars = props => {
+const CustomizedSnackbars = (props) => {
     let { variant, message, open, hide } = props
     return (
         <Snackbar
             anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left'
+                horizontal: 'left',
             }}
             open={open}
             autoHideDuration={6000}
-            onClose={variant => hide(variant)}>
+            onClose={(variant) => hide(variant)}
+        >
             <MySnackbarContentWrapper
-                onClose={variant => hide(variant)}
+                onClose={(variant) => hide(variant)}
                 variant={variant}
                 message={message}
             />

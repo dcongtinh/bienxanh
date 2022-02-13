@@ -14,37 +14,37 @@ import * as Yup from 'yup'
 
 const SignInSchema = Yup.object().shape({
     username: Yup.string().required('* This field is required'),
-    password: Yup.string().required('* This field is required')
+    password: Yup.string().required('* This field is required'),
 })
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main
+        backgroundColor: theme.palette.secondary.main,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2)
+        margin: theme.spacing(3, 0, 2),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 @withStyles(styles)
@@ -65,20 +65,21 @@ class LoginForm extends React.Component {
                         <Formik
                             initialValues={{
                                 username: '',
-                                password: ''
+                                password: '',
                             }}
                             validationSchema={SignInSchema}
-                            onSubmit={values => {
+                            onSubmit={(values) => {
                                 let { username, password } = values
                                 this.props.login({ username, password })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => (
                                 <Form>
                                     <Grid container spacing={2}>
@@ -122,7 +123,8 @@ class LoginForm extends React.Component {
                                         fullWidth
                                         variant="contained"
                                         color="primary"
-                                        className={classes.submit}>
+                                        className={classes.submit}
+                                    >
                                         Đăng nhập
                                         {isRequesting ? (
                                             <CircularProgress

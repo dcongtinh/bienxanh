@@ -11,14 +11,14 @@ import { withStyles } from '@material-ui/core'
 import { Divider, Typography } from '@material-ui/core'
 
 // Component styles
-const styles = theme => ({
+const styles = (theme) => ({
     root: {
-        padding: theme.spacing(4)
+        padding: theme.spacing(4),
     },
     company: {
         marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(0.5)
-    }
+        marginBottom: theme.spacing(0.5),
+    },
 })
 
 class Footer extends Component {
@@ -44,7 +44,7 @@ class Footer extends Component {
 
 Footer.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
 }
 
 export default withStyles(styles)(Footer)

@@ -428,7 +428,8 @@ export default class DownloadExcel extends Component {
                                 <Receipt />
                             </IconButton>
                         </Tooltip>
-                    }>
+                    }
+                >
                     <ExcelSheet dataSet={multiDataSet} name="Hoa don" />
                 </ExcelFile>
             )

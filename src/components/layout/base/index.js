@@ -9,7 +9,7 @@ import { inject, observer } from 'mobx-react'
 
 @inject(({ auth }) => ({
     fetchMe: () => auth.fetchMe(),
-    isAuthenticated: auth.isAuthenticated
+    isAuthenticated: auth.isAuthenticated,
 }))
 @observer
 class Dashboard extends Component {
@@ -20,7 +20,7 @@ class Dashboard extends Component {
 
         this.state = {
             isOpen: !isMobile,
-            title: 'Trang  chủ'
+            title: 'Trang  chủ',
         }
     }
 
@@ -29,12 +29,12 @@ class Dashboard extends Component {
     }
 
     handleToggleOpen = () => {
-        this.setState(prevState => ({
-            isOpen: !prevState.isOpen
+        this.setState((prevState) => ({
+            isOpen: !prevState.isOpen,
         }))
     }
 
-    setTitleTopbar = title => {
+    setTitleTopbar = (title) => {
         this.setState({ title })
     }
     componentDidMount() {
@@ -51,7 +51,7 @@ class Dashboard extends Component {
             <>
                 <Topbar
                     className={classNames(classes.topbar, {
-                        [classes.topbarShift]: shiftTopbar
+                        [classes.topbarShift]: shiftTopbar,
                     })}
                     isSidebarOpen={isOpen}
                     onToggleSidebar={this.handleToggleOpen}
@@ -63,7 +63,8 @@ class Dashboard extends Component {
                         classes={{ paper: classes.drawerPaper }}
                         onClose={this.handleClose}
                         open={isOpen}
-                        variant={isMobile ? 'temporary' : 'persistent'}>
+                        variant={isMobile ? 'temporary' : 'persistent'}
+                    >
                         <Sidebar
                             className={classes.sidebar}
                             setTitleTopbar={this.setTitleTopbar}
@@ -73,8 +74,9 @@ class Dashboard extends Component {
 
                 <main
                     className={classNames(classes.content, {
-                        [classes.contentShift]: shiftContent
-                    })}>
+                        [classes.contentShift]: shiftContent,
+                    })}
+                >
                     {children}
                     {/* <Footer /> */}
                 </main>
@@ -88,10 +90,7 @@ Dashboard.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object.isRequired,
     title: PropTypes.string,
-    width: PropTypes.string.isRequired
+    width: PropTypes.string.isRequired,
 }
 
-export default compose(
-    withStyles(styles),
-    withWidth()
-)(Dashboard)
+export default compose(withStyles(styles), withWidth())(Dashboard)

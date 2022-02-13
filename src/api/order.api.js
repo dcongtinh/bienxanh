@@ -1,7 +1,7 @@
 import axios from 'utils/axios'
 import { getApi } from 'config'
 
-const c = path => {
+const c = (path) => {
     return getApi().order + path
 }
 
@@ -14,7 +14,7 @@ const orderAPI = {
         date,
         itemNote,
         mergeList,
-        orders
+        orders,
     }) =>
         axios.post(c('/add'), {
             group,
@@ -24,11 +24,11 @@ const orderAPI = {
             date,
             itemNote,
             mergeList,
-            orders
+            orders,
         }),
     addOrders: ({ arrayOrders }) =>
         axios.post(c('/add-orders'), {
-            arrayOrders
+            arrayOrders,
         }),
     // getAllOrders: ({ page = 1, itemPerPage = 10 }) =>
     //     axios.get(c(`/get-orders?page=${page}&itemPerPage=${itemPerPage}`)),
@@ -37,14 +37,14 @@ const orderAPI = {
     updateOrder: ({ idOrder, data }) =>
         axios.put(c('/update'), {
             idOrder,
-            data
+            data,
         }),
     mergeOrders: ({ ordersListId, enabled }) =>
         axios.put(c('/merge'), { ordersListId, enabled }),
     exportOrders: ({ ordersListId }) =>
         axios.put(c('/export'), { ordersListId }),
     deleteOrders: ({ ordersListId }) =>
-        axios.post(c('/delete'), { ordersListId })
+        axios.post(c('/delete'), { ordersListId }),
 }
 
 export default orderAPI

@@ -12,7 +12,7 @@ import { inject, observer } from 'mobx-react'
     deleteSuppliers: ({ suppliersListId }) =>
         supplier.deleteSuppliers({ suppliersListId }),
     suppliers: JSON.parse(JSON.stringify(supplier.suppliers)),
-    isRequesting: supplier.isRequesting
+    isRequesting: supplier.isRequesting,
 }))
 @observer
 class SupplierPage extends Component {

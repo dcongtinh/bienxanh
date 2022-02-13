@@ -646,7 +646,8 @@ class UpdateOrder extends React.Component {
                                         warehouse,
                                         buyerName,
                                         orders: data,
-                                        owner: me._id,
+                                        // owner: me._id,
+                                        updater: me._id,
                                         itemNote,
                                         date: this.state.date,
                                     },
@@ -655,7 +656,8 @@ class UpdateOrder extends React.Component {
                             disabled={Boolean(isRequesting || disabled)}
                             type="submit"
                             variant="contained"
-                            color="primary">
+                            color="primary"
+                        >
                             <SaveIcon className={classes.iconSubmit} />
                             Cập nhật
                             {isRequesting ? (

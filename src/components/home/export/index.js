@@ -24,44 +24,44 @@ class Export extends Component {
             exportList: props.exportList,
             openConfirm: false,
             selectedRows: [],
-            rowsSelected: []
+            rowsSelected: [],
         }
     }
     handleClose = () => {
         this.setState({ openConfirm: false })
     }
-    changePage = async page => {
+    changePage = async (page) => {
         this.setState({ isLoading: true })
         let { itemPerPage, order, column } = this.state
         const { success, data } = await exportAPI.getAllExports({
             page,
             itemPerPage,
             order,
-            column
+            column,
         })
         if (success) {
             this.setState({
                 page,
                 exportList: data.exportedList,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
-    changeRowsPerPage = async rowsPerPage => {
+    changeRowsPerPage = async (rowsPerPage) => {
         this.setState({ isLoading: true })
         let { order, column } = this.state
         console.log(rowsPerPage)
         const { success, data } = await exportAPI.getAllExports({
             itemPerPage: rowsPerPage,
             order,
-            column
+            column,
         })
         if (success) {
             this.setState({
                 page: 0,
                 itemPerPage: rowsPerPage,
                 exportList: data.exportedList,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
@@ -72,28 +72,21 @@ class Export extends Component {
             page,
             itemPerPage,
             column,
-            order
+            order,
         })
         if (success) {
             this.setState({
                 column,
                 order,
                 exportList: data.exportedList,
-                isLoading: false
+                isLoading: false,
             })
         }
     }
     render() {
         let { exportedListId, classes } = this.props
-        let {
-            page,
-            itemPerPage,
-            count,
-            exportList,
-            isLoading,
-            column,
-            order
-        } = this.state
+        let { page, itemPerPage, count, exportList, isLoading, column, order } =
+            this.state
         const columns = [
             {
                 name: 'Ngày xuất',
@@ -101,8 +94,8 @@ class Export extends Component {
                     sortDirection: column === 0 ? order : null,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <div>{moment(value).format('DD/MM/YYYY')}</div>
-                    )
-                }
+                    ),
+                },
             },
             {
                 name: 'Thanh toán',
@@ -111,12 +104,12 @@ class Export extends Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let paid = 0
-                        value.forEach(order => {
+                        value.forEach((order) => {
                             paid += order.payStatus
                         })
                         return <div>{`${paid}/${value.length}`}</div>
-                    }
-                }
+                    },
+                },
             },
             {
                 name: 'Xem',
@@ -129,12 +122,13 @@ class Export extends Component {
                                 this.props.history.push(
                                     `/dashboard/exports/${exportList[value]._id}`
                                 )
-                            }}>
+                            }}
+                        >
                             <VisibilityIcon />
                         </IconButton>
-                    )
-                }
-            }
+                    ),
+                },
+            },
         ]
         let data = []
         exportList.forEach((exported, index) => {
@@ -147,7 +141,7 @@ class Export extends Component {
 
         let { selectedRows } = this.state
         let rowsSelected = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
         })
         rowsSelected.sort()
@@ -164,50 +158,51 @@ class Export extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
-            customToolbarSelect: selectedRows => (
+            customToolbarSelect: (selectedRows) => (
                 <IconButton
                     onClick={() => {
                         let rowsSelected = []
-                        selectedRows.data.forEach(row => {
+                        selectedRows.data.forEach((row) => {
                             rowsSelected.push(row.dataIndex)
                         })
                         rowsSelected.sort()
                         this.setState({
                             openConfirm: true,
                             selectedRows: selectedRows.data,
-                            rowsSelected
+                            rowsSelected,
                         })
-                    }}>
+                    }}
+                >
                     <RemoveCircleIcon />
                 </IconButton>
             ),
@@ -240,7 +235,7 @@ class Export extends Component {
                     default:
                         break
                 }
-            }
+            },
         }
 
         return (
@@ -256,7 +251,7 @@ class Export extends Component {
                                     style={{
                                         marginLeft: 15,
                                         position: 'relative',
-                                        top: 4
+                                        top: 4,
                                     }}
                                 />
                             )}
@@ -276,7 +271,7 @@ class Export extends Component {
                     onOK={() => {
                         let exportedList = [],
                             exportsList = []
-                        this.state.rowsSelected.forEach(index => {
+                        this.state.rowsSelected.forEach((index) => {
                             exportsList.push(exportList[index]._id)
                             exportedList = exportedList.concat(
                                 exportedListId[index]
@@ -286,24 +281,22 @@ class Export extends Component {
                             exportedList,
                             exportsList,
                             callback: async () => {
-                                const {
-                                    success,
-                                    data
-                                } = await exportAPI.getAllExports({
-                                    page,
-                                    column,
-                                    order
-                                })
+                                const { success, data } =
+                                    await exportAPI.getAllExports({
+                                        page,
+                                        column,
+                                        order,
+                                    })
                                 if (success) {
                                     this.setState({
                                         exportList: data.exportedList,
                                         count: data.count,
                                         isLoading: false,
-                                        selectedRows: []
+                                        selectedRows: [],
                                     })
                                     this.handleClose()
                                 }
-                            }
+                            },
                         })
                     }}
                 />

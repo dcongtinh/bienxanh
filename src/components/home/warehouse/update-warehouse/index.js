@@ -17,52 +17,52 @@ const SignUpSchema = Yup.object().shape({
     buyerCode: Yup.string().required('* Bắt buộc'),
     buyerAddress: Yup.string().required('* Bắt buộc'),
     buyerTaxCode: Yup.string().required('* Bắt buộc'),
-    buyerLegalName: Yup.string().required('* Bắt buộc')
+    buyerLegalName: Yup.string().required('* Bắt buộc'),
 })
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     submit: {
         margin: theme.spacing(2, 0),
         position: 'absolute',
-        right: 0
+        right: 0,
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 class UpdateWarehouse extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            buyerArea: props.wareHouse.buyerArea
+            buyerArea: props.wareHouse.buyerArea,
         }
     }
 
-    handleChange = e => {
+    handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
-            [`error${e.target.name}`]: false
+            [`error${e.target.name}`]: false,
         })
     }
     render() {
@@ -77,15 +77,15 @@ class UpdateWarehouse extends React.Component {
         let optionsArea = []
         optionsArea.push({
             label: 'Miền Bắc',
-            value: 0
+            value: 0,
         })
         optionsArea.push({
             label: 'Miền Trung',
-            value: 1
+            value: 1,
         })
         optionsArea.push({
             label: 'Miền Nam',
-            value: 2
+            value: 2,
         })
         return (
             <Container component="main" maxWidth="sm">
@@ -99,7 +99,7 @@ class UpdateWarehouse extends React.Component {
                                 buyerCode: wareHouse.buyerCode,
                                 buyerAddress: wareHouse.buyerAddress,
                                 buyerLegalName: wareHouse.buyerLegalName,
-                                buyerTaxCode: wareHouse.buyerTaxCode
+                                buyerTaxCode: wareHouse.buyerTaxCode,
                             }}
                             validationSchema={SignUpSchema}
                             onSubmit={(values, { resetForm }) => {
@@ -109,29 +109,30 @@ class UpdateWarehouse extends React.Component {
                                     buyerCode,
                                     buyerAddress,
                                     buyerLegalName,
-                                    buyerTaxCode
+                                    buyerTaxCode,
                                 } = values
                                 let buyerArea =
                                     this.state.buyerArea || optionsArea[0].value
                                 this.props.updateWarehouse({
-                                    idWarehouse: this.props.match.params
-                                        .idWarehouse,
+                                    idWarehouse:
+                                        this.props.match.params.idWarehouse,
                                     warehouse,
                                     warehouseName,
                                     buyerCode,
                                     buyerAddress,
                                     buyerArea,
                                     buyerLegalName,
-                                    buyerTaxCode
+                                    buyerTaxCode,
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => (
                                 <Form>
                                     <Grid item container spacing={2}>
@@ -245,7 +246,8 @@ class UpdateWarehouse extends React.Component {
                                         type="submit"
                                         variant="contained"
                                         color="primary"
-                                        className={classes.submit}>
+                                        className={classes.submit}
+                                    >
                                         <SaveIcon
                                             className={classes.iconSubmit}
                                         />

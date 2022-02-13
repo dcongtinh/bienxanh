@@ -1,7 +1,7 @@
 import axios from 'utils/axios'
 import { getApi } from 'config'
 
-const c = path => {
+const c = (path) => {
     return getApi().wareHouse + path
 }
 
@@ -13,7 +13,7 @@ const wareHouseAPI = {
         buyerAddress,
         buyerArea,
         buyerLegalName,
-        buyerTaxCode
+        buyerTaxCode,
     }) =>
         axios.post(c('/add'), {
             warehouse,
@@ -22,7 +22,7 @@ const wareHouseAPI = {
             buyerAddress,
             buyerArea,
             buyerLegalName,
-            buyerTaxCode
+            buyerTaxCode,
         }),
     showAllWarehouses: ({
         page = 0,
@@ -30,7 +30,7 @@ const wareHouseAPI = {
         column = '',
         order = '',
         searchText = '',
-        filters = []
+        filters = [],
     }) =>
         axios.get(
             c(
@@ -48,7 +48,7 @@ const wareHouseAPI = {
         buyerAddress,
         buyerArea,
         buyerLegalName,
-        buyerTaxCode
+        buyerTaxCode,
     }) =>
         axios.put(c('/update'), {
             idWarehouse,
@@ -58,10 +58,10 @@ const wareHouseAPI = {
             buyerAddress,
             buyerArea,
             buyerLegalName,
-            buyerTaxCode
+            buyerTaxCode,
         }),
     deleteWareHouses: ({ wareHousesListId }) =>
-        axios.post(c('/delete'), { wareHousesListId })
+        axios.post(c('/delete'), { wareHousesListId }),
 }
 
 export default wareHouseAPI

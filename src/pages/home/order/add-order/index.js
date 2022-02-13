@@ -17,10 +17,10 @@ import { inject, observer } from 'mobx-react'
     items: JSON.parse(JSON.stringify(item.items)),
     me: JSON.parse(JSON.stringify(auth.me)),
     meHasFetched: auth.hasFetched,
-    addOrder: object => order.addOrder(object),
+    addOrder: (object) => order.addOrder(object),
     fetchAllSuppliers: () => supplier.fetchAllSuppliers(),
     suppliers: JSON.parse(JSON.stringify(supplier.suppliers)),
-    isRequesting: order.isRequesting
+    isRequesting: order.isRequesting,
 }))
 @observer
 class AddOrderPage extends Component {

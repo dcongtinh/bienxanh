@@ -9,7 +9,7 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Typography
+    Typography,
 } from '@material-ui/core'
 import styles from './styles'
 import listItem from './listItem'
@@ -19,7 +19,7 @@ import { inject, observer } from 'mobx-react'
     fetchMe: () => auth.fetchMe(),
     me: JSON.parse(JSON.stringify(auth.me)),
     logout: () => auth.logout(),
-    isAuthenticated: auth.isAuthenticated
+    isAuthenticated: auth.isAuthenticated,
 }))
 @observer
 class Sidebar extends Component {
@@ -53,13 +53,14 @@ class Sidebar extends Component {
                                 to={item.link}
                                 onClick={() =>
                                     this.props.setTitleTopbar(item.title)
-                                }>
+                                }
+                            >
                                 <ListItemIcon className={classes.listItemIcon}>
                                     {item.icon}
                                 </ListItemIcon>
                                 <ListItemText
                                     classes={{
-                                        primary: classes.listItemText
+                                        primary: classes.listItemText,
                                     }}
                                     primary={item.title}
                                 />
@@ -74,7 +75,7 @@ class Sidebar extends Component {
 
 Sidebar.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
 }
 
 export default withStyles(styles)(Sidebar)

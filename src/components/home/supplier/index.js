@@ -16,7 +16,7 @@ class Supplier extends Component {
             openConfirm: false,
             selectedRows: [],
             rowsSelected: [],
-            itemName: ''
+            itemName: '',
         }
     }
     handleClose = () => {
@@ -41,12 +41,13 @@ class Supplier extends Component {
                                 this.props.history.push(
                                     `/dashboard/suppliers/${suppliers[value]._id}`
                                 )
-                            }}>
+                            }}
+                        >
                             <EditIcon />
                         </IconButton>
-                    )
-                }
-            }
+                    ),
+                },
+            },
         ]
         let data = []
         suppliers.forEach((supplier, index) => {
@@ -62,7 +63,7 @@ class Supplier extends Component {
 
         let { selectedRows } = this.state
         let rowsSelected = []
-        selectedRows.forEach(row => {
+        selectedRows.forEach((row) => {
             rowsSelected.push(row.dataIndex)
         })
         rowsSelected.sort()
@@ -75,35 +76,35 @@ class Supplier extends Component {
             textLabels: {
                 body: {
                     noMatch: 'Không tìm thấy dữ liệu!',
-                    toolTip: 'Sắp xếp'
+                    toolTip: 'Sắp xếp',
                 },
                 pagination: {
                     next: 'Next Page',
                     previous: 'Previous Page',
                     rowsPerPage: 'Rows per page:',
-                    displayRows: 'of'
+                    displayRows: 'of',
                 },
                 toolbar: {
                     search: 'Tìm kiếm',
                     downloadCsv: 'Tải xuống CSV',
                     print: 'In',
                     viewColumns: 'Xem cột',
-                    filterTable: 'Lọc bảng'
+                    filterTable: 'Lọc bảng',
                 },
                 filter: {
                     all: 'All',
                     title: 'FILTERS',
-                    reset: 'RESET'
+                    reset: 'RESET',
                 },
                 viewColumns: {
                     title: 'Show Columns',
-                    titleAria: 'Show/Hide Table Columns'
+                    titleAria: 'Show/Hide Table Columns',
                 },
                 selectedRows: {
                     text: 'dòng được chọn!',
                     delete: 'Delete',
-                    deleteAria: 'Delete Selected Rows'
-                }
+                    deleteAria: 'Delete Selected Rows',
+                },
             },
             customToolbar: () => {
                 return (
@@ -114,26 +115,28 @@ class Supplier extends Component {
                                 this.props.history.push(
                                     `/dashboard/suppliers/add`
                                 )
-                            }}>
+                            }}
+                        >
                             <AddBox />
                         </IconButton>
                     </Tooltip>
                 )
             },
-            customToolbarSelect: selectedRows => (
+            customToolbarSelect: (selectedRows) => (
                 <IconButton
                     onClick={() => {
                         let rowsSelected = []
-                        selectedRows.data.forEach(row => {
+                        selectedRows.data.forEach((row) => {
                             rowsSelected.push(row.dataIndex)
                         })
                         rowsSelected.sort()
                         this.setState({
                             openConfirm: true,
                             selectedRows: selectedRows.data,
-                            rowsSelected
+                            rowsSelected,
                         })
-                    }}>
+                    }}
+                >
                     <RemoveCircleIcon />
                 </IconButton>
             ),
@@ -141,7 +144,7 @@ class Supplier extends Component {
                 this.props.history.push(
                     `/dashboard/suppliers/${suppliers[rowMeta.dataIndex]._id}`
                 )
-            }
+            },
         }
 
         return (
@@ -157,7 +160,7 @@ class Supplier extends Component {
                     onHide={this.handleClose}
                     onOK={() => {
                         let suppliersListId = []
-                        this.state.rowsSelected.forEach(index => {
+                        this.state.rowsSelected.forEach((index) => {
                             suppliersListId.push(suppliers[index]._id)
                         })
                         this.props.deleteSuppliers({ suppliersListId })

@@ -15,7 +15,7 @@ import {
     MenuItem,
     Divider,
     ListItemIcon,
-    ListItemText
+    ListItemText,
 } from '@material-ui/core'
 import { NavLink } from 'react-router-dom'
 import {
@@ -23,7 +23,7 @@ import {
     Close as CloseIcon,
     AccountCircle as AccountCircleIcon,
     ExitToApp as ExitToAppIcon,
-    Person as PersonIcon
+    Person as PersonIcon,
 } from '@material-ui/icons'
 import { inject, observer } from 'mobx-react'
 import styles from './styles'
@@ -32,17 +32,17 @@ import styles from './styles'
     fetchMe: () => auth.fetchMe(),
     me: JSON.parse(JSON.stringify(auth.me)),
     logout: () => auth.logout(),
-    isAuthenticated: auth.isAuthenticated
+    isAuthenticated: auth.isAuthenticated,
 }))
 @observer
 class Topbar extends Component {
     state = {
-        anchorEl: null
+        anchorEl: null,
     }
     handleClose = () => {
         this.setState({ anchorEl: null })
     }
-    handleClick = e => {
+    handleClick = (e) => {
         this.setState({ anchorEl: e.currentTarget })
     }
     logout = () => {
@@ -60,7 +60,7 @@ class Topbar extends Component {
             title,
             isSidebarOpen,
             onToggleSidebar,
-            me
+            me,
         } = this.props
         const { anchorEl } = this.state
 
@@ -73,7 +73,8 @@ class Topbar extends Component {
                         <IconButton
                             className={classes.menuButton}
                             onClick={onToggleSidebar}
-                            variant="text">
+                            variant="text"
+                        >
                             {isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
                         </IconButton>
                         <Typography className={classes.title} variant="h4">
@@ -86,18 +87,21 @@ class Topbar extends Component {
                             color="inherit"
                             aria-owns={anchorEl ? 'simple-menu' : null}
                             aria-haspopup="true"
-                            onClick={this.handleClick}>
+                            onClick={this.handleClick}
+                        >
                             <AccountCircleIcon />
                         </IconButton>
                         <Menu
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
-                            disableAutoFocusItem>
+                            disableAutoFocusItem
+                        >
                             <MenuItem
                                 component={NavLink}
                                 to={`/dashboard/profile/${me.username}`}
-                                onClick={this.handleClose}>
+                                onClick={this.handleClose}
+                            >
                                 <ListItemIcon>
                                     <PersonIcon />
                                 </ListItemIcon>
@@ -124,14 +128,11 @@ Topbar.propTypes = {
     history: PropTypes.object.isRequired,
     isSidebarOpen: PropTypes.bool,
     onToggleSidebar: PropTypes.func,
-    title: PropTypes.string
+    title: PropTypes.string,
 }
 
 Topbar.defaultProps = {
-    onToggleSidebar: () => {}
+    onToggleSidebar: () => {},
 }
 
-export default compose(
-    withRouter,
-    withStyles(styles)
-)(Topbar)
+export default compose(withRouter, withStyles(styles))(Topbar)

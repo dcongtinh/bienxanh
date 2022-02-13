@@ -16,38 +16,38 @@ const SignUpSchema = Yup.object().shape({
     buyerCode: Yup.string().required('* Bắt buộc'),
     buyerAddress: Yup.string().required('* Bắt buộc'),
     buyerTaxCode: Yup.string().required('* Bắt buộc'),
-    buyerLegalName: Yup.string().required('* Bắt buộc')
+    buyerLegalName: Yup.string().required('* Bắt buộc'),
 })
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     submit: {
         margin: theme.spacing(2, 0),
         position: 'absolute',
-        right: 0
+        right: 0,
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 let initialValues = {
@@ -56,14 +56,14 @@ let initialValues = {
     buyerCode: '',
     buyerAddress: '',
     buyerLegalName: '',
-    buyerTaxCode: ''
+    buyerTaxCode: '',
 }
 class AddWarehouse extends React.Component {
     state = {}
-    handleChange = e => {
+    handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
-            [`error${e.target.name}`]: false
+            [`error${e.target.name}`]: false,
         })
     }
     render() {
@@ -83,7 +83,7 @@ class AddWarehouse extends React.Component {
                                     buyerCode,
                                     buyerAddress,
                                     buyerLegalName,
-                                    buyerTaxCode
+                                    buyerTaxCode,
                                 } = values
                                 this.props.addWarehouse({
                                     warehouse,
@@ -92,16 +92,17 @@ class AddWarehouse extends React.Component {
                                     buyerAddress,
                                     buyerLegalName,
                                     buyerTaxCode,
-                                    callback: () => resetForm()
+                                    callback: () => resetForm(),
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => (
                                 <Form>
                                     <Grid item container spacing={2}>
@@ -204,7 +205,8 @@ class AddWarehouse extends React.Component {
                                         type="submit"
                                         variant="contained"
                                         color="primary"
-                                        className={classes.submit}>
+                                        className={classes.submit}
+                                    >
                                         <SendIcon
                                             className={classes.iconSubmit}
                                         />

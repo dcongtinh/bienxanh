@@ -13,7 +13,13 @@ import Profile from 'components/home/profile'
     fetchUser: ({ username }) => auth.fetchUser({ username }),
     user: JSON.parse(JSON.stringify(auth.user)),
     updateProfile: ({ username, firstname, lastname, siteAdmin, access }) =>
-        auth.updateProfile({ username, firstname, lastname, siteAdmin, access })
+        auth.updateProfile({
+            username,
+            firstname,
+            lastname,
+            siteAdmin,
+            access,
+        }),
 }))
 @observer
 class ProfilePage extends Component {

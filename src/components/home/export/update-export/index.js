@@ -31,14 +31,8 @@ class UpdateExport extends Component {
     }
     render() {
         let { openConfirm, openConfirmExport } = this.state
-        let {
-            classes,
-            exported,
-            items,
-            wareHouses,
-            suppliers,
-            users,
-        } = this.props
+        let { classes, exported, items, wareHouses, suppliers, users } =
+            this.props
         let orders = exported.exportedList
         let itemName = {},
             whName = {},
@@ -78,7 +72,8 @@ class UpdateExport extends Component {
                                         return (
                                             <div
                                                 className={classes.items}
-                                                key={index}>
+                                                key={index}
+                                            >
                                                 {item}
                                             </div>
                                         )
@@ -102,7 +97,8 @@ class UpdateExport extends Component {
                                         return (
                                             <div
                                                 className={classes.items}
-                                                key={index}>
+                                                key={index}
+                                            >
                                                 {item}
                                             </div>
                                         )
@@ -114,7 +110,8 @@ class UpdateExport extends Component {
                 },
             },
             'Ngày giao hàng',
-            'Cập nhật',
+            'Ngày cập nhật',
+            'Người cập nhật',
             'Ngày xuất BC',
             {
                 name: 'Thanh toán',
@@ -137,6 +134,7 @@ class UpdateExport extends Component {
         ]
         let data = [],
             exportedList = []
+        console.log(orders)
         orders.forEach((order, index) => {
             exportedList.push(order._id)
             let row = []
@@ -157,9 +155,22 @@ class UpdateExport extends Component {
             row.push(itemList)
             row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
-            row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            row.push(
+                moment(order.updatedAt)
+                    .utcOffset('+0700')
+                    .format('HH:mm DD/MM/YYYY')
+            )
+            row.push(
+                order.updater.firstname === order.updater.lastname
+                    ? order.updater.lastname
+                    : order.updater.firstname + ' ' + order.updater.lastname
+            )
             if (order.reportExportedAt)
-                row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+                row.push(
+                    moment(order.updatedAt)
+                        .utcOffset('+0700')
+                        .format('HH:mm DD/MM/YYYY')
+                )
             else row.push('')
             row.push(index)
             data.push(row)
@@ -252,9 +263,8 @@ class UpdateExport extends Component {
                     exportable = true
                 selectedRows.data.forEach((row) => {
                     rowsSelected.push(row.dataIndex)
-                    let buyName_slpitted = orders[
-                        row.dataIndex
-                    ].buyerName.split('/')
+                    let buyName_slpitted =
+                        orders[row.dataIndex].buyerName.split('/')
                     if (!buyName_slpitted[2]) {
                         exportable = false
                     }
@@ -278,7 +288,8 @@ class UpdateExport extends Component {
                                             variant: 'error',
                                         })
                                     }
-                                }}>
+                                }}
+                            >
                                 <ImportExportIcon />
                             </IconButton>
                         </Tooltip>

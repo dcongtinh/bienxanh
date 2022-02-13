@@ -12,49 +12,49 @@ import SendIcon from '@material-ui/icons/Send'
 import ItemPriceForm from './ItemPriceForm'
 import moment from 'moment'
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     submit: {
         margin: theme.spacing(2, 0),
         position: 'absolute',
-        right: 0
+        right: 0,
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 })
 
 class AddItem extends React.Component {
     state = {
         count: 1,
-        datas: []
+        datas: [],
     }
-    handleChangeCount = count => {
+    handleChangeCount = (count) => {
         this.setState({ count })
     }
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
-    handleSelect = datas => {
+    handleSelect = (datas) => {
         this.setState({ datas })
     }
     render() {
@@ -64,22 +64,21 @@ class AddItem extends React.Component {
         for (let i = 0; i < count; ++i) array.push('')
 
         let initialValues = {
-                itemName: ''
+                itemName: '',
             },
             _AddItemSchema = {
-                itemName: Yup.string().required('* Bắt buộc')
+                itemName: Yup.string().required('* Bắt buộc'),
             }
         array.forEach((item, index) => {
             let _initialValues = {
                 [`itemPrice${index}`]: '',
-                [`dateApply${index}`]: new Date()
+                [`dateApply${index}`]: new Date(),
             }
             initialValues = Object.assign({}, initialValues, _initialValues)
 
             let _addItemSchema = {
-                [`itemPrice${index}`]: Yup.number('Not a numbBar').required(
-                    '* Bắt buộc'
-                )
+                [`itemPrice${index}`]:
+                    Yup.number('Not a numbBar').required('* Bắt buộc'),
             }
             _AddItemSchema = Object.assign({}, _AddItemSchema, _addItemSchema)
         })
@@ -87,17 +86,17 @@ class AddItem extends React.Component {
 
         let area = []
         for (let i = 0; i < 3; ++i) {
-            area[i] = wareHouses.filter(warehouse => {
+            area[i] = wareHouses.filter((warehouse) => {
                 return warehouse.buyerArea === i
             })
         }
         let options = []
         for (let i = 0; i < 3; ++i) {
             options[i] = []
-            area[i].forEach(warehouse => {
+            area[i].forEach((warehouse) => {
                 options[i].push({
                     value: warehouse._id,
-                    label: warehouse.warehouseName
+                    label: warehouse.warehouseName,
                 })
             })
         }
@@ -121,10 +120,9 @@ class AddItem extends React.Component {
                                     itemPrices.push({
                                         itemPrice: values[`itemPrice${index}`],
                                         wareHouses: datas[index],
-                                        customDateApply: moment(date).format(
-                                            'YYYY/MM/DD'
-                                        ),
-                                        dateApply: date
+                                        customDateApply:
+                                            moment(date).format('YYYY/MM/DD'),
+                                        dateApply: date,
                                     })
                                 })
                                 this.props.addItem({
@@ -133,16 +131,17 @@ class AddItem extends React.Component {
                                     callback: () => {
                                         resetForm()
                                         this.setState({ datas: [] })
-                                    }
+                                    },
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => {
                                 let disabled = false
                                 array.forEach((item, index) => {
@@ -200,7 +199,8 @@ class AddItem extends React.Component {
                                             type="submit"
                                             variant="contained"
                                             color="primary"
-                                            className={classes.submit}>
+                                            className={classes.submit}
+                                        >
                                             <SendIcon
                                                 className={classes.iconSubmit}
                                             />

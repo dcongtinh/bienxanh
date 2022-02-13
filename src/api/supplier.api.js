@@ -1,7 +1,7 @@
 import axios from 'utils/axios'
 import { getApi } from 'config'
 
-const c = path => {
+const c = (path) => {
     return getApi().supplier + path
 }
 
@@ -12,7 +12,7 @@ const supplierAPI = {
         supplierIdNo,
         supplierAddress,
         supplierNote,
-        supplierItems
+        supplierItems,
     }) =>
         axios.post(c('/add'), {
             supplierCode,
@@ -20,7 +20,7 @@ const supplierAPI = {
             supplierIdNo,
             supplierAddress,
             supplierNote,
-            supplierItems
+            supplierItems,
         }),
     getAllSuppliers: () => axios.get(c('/get-suppliers')),
     getSupplier: ({ idSupplier }) =>
@@ -28,10 +28,10 @@ const supplierAPI = {
     updateSupplier: ({ idSupplier, data }) =>
         axios.put(c('/update'), {
             idSupplier,
-            data
+            data,
         }),
     deleteSuppliers: ({ suppliersListId }) =>
-        axios.post(c('/delete'), { suppliersListId })
+        axios.post(c('/delete'), { suppliersListId }),
 }
 
 export default supplierAPI

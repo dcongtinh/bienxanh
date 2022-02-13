@@ -3,7 +3,7 @@ import Editable2 from 'components/Editable/Editable2'
 
 class PriceTable extends React.Component {
     state = {
-        data: this.props.data
+        data: this.props.data,
     }
     render() {
         let { data } = this.state
@@ -19,12 +19,12 @@ class PriceTable extends React.Component {
                 title={title}
                 columns={columns}
                 data={data}
-                onRowAdd={newData => {
+                onRowAdd={(newData) => {
                     if (!newData.dateApply) newData.dateApply = new Date()
                     delete newData.tableData
 
                     if (newData.equalPrice) {
-                        warehouseList.forEach(idWh => {
+                        warehouseList.forEach((idWh) => {
                             newData[idWh] = newData.equalPrice
                         })
                     }
@@ -33,15 +33,15 @@ class PriceTable extends React.Component {
                     this.props.updateItem({
                         idItem,
                         data: {
-                            [id]: data
-                        }
+                            [id]: data,
+                        },
                     })
                 }}
                 onRowUpdate={(newData, oldData) => {
                     const index = data.indexOf(oldData)
                     delete newData.tableData
                     if (newData.equalPrice) {
-                        warehouseList.forEach(idWh => {
+                        warehouseList.forEach((idWh) => {
                             newData[idWh] = newData.equalPrice
                         })
                     }
@@ -49,18 +49,18 @@ class PriceTable extends React.Component {
                     this.props.updateItem({
                         idItem,
                         data: {
-                            [id]: data
-                        }
+                            [id]: data,
+                        },
                     })
                 }}
-                onRowDelete={oldData => {
+                onRowDelete={(oldData) => {
                     const index = data.indexOf(oldData)
                     data.splice(index, 1)
                     this.props.updateItem({
                         idItem,
                         data: {
-                            [id]: data
-                        }
+                            [id]: data,
+                        },
                     })
                 }}
             />

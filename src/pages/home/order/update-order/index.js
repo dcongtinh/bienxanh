@@ -15,14 +15,14 @@ import { inject, observer } from 'mobx-react'
     fetchAllItems: () => item.fetchAllItems(),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
     items: JSON.parse(JSON.stringify(item.items)),
-    addOrder: object => order.addOrder(object),
+    addOrder: (object) => order.addOrder(object),
     fetchOrder: ({ idOrder }) => order.fetchOrder({ idOrder }),
-    updateOrder: object => order.updateOrder(object),
+    updateOrder: (object) => order.updateOrder(object),
     deleteOrders: ({ ordersListId }) => order.deleteOrders({ ordersListId }),
     order: JSON.parse(JSON.stringify(order.order)),
     fetchAllSuppliers: () => supplier.fetchAllSuppliers(),
     suppliers: JSON.parse(JSON.stringify(supplier.suppliers)),
-    isRequesting: order.isRequesting
+    isRequesting: order.isRequesting,
 }))
 @observer
 class UpdateOrderPage extends Component {

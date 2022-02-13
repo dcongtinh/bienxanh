@@ -159,7 +159,8 @@ class RowItem extends Component {
                     <Prefix>{prefix}</Prefix>
                     <FormControl
                         error={error}
-                        style={{ marginTop: error && 20 }}>
+                        style={{ marginTop: error && 20 }}
+                    >
                         <TextField
                             error={error}
                             autoFocus
@@ -169,7 +170,8 @@ class RowItem extends Component {
                         />
                         {error ? (
                             <FormHelperText
-                                style={{ margin: error && '4px 0' }}>
+                                style={{ margin: error && '4px 0' }}
+                            >
                                 {error}
                             </FormHelperText>
                         ) : null}

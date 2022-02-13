@@ -12,14 +12,14 @@ import { inject, observer } from 'mobx-react'
     items: JSON.parse(JSON.stringify(item.items)),
     fetchSupplier: ({ idSupplier }) => supplier.fetchSupplier({ idSupplier }),
     supplier: JSON.parse(JSON.stringify(supplier.supplier)),
-    updateSupplier: object => supplier.updateSupplier(object),
-    isRequesting: supplier.isRequesting
+    updateSupplier: (object) => supplier.updateSupplier(object),
+    isRequesting: supplier.isRequesting,
 }))
 @observer
 class UpdateSupplierPage extends Component {
     componentDidMount = () => {
         this.props.fetchSupplier({
-            idSupplier: this.props.match.params.idSupplier
+            idSupplier: this.props.match.params.idSupplier,
         })
         this.props.fetchAllItems()
     }

@@ -9,31 +9,31 @@ const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
 const styles = {
     font: {
         name: 'Times New Roman',
-        sz: '12'
+        sz: '12',
     },
     border: {
         top: { style: 'thin' },
         right: {
-            style: 'thin'
+            style: 'thin',
         },
         bottom: {
-            style: 'thin'
+            style: 'thin',
         },
-        left: { style: 'thin' }
+        left: { style: 'thin' },
     },
     alignCenter: {
         vertical: 'center',
-        horizontal: 'center'
+        horizontal: 'center',
     },
     alignLeft: {
         vertical: 'center',
-        horizontal: 'top'
+        horizontal: 'top',
     },
     alignRight: {
         vertical: 'botom',
         horizontal: 'bottom',
-        readingOrder: 2
-    }
+        readingOrder: 2,
+    },
 }
 
 export default class DownloadExcel extends Component {
@@ -43,7 +43,7 @@ export default class DownloadExcel extends Component {
             ? order.warehouse._id
             : order.warehouse
         let { items, suppliers } = this.props
-        let _item = items.filter(item => {
+        let _item = items.filter((item) => {
             return item._id === idItem
         })
         _item = _item[0]
@@ -52,13 +52,13 @@ export default class DownloadExcel extends Component {
         _item[name].forEach((itemPrice, index) => {
             let match = itemPrice[idWarehouse] ? true : false
             if (name === 'itemTradePrices') {
-                let supplier = suppliers.filter(supplier => {
+                let supplier = suppliers.filter((supplier) => {
                     return supplier._id === item.itemSupplier
                 })
                 supplier = supplier[0]
                 match &=
                     supplier &&
-                    supplier.supplierItems.some(supplierItem => {
+                    supplier.supplierItems.some((supplierItem) => {
                         return supplierItem.value === item.itemName
                     })
                 match &= itemPrice.itemSupplier === item.itemSupplier
@@ -66,7 +66,7 @@ export default class DownloadExcel extends Component {
             if (match)
                 prices.push({
                     dateApply: itemPrice.dateApply,
-                    itemPrice: itemPrice[idWarehouse]
+                    itemPrice: itemPrice[idWarehouse],
                 })
         })
         prices.sort((a, b) => {
@@ -155,8 +155,8 @@ export default class DownloadExcel extends Component {
                     }${time[2] < 10 ? `0${time[2]}` : time[2]}`,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///2. number
                 row.push({
@@ -164,8 +164,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignCenter
-                    }
+                        alignment: styles.alignCenter,
+                    },
                 })
                 ///3. group
                 row.push({
@@ -173,24 +173,24 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignCenter
-                    }
+                        alignment: styles.alignCenter,
+                    },
                 })
                 ///4. warehouse
                 row.push({
                     value: warehouseName.warehouse,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///5. itemName
                 row.push({
                     value: itemName[item.itemName],
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
 
                 ///6. itemQuantity
@@ -198,16 +198,16 @@ export default class DownloadExcel extends Component {
                     value: itemQuantity || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///7. itemLoss
                 row.push({
                     value: itemLoss || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///8. itemPrice
                 row.push({
@@ -215,8 +215,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///9. amountBeforeTax
                 row.push({
@@ -224,24 +224,24 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///10. itemSupplier
                 row.push({
                     value: itemSupplier || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///11. itemShipper
                 row.push({
                     value: itemShipper || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///12. PHI GH
                 row.push({
@@ -249,8 +249,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///13. PHI VC
                 row.push({
@@ -258,8 +258,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///14. PHI TC
                 row.push({
@@ -267,16 +267,16 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///15. WEIGHT
                 row.push({
                     value: itemWeight || 0,
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///16. GiVC HK
                 row.push({
@@ -284,16 +284,16 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///17. NCC VC
                 row.push({
                     value: itemTransfer || '',
                     style: {
                         font: styles.font,
-                        border: styles.border
-                    }
+                        border: styles.border,
+                    },
                 })
                 ///18. DON GIA BAN
                 row.push({
@@ -301,8 +301,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///19. totalPrice
                 row.push({
@@ -310,8 +310,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///20. beforeTax
                 row.push({
@@ -319,8 +319,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///21. discount1
                 row.push({
@@ -328,8 +328,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 ///22. discount2
                 row.push({
@@ -337,8 +337,8 @@ export default class DownloadExcel extends Component {
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)'
-                    }
+                        numFmt: '_(* #,##0_);_(* (#,##0);_(* "-"??_);_(@_)',
+                    },
                 })
                 data.push(row)
             })
@@ -367,10 +367,10 @@ export default class DownloadExcel extends Component {
                     'DOANH THU', /// 19
                     'LÃI TRƯỚC THUẾ', /// 20
                     'CHIẾT KHẤU 3.53%', /// 21
-                    'CHIẾT KHẤU 4.5%' /// 22
+                    'CHIẾT KHẤU 4.5%', /// 22
                 ],
-                data
-            }
+                data,
+            },
         ]
         return (
             <div>
@@ -380,11 +380,13 @@ export default class DownloadExcel extends Component {
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={this.props.onClick}>
+                            onClick={this.props.onClick}
+                        >
                             <ArrowUpwardIcon />
                             Xuất Báo Cáo
                         </Button>
-                    }>
+                    }
+                >
                     <ExcelSheet dataSet={multiDataSet} name="Hoa don" />
                 </ExcelFile>
             </div>

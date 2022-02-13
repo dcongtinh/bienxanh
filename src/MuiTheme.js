@@ -7,29 +7,29 @@ function MuiTheme() {
         palette: {
             type: 'light',
             primary: blue,
-            secondary: red
+            secondary: red,
         },
         overrides: {
             MuiFormControl: {
                 root: {
-                    width: '100%'
+                    width: '100%',
                 },
                 marginNormal: {
-                    marginBottom: 0
-                }
+                    marginBottom: 0,
+                },
             },
             MuiFormHelperText: {
                 root: {
                     '&.Mui-error': {
-                        fontStyle: 'italic'
-                    }
-                }
-            }
+                        fontStyle: 'italic',
+                    },
+                },
+            },
         },
         zIndex: {
             appBar: 1200,
-            drawer: 1100
-        }
+            drawer: 1100,
+        },
     })
     return theme
 }

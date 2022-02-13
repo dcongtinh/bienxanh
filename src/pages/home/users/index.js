@@ -10,7 +10,7 @@ import Users from 'components/home/users'
 @inject(({ auth }) => ({
     fetchAllUser: () => auth.fetchAllUser(),
     users: JSON.parse(JSON.stringify(auth.users)),
-    deleteUsers: ({ usernames }) => auth.deleteUsers({ usernames })
+    deleteUsers: ({ usernames }) => auth.deleteUsers({ usernames }),
 }))
 @observer
 class UsersPage extends Component {

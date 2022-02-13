@@ -13,50 +13,50 @@ import SaveIcon from '@material-ui/icons/Save'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 
-const styles = theme => ({
+const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white
-        }
+            backgroundColor: theme.palette.common.white,
+        },
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-        position: 'relative'
+        position: 'relative',
     },
     submit: {
         margin: theme.spacing(2, 0),
         position: 'absolute',
-        right: 0
+        right: 0,
     },
     iconSubmit: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     circularProgress: {
         position: 'absolute',
         width: '24px !important',
-        height: '24px !important'
+        height: '24px !important',
     },
     root: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     formControl: {
         minWidth: 120,
-        width: '100%'
+        width: '100%',
     },
     selectEmpty: {
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
     },
     groupOrder: {
         margin: theme.spacing(1),
-        border: '1px solid ' + theme.palette.border
-    }
+        border: '1px solid ' + theme.palette.border,
+    },
 })
 
 class UpdateSupplier extends React.Component {
@@ -70,20 +70,20 @@ class UpdateSupplier extends React.Component {
             supplierName: supplier.supplierName,
             supplierIdNo: supplier.supplierIdNo,
             supplierAddress: supplier.supplierAddress,
-            supplierNote: supplier.supplierNote
+            supplierNote: supplier.supplierNote,
         }
         let AddOrderSchema = Yup.object().shape({
             supplierCode: Yup.string().required('* Bắt buộc'),
             supplierName: Yup.string().required('* Bắt buộc'),
             supplierIdNo: Yup.string().required('* Bắt buộc'),
             supplierAddress: Yup.string().required('* Bắt buộc'),
-            supplierNote: Yup.string()
+            supplierNote: Yup.string(),
         })
         let optionsItem = []
-        items.forEach(item => {
+        items.forEach((item) => {
             optionsItem.push({
                 value: item._id,
-                label: item.itemName
+                label: item.itemName,
             })
         })
         return (
@@ -101,7 +101,7 @@ class UpdateSupplier extends React.Component {
                                     supplierName,
                                     supplierIdNo,
                                     supplierAddress,
-                                    supplierNote
+                                    supplierNote,
                                 } = values
                                 this.props.updateSupplier({
                                     idSupplier,
@@ -111,17 +111,18 @@ class UpdateSupplier extends React.Component {
                                         supplierIdNo,
                                         supplierAddress,
                                         supplierNote,
-                                        supplierItems: data
-                                    }
+                                        supplierItems: data,
+                                    },
                                 })
-                            }}>
+                            }}
+                        >
                             {({
                                 values,
                                 errors,
                                 touched,
                                 handleChange,
                                 handleBlur,
-                                handleSubmit
+                                handleSubmit,
                             }) => {
                                 return (
                                     <Form>
@@ -207,7 +208,7 @@ class UpdateSupplier extends React.Component {
                                                     isMulti={true}
                                                     name="supplierItems"
                                                     value={data}
-                                                    onChange={data => {
+                                                    onChange={(data) => {
                                                         this.setState({ data })
                                                     }}
                                                     options={optionsItem}
@@ -219,18 +220,19 @@ class UpdateSupplier extends React.Component {
                                                     placeholder="Chọn hàng hoá"
                                                     components={makeAnimated()}
                                                     styles={{
-                                                        multiValue: base => ({
+                                                        multiValue: (base) => ({
                                                             ...base,
-                                                            borderRadius: 16
+                                                            borderRadius: 16,
                                                         }),
-                                                        option: base => ({
+                                                        option: (base) => ({
                                                             ...base,
                                                             maxWidth: '100%',
                                                             overflow: 'hidden',
                                                             textOverflow:
                                                                 'ellipsis',
-                                                            whiteSpace: 'nowrap'
-                                                        })
+                                                            whiteSpace:
+                                                                'nowrap',
+                                                        }),
                                                     }}
                                                 />
                                             </Grid>
@@ -240,7 +242,8 @@ class UpdateSupplier extends React.Component {
                                             type="submit"
                                             variant="contained"
                                             color="primary"
-                                            className={classes.submit}>
+                                            className={classes.submit}
+                                        >
                                             <SaveIcon
                                                 className={classes.iconSubmit}
                                             />

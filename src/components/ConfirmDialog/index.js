@@ -13,15 +13,15 @@ import Select from 'react-select'
 
 import { withStyles } from '@material-ui/core/styles'
 
-const styles = theme => ({
+const styles = (theme) => ({
     container: {
         overflowY: 'hidden',
         maxHeight: '80%',
-        width: '60%'
+        width: '60%',
     },
     dialogActions: {
-        padding: 24
-    }
+        padding: 24,
+    },
 })
 
 class ConfirmDialog extends Component {
@@ -31,15 +31,15 @@ class ConfirmDialog extends Component {
             datas: [],
             inputError: '',
             focus: false,
-            access: 0
+            access: 0,
         }
     }
-    onKeyPress = e => {
+    onKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.props.onOK()
         }
     }
-    handleChangeOption = data => {
+    handleChangeOption = (data) => {
         this.props.handleChangeOption(data)
     }
 
@@ -53,7 +53,7 @@ class ConfirmDialog extends Component {
             okLabel,
             select,
             input,
-            classes
+            classes,
         } = this.props
         let { focus } = this.state
         let height = !focus ? 'auto' : 360
@@ -62,10 +62,11 @@ class ConfirmDialog extends Component {
                 open={open}
                 onClose={onHide}
                 classes={{
-                    paper: classes.container
+                    paper: classes.container,
                 }}
                 aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description">
+                aria-describedby="alert-dialog-description"
+            >
                 <DialogTitle onClose={onHide} />
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -94,17 +95,17 @@ class ConfirmDialog extends Component {
                                     // components={makeAnimated()}
                                     placeholder={select.placeholder}
                                     styles={{
-                                        multiValue: base => ({
+                                        multiValue: (base) => ({
                                             ...base,
-                                            borderRadius: 16
+                                            borderRadius: 16,
                                         }),
-                                        option: base => ({
+                                        option: (base) => ({
                                             ...base,
                                             maxWidth: '100%',
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap'
-                                        })
+                                            whiteSpace: 'nowrap',
+                                        }),
                                     }}
                                     onMenuOpen={() =>
                                         this.setState({ focus: true })
@@ -122,7 +123,8 @@ class ConfirmDialog extends Component {
                         <Button
                             color="primary"
                             variant="outlined"
-                            onClick={onHide}>
+                            onClick={onHide}
+                        >
                             {cancelLabel}
                         </Button>
                     )}
@@ -131,7 +133,8 @@ class ConfirmDialog extends Component {
                             color="primary"
                             variant="contained"
                             autoFocus
-                            onClick={onOK}>
+                            onClick={onOK}
+                        >
                             {okLabel}
                         </Button>
                     ) : (

@@ -7,8 +7,8 @@ import AddUserForm from 'components/home/users/add-user'
 @createIsAuthenticated({})
 @canReachAccess({ access: 'user' })
 @inject(({ auth, alert }) => ({
-    register: object => auth.register(object),
-    isRequesting: auth.isRequesting
+    register: (object) => auth.register(object),
+    isRequesting: auth.isRequesting,
 }))
 @observer
 class AddUser extends Component {

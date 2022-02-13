@@ -1,9 +1,9 @@
-export default theme => ({
+export default (theme) => ({
     addIcon: {
-        marginRight: theme.spacing()
+        marginRight: theme.spacing(),
     },
     actionButton: {
-        marginLeft: theme.spacing()
+        marginLeft: theme.spacing(),
     },
     row: {
         height: '42px',
@@ -11,12 +11,12 @@ export default theme => ({
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: theme.spacing(),
-        marginBottom: theme.spacing()
+        marginBottom: theme.spacing(),
     },
     spacer: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     editOption: {
-        marginLeft: 16
-    }
+        marginLeft: 16,
+    },
 })

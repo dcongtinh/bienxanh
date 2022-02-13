@@ -17,7 +17,7 @@ class AlertStore {
     }
 
     @action
-    hide = variant => {
+    hide = (variant) => {
         this.message = ''
         this.open = false
         this.variant = variant

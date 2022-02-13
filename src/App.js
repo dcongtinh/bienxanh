@@ -3,7 +3,7 @@ import {
     BrowserRouter as Router,
     Route,
     Switch,
-    Redirect
+    Redirect,
 } from 'react-router-dom'
 
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -44,7 +44,7 @@ import { inject, observer } from 'mobx-react'
     message: alert.message,
     variant: alert.variant,
     open: alert.open,
-    hide: variant => alert.hide(variant)
+    hide: (variant) => alert.hide(variant),
 }))
 @observer
 class App extends React.Component {
@@ -160,7 +160,7 @@ class App extends React.Component {
                             variant={variant}
                             message={message}
                             open={open}
-                            hide={variant => hide(variant)}
+                            hide={(variant) => hide(variant)}
                         />
                     )}
                 </Router>

@@ -1,10 +1,10 @@
 const { REACT_APP_API_URL } = process.env
 
 const config = {
-    API_URL: REACT_APP_API_URL
+    API_URL: REACT_APP_API_URL,
 }
 
-const c = path => {
+const c = (path) => {
     const cPath = config.API_URL + path
     return cPath
 }
@@ -16,7 +16,7 @@ export const getApi = () => {
         item: c('/items'),
         order: c('/orders'),
         supplier: c('/suppliers'),
-        export: c('/exports')
+        export: c('/exports'),
     }
 }
 

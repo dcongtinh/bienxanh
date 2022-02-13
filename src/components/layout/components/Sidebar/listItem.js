@@ -14,42 +14,42 @@ export default [
         title: 'Quản lý nhân viên',
         icon: <PeopleIcon />,
         link: '/dashboard/users',
-        access: 'user'
+        access: 'user',
     },
     {
         title: 'Nhập hoá đơn',
         icon: <NotesIcon />,
         link: '/dashboard/order/add',
-        access: 'order'
+        access: 'order',
     },
     {
         title: 'Xem hoá đơn',
         icon: <ViewListIcon />,
         link: '/dashboard/orders',
-        access: 'order'
+        access: 'order',
     },
     {
         title: 'Hàng hoá',
         icon: <LocalGroceryStoreIcon />,
         link: '/dashboard/items',
-        access: 'item'
+        access: 'item',
     },
     {
         title: 'Kho',
         icon: <ListIcon />,
         link: '/dashboard/warehouses',
-        access: 'warehouse'
+        access: 'warehouse',
     },
     {
         title: 'Nhà cung cấp',
         icon: <HomeIcon />,
         link: '/dashboard/suppliers',
-        access: 'supplier'
+        access: 'supplier',
     },
     {
         title: 'Hoá đơn đã xuất',
         icon: <HistoryIcon />,
         link: '/dashboard/exports',
-        access: 'order'
-    }
+        access: 'order',
+    },
 ]

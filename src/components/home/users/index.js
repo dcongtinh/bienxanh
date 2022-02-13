@@ -39,7 +39,8 @@ class Users extends Component {
                                     this.props.history.push(
                                         `/dashboard/profile/${users[value].username}`
                                     )
-                                }}>
+                                }}
+                            >
                                 <EditIcon />
                             </IconButton>
                         </div>
@@ -116,7 +117,8 @@ class Users extends Component {
                             selectedRows: selectedRows.data,
                             rowsSelected,
                         })
-                    }}>
+                    }}
+                >
                     <RemoveCircleIcon />
                 </IconButton>
             ),
@@ -135,7 +137,8 @@ class Users extends Component {
                         variant="outlined"
                         onClick={() => {
                             this.props.history.push('/dashboard/users/add-user')
-                        }}>
+                        }}
+                    >
                         <AddIcon className={classes.addIcon} />
                         Add
                     </Button>

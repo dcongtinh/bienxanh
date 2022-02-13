@@ -1,7 +1,7 @@
 import axios from 'utils/axios'
 import { getApi } from 'config'
 
-const c = path => {
+const c = (path) => {
     return getApi().auth + path
 }
 
@@ -9,7 +9,7 @@ const userAPI = {
     login: ({ username, password }) =>
         axios.post(c('/login'), {
             username,
-            password
+            password,
         }),
     register: ({
         firstname,
@@ -18,7 +18,7 @@ const userAPI = {
         password,
         email,
         siteAdmin,
-        access
+        access,
     }) =>
         axios.post(c('/register'), {
             firstname,
@@ -27,7 +27,7 @@ const userAPI = {
             password,
             email,
             siteAdmin,
-            access
+            access,
         }),
     getUser: ({ username }) => axios.post(c('/get-user'), { username }),
     getAllUser: () => axios.post(c('/get-users')),
@@ -37,10 +37,10 @@ const userAPI = {
             firstname,
             lastname,
             siteAdmin,
-            access
+            access,
         }),
     deleteUsers: ({ usernames }) => axios.post(c('/delete'), { usernames }),
-    me: () => axios.get(c('/me'))
+    me: () => axios.get(c('/me')),
 }
 
 export default userAPI

@@ -141,7 +141,8 @@ class Order extends Component {
                 },
             },
             'Ngày giao hàng',
-            'Cập nhật',
+            'Ngày cập nhật',
+            'Người cập nhật',
             'Ngày xuất BC',
             {
                 name: 'Chỉnh sửa',
@@ -189,9 +190,10 @@ class Order extends Component {
             row.push(itemList)
             row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
-            row.push(moment(order.updatedAt).format('DD/MM/YYYY'))
+            row.push(moment(order.updatedAt).utcOffset('+0700').format('HH:mm DD/MM/YYYY'))
+            row.push(order.updater.firstname === order.updater.lastname ? order.updater.lastname : order.updater.firstname + ' ' + order.updater.lastname)
             if (order.reportExportedAt)
-                row.push(moment(order.reportExportedAt).format('DD/MM/YYYY'))
+                row.push(moment(order.reportExportedAt).utcOffset('+0700').format('HH:mm DD/MM/YYYY'))
             else row.push('')
             row.push(index)
             data.push(row)
@@ -268,9 +270,8 @@ class Order extends Component {
                     rowsSelected.push(row.dataIndex)
                     ordersSelected.push(orders[row.dataIndex])
                     ordersListId.push(orders[row.dataIndex]._id)
-                    let buyName_slpitted = orders[
-                        row.dataIndex
-                    ].buyerName.split('/')
+                    let buyName_slpitted =
+                        orders[row.dataIndex].buyerName.split('/')
                     if (!buyName_slpitted[2]) {
                         exportable = false
                     }
@@ -302,7 +303,8 @@ class Order extends Component {
                                             rowsSelected,
                                             unMerge1,
                                         })
-                                    }}>
+                                    }}
+                                >
                                     <UndoIcon />
                                 </IconButton>
                             </Tooltip>
@@ -316,7 +318,8 @@ class Order extends Component {
                                             selectedRows: selectedRows.data,
                                             rowsSelected,
                                         })
-                                    }}>
+                                    }}
+                                >
                                     <MergeTypeIcon />
                                 </IconButton>
                             </Tooltip>
@@ -338,7 +341,8 @@ class Order extends Component {
                                         })
                                     }
                                     // alert('Vui lòng nhập đầy đủ SỐ HOÁ ĐƠN')
-                                }}>
+                                }}
+                            >
                                 <ImportExportIcon />
                             </IconButton>
                         </Tooltip>
@@ -374,7 +378,8 @@ class Order extends Component {
                                             selectedRows: selectedRows.data,
                                             rowsSelected,
                                         })
-                                    }}>
+                                    }}
+                                >
                                     <RemoveCircleIcon />
                                 </IconButton>
                             </Tooltip>
@@ -406,7 +411,8 @@ class Order extends Component {
                         variant="outlined"
                         onClick={() => {
                             this.props.history.push('/dashboard/order/add')
-                        }}>
+                        }}
+                    >
                         <AddIcon className={classes.addIcon} />
                         Add
                     </Button>
@@ -433,12 +439,8 @@ class Order extends Component {
                             let arrayOrders = []
 
                             let group = this.props.group
-                            let {
-                                warehouse,
-                                buyerName,
-                                date,
-                                owner,
-                            } = ordersFirst
+                            let { warehouse, buyerName, date, owner } =
+                                ordersFirst
                             // console.log(group)
                             ordersFirst.orders.forEach((order) => {
                                 arrayOrders.push({

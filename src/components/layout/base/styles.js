@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
     topbar: {
         position: 'fixed',
         width: '100%',
@@ -7,19 +7,19 @@ export default theme => ({
         right: 'auto',
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
-        })
+            duration: theme.transitions.duration.leavingScreen,
+        }),
     },
     topbarShift: {
         marginLeft: 200,
-        width: 'calc(-200px + 100vw)'
+        width: 'calc(-200px + 100vw)',
     },
     drawerPaper: {
         zIndex: 1200,
-        width: 200
+        width: 200,
     },
     sidebar: {
-        width: 200
+        width: 200,
     },
     content: {
         marginTop: '24px',
@@ -27,10 +27,10 @@ export default theme => ({
         // backgroundColor: theme.palette.background.default,
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
-        })
+            duration: theme.transitions.duration.leavingScreen,
+        }),
     },
     contentShift: {
-        marginLeft: 200
-    }
+        marginLeft: 200,
+    },
 })

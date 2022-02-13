@@ -1,7 +1,7 @@
 import axios from 'utils/axios'
 import { getApi } from 'config'
 
-const c = path => {
+const c = (path) => {
     return getApi().export + path
 }
 
@@ -18,7 +18,7 @@ const exportAPI = {
     exportReport: ({ exportIdList }) =>
         axios.put(c('/export-report'), { exportIdList }),
     deleteExports: ({ exportedList, exportsList }) =>
-        axios.post(c('/delete'), { exportedList, exportsList })
+        axios.post(c('/delete'), { exportedList, exportsList }),
 }
 
 export default exportAPI

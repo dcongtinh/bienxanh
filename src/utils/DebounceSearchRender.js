@@ -64,13 +64,8 @@ class _DebounceTableSearch extends React.Component {
     }
 
     render() {
-        const {
-            classes,
-            options,
-            onHide,
-            searchText,
-            debounceWait,
-        } = this.props
+        const { classes, options, onHide, searchText, debounceWait } =
+            this.props
 
         const debouncedSearch = debounce((value) => {
             this.props.onSearch(value)

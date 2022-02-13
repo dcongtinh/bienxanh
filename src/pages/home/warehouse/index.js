@@ -8,13 +8,13 @@ import queryString from 'query-string'
 @createIsAuthenticated({})
 @canReachAccess({ access: 'warehouse' })
 @inject(({ wareHouse }) => ({
-    showAllWarehouses: query => wareHouse.showAllWarehouses(query),
+    showAllWarehouses: (query) => wareHouse.showAllWarehouses(query),
     // fetchAllWarehouses: () => wareHouse.fetchAllWarehouses(),
     deleteWareHouses: ({ wareHousesListId, callback }) =>
         wareHouse.deleteWareHouses({ wareHousesListId, callback }),
     wareHouses: JSON.parse(JSON.stringify(wareHouse.wareHouses)),
     wareHousesTotal: wareHouse.wareHousesTotal,
-    isRequesting: wareHouse.isRequesting
+    isRequesting: wareHouse.isRequesting,
 }))
 @observer
 class WarehousePage extends Component {

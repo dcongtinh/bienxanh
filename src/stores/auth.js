@@ -42,12 +42,12 @@ class AuthStore {
 
             this.rootStore.alert.show({
                 message: `Xin chào, ${data.user.username}!`,
-                variant: 'success'
+                variant: 'success',
             })
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
             this.isAuthenticated = false
             this.me = null
@@ -64,7 +64,7 @@ class AuthStore {
         email,
         siteAdmin,
         access,
-        callback
+        callback,
     }) {
         this.isRequesting = true
         const { success, data } = await userAPI.register({
@@ -74,18 +74,18 @@ class AuthStore {
             password,
             email,
             siteAdmin,
-            access
+            access,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Tạo tài khoản thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             if (callback) callback()
         } else {
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         }
         this.isRequesting = false
@@ -96,7 +96,7 @@ class AuthStore {
         this.isRequesting = true
         this.user = null
         const { success, data } = await userAPI.getUser({
-            username
+            username,
         })
         if (success) this.user = data.user
 
@@ -118,17 +118,17 @@ class AuthStore {
             firstname,
             lastname,
             siteAdmin,
-            access
+            access,
         })
         if (success)
             this.rootStore.alert.show({
                 message: `Cập nhật tài khoản thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
         else
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         this.isRequesting = false
     }
@@ -137,18 +137,18 @@ class AuthStore {
     async deleteUsers({ usernames }) {
         this.isRequesting = true
         const { success, data } = await userAPI.deleteUsers({
-            usernames
+            usernames,
         })
         if (success) {
             this.rootStore.alert.show({
                 message: `Xoá tài khoản thành công!`,
-                variant: 'success'
+                variant: 'success',
             })
             this.fetchAllUser()
         } else
             this.rootStore.alert.show({
                 message: data.message,
-                variant: 'error'
+                variant: 'error',
             })
         this.isRequesting = false
     }
