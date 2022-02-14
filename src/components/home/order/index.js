@@ -196,11 +196,16 @@ class Order extends Component {
                     .utcOffset('+0700')
                     .format('HH:mm DD/MM/YYYY')
             )
-            row.push(
-                order.updater.firstname === order.updater.lastname
-                    ? order.updater.lastname
-                    : order.updater.firstname + ' ' + order.updater.lastname
-            )
+            try {
+                row.push(
+                    order.updater.firstname === order.updater.lastname
+                        ? order.updater.lastname
+                        : order.updater.firstname + ' ' + order.updater.lastname
+                )
+            } catch (error) {
+                row.push('')
+            }
+
             if (order.reportExportedAt)
                 row.push(
                     moment(order.reportExportedAt)
