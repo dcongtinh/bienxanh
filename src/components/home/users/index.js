@@ -58,7 +58,7 @@ class Users extends Component {
             row.push(index)
             data.push(row)
         })
-        console.log(data)
+        // console.log(data)
         let { selectedRows } = this.state
         let rowsSelected = []
         selectedRows.forEach((row) => {

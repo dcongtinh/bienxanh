@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx'
 import itemAPI from 'api/item.api'
 
-class WarehouseStore {
+class ItemStore {
     @observable isFetchingMe = true
     @observable hasFetched = false
     @observable items = []
@@ -12,10 +12,11 @@ class WarehouseStore {
         this.rootStore = rootStore
     }
     @action
-    async addItem({ itemName, callback }) {
+    async addItem({ itemName, itemUnit, callback }) {
         this.isRequesting = true
         const { success, data } = await itemAPI.addItem({
             itemName,
+            itemUnit,
         })
 
         if (success) {
@@ -104,4 +105,4 @@ class WarehouseStore {
     }
 }
 
-export default WarehouseStore
+export default ItemStore

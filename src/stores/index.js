@@ -1,8 +1,8 @@
 import AuthStore from './auth'
 import AlertStore from './alert'
 import WarehouseStore from './warehouse'
-import UnitStore from './unit'
 import ItemStore from './item'
+import UnitStore from './unit'
 import OrderStore from './order'
 import SupplierStore from './supplier'
 import ExportStore from './export'
@@ -11,8 +11,8 @@ class RootStore {
     constructor() {
         this.auth = new AuthStore(this)
         this.wareHouse = new WarehouseStore(this)
-        this.unitStore = new UnitStore(this)
         this.item = new ItemStore(this)
+        this.unit = new UnitStore(this)
         this.order = new OrderStore(this)
         this.supplier = new SupplierStore(this)
         this.exported = new ExportStore(this)

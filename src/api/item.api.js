@@ -6,9 +6,10 @@ const c = (path) => {
 }
 
 const itemAPI = {
-    addItem: ({ itemName }) =>
+    addItem: ({ itemName, itemUnit }) =>
         axios.post(c('/add'), {
             itemName,
+            itemUnit,
         }),
     getAllItems: () => axios.get(c('/get-items')),
     getItem: ({ idItem }) => axios.post(c('/get-item'), { idItem }),

@@ -8,8 +8,14 @@ import ConfirmDialog from 'components/ConfirmDialog'
 import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import RowItem from './row-item'
+import SelectUnit from './select-unit'
 import styles from 'components/home/styles'
 import numeral from 'numeral'
+
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Typography from '@material-ui/core/Typography'
 
 class Item extends Component {
     constructor(props) {
@@ -20,11 +26,22 @@ class Item extends Component {
             selectedRows: [],
             rowsSelected: [],
             itemName: '',
+            itemUnit: '',
         }
     }
+    componentDidMount = () => {
+        this.setState({ itemUnit: this.props.units[0]._id })
+    }
+
     handleChangeText = (e) => {
         this.setState({ itemName: e.target.value })
     }
+
+    handleChangeValue = (event, val) => {
+        const itemUnit = event.target.value
+        this.setState({ itemUnit })
+    }
+
     handleClose = () => {
         this.setState({ openAddItem: false, openConfirm: false })
     }
@@ -47,8 +64,9 @@ class Item extends Component {
         return prices[0] ? prices[0].itemPrice : 0
     }
     render() {
-        let { itemName } = this.state
-        let { classes, items } = this.props
+        let { itemName, itemUnit } = this.state
+        let { classes, items, units } = this.props
+
         const columns = [
             {
                 name: 'Tên hàng',
@@ -56,7 +74,7 @@ class Item extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let idx =
                             typeof tableMeta.rowData !== 'string'
-                                ? tableMeta.rowData[4]
+                                ? tableMeta.rowData[5]
                                 : 0
                         return (
                             <RowItem
@@ -65,6 +83,27 @@ class Item extends Component {
                                 updateValue={updateValue}
                                 updateItem={this.props.updateItem}
                                 item={items[idx]}
+                            />
+                        )
+                    },
+                },
+            },
+            {
+                name: 'Đơn vị tính',
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let idx =
+                            typeof tableMeta.rowData !== 'string'
+                                ? tableMeta.rowData[5]
+                                : 0
+                        return (
+                            <SelectUnit
+                                value={value}
+                                tableMeta={tableMeta}
+                                updateValue={updateValue}
+                                updateItem={this.props.updateItem}
+                                item={items[idx]}
+                                units={units}
                             />
                         )
                     },
@@ -133,6 +172,7 @@ class Item extends Component {
         items.forEach((item, index) => {
             let row = []
             row.push(item.itemName)
+            row.push(item.itemUnit.unitName)
             row.push(this.getPrice('5d2dacc828322044ab2d2c79', item.itemPrices)) // An Phú
             row.push(this.getPrice('5d4fc31d2b427e0676ab03f4', item.itemPrices)) // Thăng Long
             row.push(this.getPrice('5d4fc2232b427e0676ab03ec', item.itemPrices)) // Đà Nẵng
@@ -232,9 +272,32 @@ class Item extends Component {
                         value: itemName,
                         onChange: this.handleChangeText,
                     }}
+                    others={
+                        <FormControl fullWidth>
+                            <Typography variant="h4" gutterBottom>
+                                Đơn vị tính:
+                            </Typography>
+                            <Select
+                                value={itemUnit}
+                                onChange={this.handleChangeValue}
+                            >
+                                {units.map((unit, i) => {
+                                    return (
+                                        <MenuItem
+                                            value={unit._id}
+                                            name={unit.unitName}
+                                            key={i}
+                                        >
+                                            {unit.unitName}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+                    }
                     onHide={this.handleClose}
                     onOK={() => {
-                        this.props.addItem({ itemName })
+                        this.props.addItem({ itemName, itemUnit })
                         this.props.fetchAllItems()
                         this.handleClose()
                     }}

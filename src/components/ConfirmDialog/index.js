@@ -52,6 +52,7 @@ class ConfirmDialog extends Component {
             cancelLabel,
             okLabel,
             select,
+            others,
             input,
             classes,
         } = this.props
@@ -116,6 +117,7 @@ class ConfirmDialog extends Component {
                                 />
                             </FormControl>
                         )}
+                        {others}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions className={classes.dialogActions}>

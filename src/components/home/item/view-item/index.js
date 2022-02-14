@@ -259,7 +259,7 @@ class ViewItemInfo extends React.Component {
                 <PriceTable
                     id="itemPrices"
                     idItem={idItem}
-                    title={item.itemName}
+                    title={`${item.itemName} (ĐVT: ${item.itemUnit.unitName})`}
                     data={item.itemPrices || []}
                     columns={columns}
                     warehouseList={warehouseList}

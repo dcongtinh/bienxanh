@@ -134,7 +134,7 @@ class UpdateExport extends Component {
         ]
         let data = [],
             exportedList = []
-        console.log(orders)
+        // console.log(orders)
         orders.forEach((order, index) => {
             exportedList.push(order._id)
             let row = []

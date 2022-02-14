@@ -50,7 +50,7 @@ class Export extends Component {
     changeRowsPerPage = async (rowsPerPage) => {
         this.setState({ isLoading: true })
         let { order, column } = this.state
-        console.log(rowsPerPage)
+        // console.log(rowsPerPage)
         const { success, data } = await exportAPI.getAllExports({
             itemPerPage: rowsPerPage,
             order,
