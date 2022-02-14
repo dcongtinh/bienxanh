@@ -39,7 +39,7 @@ class OrderPage extends Component {
     }
 
     render() {
-        let { isRequesting, items, me } = this.props
+        let { isRequesting, orders, items, me } = this.props
         if (isRequesting || !orders.length || !items.length || !me)
             return <CircularProgress />
         return <Order {...this.props} />
