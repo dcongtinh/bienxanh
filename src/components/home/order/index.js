@@ -543,6 +543,7 @@ class Order extends Component {
                                     warehouse,
                                     orders: _orderList,
                                     owner: me._id,
+                                    updater: me._id,
                                     date,
                                     mergeList,
                                     callback: () => this.props.fetchAllOrders(),

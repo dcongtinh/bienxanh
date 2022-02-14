@@ -720,6 +720,7 @@ class AddOrder extends React.Component {
                                     warehouse,
                                     buyerName,
                                     owner: me._id,
+                                    updater: me._id,
                                     date,
                                     itemNote,
                                     orders: _data,
