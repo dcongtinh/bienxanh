@@ -40,7 +40,8 @@ class OrderPage extends Component {
 
     render() {
         let { isRequesting, items, me } = this.props
-        if (isRequesting || !items.length || !me) return <CircularProgress />
+        if (isRequesting || !orders.length || !items.length || !me)
+            return <CircularProgress />
         return <Order {...this.props} />
     }
 }

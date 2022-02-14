@@ -172,6 +172,7 @@ class Order extends Component {
             exportIdList.push(orders[row.dataIndex]._id)
         })
         rowsSelected.sort()
+        console.log(orders)
         orders.forEach((order, index) => {
             ordersListId.push(order._id)
             let row = []
@@ -190,10 +191,22 @@ class Order extends Component {
             row.push(itemList)
             row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
-            row.push(moment(order.updatedAt).utcOffset('+0700').format('HH:mm DD/MM/YYYY'))
-            row.push(order.updater.firstname === order.updater.lastname ? order.updater.lastname : order.updater.firstname + ' ' + order.updater.lastname)
+            row.push(
+                moment(order.updatedAt)
+                    .utcOffset('+0700')
+                    .format('HH:mm DD/MM/YYYY')
+            )
+            row.push(
+                order.updater.firstname === order.updater.lastname
+                    ? order.updater.lastname
+                    : order.updater.firstname + ' ' + order.updater.lastname
+            )
             if (order.reportExportedAt)
-                row.push(moment(order.reportExportedAt).utcOffset('+0700').format('HH:mm DD/MM/YYYY'))
+                row.push(
+                    moment(order.reportExportedAt)
+                        .utcOffset('+0700')
+                        .format('HH:mm DD/MM/YYYY')
+                )
             else row.push('')
             row.push(index)
             data.push(row)
