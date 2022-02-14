@@ -51,12 +51,14 @@ class Users extends Component {
         let data = []
         users.forEach((user, index) => {
             let row = []
-            row.push(user.firstname)
-            row.push(user.lastname)
-            row.push(user.username)
-            row.push(user.email)
-            row.push(index)
-            data.push(row)
+            if (user.username != 'anonymous') {
+                row.push(user.firstname)
+                row.push(user.lastname)
+                row.push(user.username)
+                row.push(user.email)
+                row.push(index)
+                data.push(row)
+            }
         })
         // console.log(data)
         let { selectedRows } = this.state
