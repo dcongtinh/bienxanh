@@ -87,7 +87,7 @@ class Warehouse extends Component {
         }
     }
     filter = async (filterList) => {
-        console.log('Submitting filters: ', filterList)
+        // console.log('Submitting filters: ', filterList)
 
         this.setState({ isLoading: true, filters: filterList })
 

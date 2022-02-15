@@ -34,11 +34,7 @@ class AuthStore {
     @action
     async login({ username, password }) {
         this.isRequesting = true
-        console.log(username)
-        console.log(password)
         let { success, data } = await userAPI.login({ username, password })
-        console.log(success)
-        console.log(data)
         if (success) {
             saveToken(data.token)
             this.me = data.user
@@ -56,7 +52,6 @@ class AuthStore {
             this.isAuthenticated = false
             this.me = null
         }
-        console.log('debuggg')
         this.isRequesting = false
     }
 

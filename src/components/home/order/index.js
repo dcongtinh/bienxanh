@@ -172,7 +172,7 @@ class Order extends Component {
             exportIdList.push(orders[row.dataIndex]._id)
         })
         rowsSelected.sort()
-        console.log(orders)
+        // console.log(orders)
         orders.forEach((order, index) => {
             ordersListId.push(order._id)
             let row = []
