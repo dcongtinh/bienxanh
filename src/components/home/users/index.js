@@ -51,7 +51,7 @@ class Users extends Component {
         let data = []
         users.forEach((user, index) => {
             let row = []
-            if (user.username != 'anonymous') {
+            if (user.username !== 'anonymous') {
                 row.push(user.firstname)
                 row.push(user.lastname)
                 row.push(user.username)

@@ -6,7 +6,9 @@ const config = {
 
 const c = (path) => {
     const cPath = config.API_URL + path
-    return cPath
+    const cPath_slashReplaced = cPath.replaceAll('//', '/')
+    console.log(cPath_slashReplaced.replace(':/', '://'))
+    return cPath_slashReplaced.replace(':/', '://')
 }
 
 export const getApi = () => {
