@@ -16,6 +16,7 @@ const orderAPI = {
         mergeList,
         orders,
         updater,
+        images,
     }) =>
         axios.post(c('/add'), {
             group,
@@ -27,6 +28,7 @@ const orderAPI = {
             mergeList,
             orders,
             updater,
+            images,
         }),
     addOrders: ({ arrayOrders }) =>
         axios.post(c('/add-orders'), {

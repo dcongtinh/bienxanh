@@ -22,6 +22,7 @@ class OrderStore {
         itemNote,
         mergeList,
         orders,
+        images,
         callback,
     }) {
         this.isRequesting = true
@@ -35,6 +36,7 @@ class OrderStore {
             itemNote,
             mergeList,
             orders,
+            images,
         })
 
         if (success) {

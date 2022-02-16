@@ -15,6 +15,8 @@ import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import Editable from 'components/Editable'
 import moment from 'moment'
+import ImageUploader from 'react-images-upload'
+
 const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
     return (
@@ -111,7 +113,12 @@ class AddOrder extends React.Component {
             optionsItem,
             itemName,
             pageSize,
+            images: [],
         }
+        this.onDrop = this.onDrop.bind(this)
+    }
+    onDrop = async (imageFiles, imageDataURLs) => {
+        this.setState({ images: this.state.images.concat(imageDataURLs) })
     }
     handleDateChange = (date) => {
         this.setState({ date })
@@ -701,14 +708,28 @@ class AddOrder extends React.Component {
                     pageSize={pageSize}
                     handleChange={this.handleChange}
                 />
+                <ImageUploader
+                    withIcon={false}
+                    withPreview={true}
+                    buttonText="Chọn hoá đơn"
+                    onChange={this.onDrop}
+                    imgExtension={['.jpg', '.jpeg', '.gif', '.png']}
+                    maxFileSize={5242880}
+                />
                 <Grid item container spacing={2}>
                     <Grid item xs={12} className={classes.buttonSubmit}>
                         <Button
                             onClick={() => {
+                                let els = document.getElementsByClassName(
+                                    'uploadPictureContainer'
+                                )
+                                for (var i = 0; i < els.length; i++) {
+                                    els[i].style.display = 'none'
+                                }
                                 let warehouse =
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
-                                let { date } = this.state
+                                let { date, images } = this.state
                                 let _data = data.filter((item) => {
                                     return item.itemName
                                 })
@@ -724,11 +745,13 @@ class AddOrder extends React.Component {
                                     date,
                                     itemNote,
                                     orders: _data,
+                                    images,
                                     callback: () => {
                                         this.setState({
                                             data: initData,
                                             date: new Date(),
                                             itemNote: '',
+                                            images: [],
                                         })
                                     },
                                 })
