@@ -290,7 +290,7 @@ export default class DownloadExcel extends Component {
                 })
                 ///19. itemName
                 row.push({
-                    value: name[item.itemName] || '',
+                    value: name[item.itemName].name || '',
                     style: {
                         font: styles.font,
                         border: styles.border,
@@ -322,11 +322,10 @@ export default class DownloadExcel extends Component {
                 })
                 ///23. itemUnit
                 row.push({
-                    value: 'KG',
+                    value: name[item.itemName].unit || '',
                     style: {
                         font: styles.font,
                         border: styles.border,
-                        alignment: styles.alignCenter,
                     },
                 })
                 ///24. itemQuantity

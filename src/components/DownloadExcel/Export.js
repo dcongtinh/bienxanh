@@ -186,13 +186,20 @@ export default class DownloadExcel extends Component {
                 })
                 ///5. itemName
                 row.push({
-                    value: itemName[item.itemName],
+                    value: itemName[item.itemName].name,
                     style: {
                         font: styles.font,
                         border: styles.border,
                     },
                 })
-
+                ///5b. itemUnit
+                row.push({
+                    value: itemName[item.itemName].unit,
+                    style: {
+                        font: styles.font,
+                        border: styles.border,
+                    },
+                })
                 ///6. itemQuantity
                 row.push({
                     value: itemQuantity || 0,
@@ -351,6 +358,7 @@ export default class DownloadExcel extends Component {
                     'NHÓM ORDER', /// 3
                     'KHO', ///4
                     'LOẠI HÀNG', /// 5
+                    'ĐƠN VỊ TÍNH', /// 5b
                     'SỐ LƯỢNG', /// 6
                     'HAO HỤT', /// 7
                     'ĐƠN GIÁ MUA', /// 8
