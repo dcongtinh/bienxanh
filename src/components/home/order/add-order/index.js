@@ -730,6 +730,7 @@ class AddOrder extends React.Component {
                                     this.state.warehouse ||
                                     optionsWarehouse[0].value
                                 let { date, images } = this.state
+                                // console.log(images)
                                 let _data = data.filter((item) => {
                                     return item.itemName
                                 })
