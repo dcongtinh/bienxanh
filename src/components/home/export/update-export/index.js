@@ -39,8 +39,12 @@ class UpdateExport extends Component {
             supplierName = {},
             userName = {}
         items.forEach((item) => {
-            itemName[item._id] = item.itemName
+            itemName[item._id] = {
+                name: item.itemName,
+                unit: item.itemUnit.unitName,
+            }
         })
+
         wareHouses.forEach((warehouse) => {
             whName[warehouse._id] = {
                 warehouse: warehouse.warehouse,
@@ -74,6 +78,28 @@ class UpdateExport extends Component {
                                                 className={classes.items}
                                                 key={index}
                                             >
+                                                {item}
+                                            </div>
+                                        )
+                                    return null
+                                })}
+                            </div>
+                        )
+                    },
+                },
+            },
+            {
+                name: 'Đơn vị tính',
+                options: {
+                    filter: false,
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let quantityList = value.split(';')
+                        return (
+                            <div>
+                                {quantityList.map((item) => {
+                                    if (item)
+                                        return (
+                                            <div className={classes.items}>
                                                 {item}
                                             </div>
                                         )
@@ -147,12 +173,15 @@ class UpdateExport extends Component {
             //     })`
             // )
             let itemList = '',
+                unitList = '',
                 quantityList = ''
             order.orders.forEach((item) => {
-                itemList += itemName[item.itemName] + ';'
-                quantityList += item.itemQuantity + ' KG;'
+                itemList += itemName[item.itemName].name + ';'
+                unitList += itemName[item.itemName].unit + ';'
+                quantityList += item.itemQuantity + ';'
             })
             row.push(itemList)
+            row.push(unitList)
             row.push(quantityList)
             row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(
