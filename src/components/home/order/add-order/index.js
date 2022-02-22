@@ -708,14 +708,14 @@ class AddOrder extends React.Component {
                     pageSize={pageSize}
                     handleChange={this.handleChange}
                 />
-                <ImageUploader
+                {/* <ImageUploader
                     withIcon={false}
                     withPreview={true}
                     buttonText="Chọn hoá đơn"
                     onChange={this.onDrop}
                     imgExtension={['.jpg', '.jpeg', '.gif', '.png']}
                     maxFileSize={5242880}
-                />
+                /> */}
                 <Grid item container spacing={2}>
                     <Grid item xs={12} className={classes.buttonSubmit}>
                         <Button

@@ -84,11 +84,11 @@ class RowItem extends Component {
     }
 
     handleSave = async () => {
-        const { order } = this.props
+        const { order, updater } = this.props
         let buyerName = this.getValue()
         await this.props.updateOrder({
             idOrder: order._id,
-            data: { buyerName },
+            data: { buyerName, updater },
             callback: () => {
                 this.props.updateValue(buyerName)
                 this.setState({ readOnly: true })
