@@ -16,8 +16,8 @@ import NumberFormat from 'react-number-format'
 import Editable from 'components/Editable'
 import moment from 'moment'
 
-import '../../../../image-gallary.css'
-import ImageGallery from 'react-image-gallery'
+// import '../../../../image-gallary.css'
+// import ImageGallery from 'react-image-gallery'
 
 const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
@@ -77,23 +77,23 @@ const styles = (theme) => ({
     },
 })
 
-const mock_images = [
-    {
-        original: 'https://picsum.photos/id/1018/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1018/1000/600/',
-        originalHeight: 500,
-    },
-    {
-        original: 'https://picsum.photos/id/1015/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1015/1000/600/',
-        originalHeight: 500,
-    },
-    {
-        original: 'https://picsum.photos/id/1019/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1019/1000/600/',
-        originalHeight: 500,
-    },
-]
+// const mock_images = [
+//     {
+//         original: 'https://picsum.photos/id/1018/1000/600/',
+//         thumbnail: 'https://picsum.photos/id/1018/1000/600/',
+//         originalHeight: 500,
+//     },
+//     {
+//         original: 'https://picsum.photos/id/1015/1000/600/',
+//         thumbnail: 'https://picsum.photos/id/1015/1000/600/',
+//         originalHeight: 500,
+//     },
+//     {
+//         original: 'https://picsum.photos/id/1019/1000/600/',
+//         thumbnail: 'https://picsum.photos/id/1019/1000/600/',
+//         originalHeight: 500,
+//     },
+// ]
 
 class UpdateOrder extends React.Component {
     constructor(props) {

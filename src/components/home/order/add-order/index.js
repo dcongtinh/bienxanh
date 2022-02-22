@@ -15,7 +15,7 @@ import { DatePicker } from '@material-ui/pickers'
 import NumberFormat from 'react-number-format'
 import Editable from 'components/Editable'
 import moment from 'moment'
-import ImageUploader from 'react-images-upload'
+// import ImageUploader from 'react-images-upload'
 
 const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props
