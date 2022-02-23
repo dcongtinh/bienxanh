@@ -214,6 +214,7 @@ class Order extends Component {
                 name: 'Ngày cập nhật',
                 options: {
                     filter: false,
+                    searchable: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let dates = value.split(';')
                         let updatedAt = dates[0]
@@ -254,11 +255,18 @@ class Order extends Component {
                     },
                 },
             },
-            'Ngày xuất BC',
+            {
+                name: 'Ngày xuất báo cáo',
+                options: {
+                    filter: false,
+                    searchable: false,
+                },
+            },
             {
                 name: 'Chỉnh sửa',
                 options: {
                     filter: false,
+                    searchable: false,
                     customBodyRender: (value, tableMeta, updateValue) => (
                         <RowEdit
                             style={{ marginLeft: 16 }}
@@ -311,13 +319,6 @@ class Order extends Component {
                     .utcOffset('+0700')
                     .format('HH:mm DD/MM/YYYY')}`
             )
-            // row.push(
-            //     `${moment(order.updatedAt)
-            //         .utcOffset('+0700')
-            //         .format('HH:mm DD/MM/YYYY')};${moment(order.updatedAt2)
-            //         .utcOffset('+0700')
-            //         .format('HH:mm DD/MM/YYYY')}`
-            // )
             row.push(
                 `${this.getDate(order, 'updatedAt')};${this.getDate(
                     order,
@@ -393,10 +394,16 @@ class Order extends Component {
                     if (search) {
                         let isFound = false
                         for (let i = 0; i < currentRow.length; ++i) {
-                            let colString = currentRow[i].toString()
-                            if (colString.indexOf(searchText) >= 0) {
-                                isFound = true
-                                break
+                            if (columns[i].searchable) {
+                                let colString = currentRow[i].toString()
+                                if (i === 6) {
+                                    // Ngày cập nhật (createdAt)
+                                    colString = colString.split(';')[0]
+                                }
+                                if (colString.indexOf(searchText) >= 0) {
+                                    isFound = true
+                                    break
+                                }
                             }
                         }
                         entire &= isFound
