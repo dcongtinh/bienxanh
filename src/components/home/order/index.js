@@ -305,9 +305,11 @@ class Order extends Component {
                 unitList = '',
                 quantityList = ''
             order.orders.forEach((item) => {
-                itemList += itemName[item.itemName].name + ';'
-                unitList += itemName[item.itemName].unit + ';'
-                quantityList += item.itemQuantity + ';'
+                if (item.itemName) {
+                    itemList += itemName[item.itemName].name + ';'
+                    unitList += itemName[item.itemName].unit + ';'
+                    quantityList += item.itemQuantity + ';'
+                }
             })
             row.push(itemList)
             row.push(unitList)
