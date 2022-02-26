@@ -99,7 +99,7 @@ class AddOrder extends React.Component {
         })
 
         let data = [],
-            pageSize = 10
+            pageSize = 20
         for (let i = 0; i < pageSize; ++i) data.push({})
         this.state = {
             data,
@@ -178,11 +178,15 @@ class AddOrder extends React.Component {
                 },
                 editComponent: (props) => {
                     let data
-                    if (props.value)
+                    if (props.value) {
                         data = {
                             value: props.value,
                             label: itemName[props.value],
                         }
+                    } else {
+                        data = optionsItem[0]
+                        props.onChange(data.value)
+                    }
                     return (
                         <Select
                             name="itemName"
@@ -225,17 +229,22 @@ class AddOrder extends React.Component {
                         </div>
                     )
                 },
-                editComponent: (props) => (
-                    <TextField
-                        style={{ width: 60 }}
-                        onChange={(e) => props.onChange(e.target.value)}
-                        value={props.value}
-                        name="itemQuantity"
-                        InputProps={{
-                            inputComponent: NumberFormatCustom,
-                        }}
-                    />
-                ),
+                editComponent: (props) => {
+                    if (props.value === undefined) {
+                        props.onChange(0.0001)
+                    }
+                    return (
+                        <TextField
+                            style={{ width: 60 }}
+                            onChange={(e) => props.onChange(e.target.value)}
+                            value={props.value}
+                            name="itemQuantity"
+                            InputProps={{
+                                inputComponent: NumberFormatCustom,
+                            }}
+                        />
+                    )
+                },
             },
             {
                 title: 'Hao hụt',
