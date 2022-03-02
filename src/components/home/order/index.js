@@ -45,9 +45,11 @@ class Order extends Component {
 
     getName = (order, attr) => {
         try {
-            return order[attr].firstname === order[attr].lastname
-                ? order[attr].lastname
-                : order[attr].firstname + ' ' + order[attr].lastname
+            if (order[attr])
+                return order[attr].firstname === order[attr].lastname
+                    ? order[attr].lastname
+                    : order[attr].firstname + ' ' + order[attr].lastname
+            return '-'
         } catch (error) {
             return '-'
         }

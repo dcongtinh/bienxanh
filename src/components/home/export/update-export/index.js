@@ -36,6 +36,7 @@ class UpdateExport extends Component {
                 return order[attr].firstname === order[attr].lastname
                     ? order[attr].lastname
                     : order[attr].firstname + ' ' + order[attr].lastname
+            return '-'
         } catch (error) {
             return '-'
         }
@@ -194,7 +195,7 @@ class UpdateExport extends Component {
                                 <div style={{ padding: '2px' }}>
                                     {updatedAt}
                                 </div>
-                                {updatedAt2 !== '-' && (
+                                {updatedAt2 && updatedAt2 !== '-' && (
                                     <div style={{ padding: '2px' }}>
                                         {updatedAt2}
                                     </div>
@@ -215,7 +216,7 @@ class UpdateExport extends Component {
                         return (
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{ padding: '2px' }}>{updater}</div>
-                                {updater2 !== '-' && (
+                                {updater2 && updater2 !== '-' && (
                                     <div style={{ padding: '2px' }}>
                                         {updater2}
                                     </div>
