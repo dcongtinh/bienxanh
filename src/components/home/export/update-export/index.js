@@ -29,6 +29,30 @@ class UpdateExport extends Component {
     handleClose = () => {
         this.setState({ openConfirm: false, openConfirmExport: false })
     }
+
+    getName = (order, attr) => {
+        try {
+            if (order[attr])
+                return order[attr].firstname === order[attr].lastname
+                    ? order[attr].lastname
+                    : order[attr].firstname + ' ' + order[attr].lastname
+        } catch (error) {
+            return '-'
+        }
+    }
+
+    getDate = (order, attr) => {
+        try {
+            if (order[attr])
+                return moment(order[attr])
+                    .utcOffset('+0700')
+                    .format('HH:mm DD/MM/YYYY')
+            return '-'
+        } catch (error) {
+            return '-'
+        }
+    }
+
     render() {
         let { openConfirm, openConfirmExport } = this.state
         let { classes, exported, items, wareHouses, suppliers, users } =
@@ -135,10 +159,79 @@ class UpdateExport extends Component {
                     },
                 },
             },
-            'Ngày giao hàng',
-            'Ngày cập nhật',
-            'Người cập nhật',
-            'Ngày xuất BC',
+            {
+                name: 'Ngày giao hàng',
+                options: {
+                    filter: false,
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let dates = value.split(';')
+                        let deliveryAt = dates[0]
+                        let createdAt = dates[1]
+                        return (
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ padding: '2px' }}>
+                                    {deliveryAt}
+                                </div>
+                                <div style={{ padding: '2px' }}>
+                                    ({createdAt})
+                                </div>
+                            </div>
+                        )
+                    },
+                },
+            },
+            {
+                name: 'Ngày cập nhật',
+                options: {
+                    filter: false,
+                    searchable: false,
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let dates = value.split(';')
+                        let updatedAt = dates[0]
+                        let updatedAt2 = dates[1]
+                        return (
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ padding: '2px' }}>
+                                    {updatedAt}
+                                </div>
+                                {updatedAt2 !== '-' && (
+                                    <div style={{ padding: '2px' }}>
+                                        {updatedAt2}
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    },
+                },
+            },
+            {
+                name: 'Người cập nhật',
+                options: {
+                    filter: false,
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let dates = value.split(';')
+                        let updater = dates[0]
+                        let updater2 = dates[1]
+                        return (
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ padding: '2px' }}>{updater}</div>
+                                {updater2 !== '-' && (
+                                    <div style={{ padding: '2px' }}>
+                                        {updater2}
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    },
+                },
+            },
+            {
+                name: 'Ngày xuất báo cáo',
+                options: {
+                    filter: false,
+                    searchable: false,
+                },
+            },
             {
                 name: 'Thanh toán',
                 options: {
@@ -183,16 +276,24 @@ class UpdateExport extends Component {
             row.push(itemList)
             row.push(unitList)
             row.push(quantityList)
-            row.push(moment(order.date).format('DD/MM/YYYY'))
             row.push(
-                moment(order.updatedAt)
+                `${moment(order.date).format('DD/MM/YYYY')};${moment(
+                    order.createdAt
+                )
                     .utcOffset('+0700')
-                    .format('HH:mm DD/MM/YYYY')
+                    .format('HH:mm DD/MM/YYYY')}`
             )
             row.push(
-                order.updater.firstname === order.updater.lastname
-                    ? order.updater.lastname
-                    : order.updater.firstname + ' ' + order.updater.lastname
+                `${this.getDate(order, 'updatedAt')};${this.getDate(
+                    order,
+                    'updatedAt2'
+                )}`
+            )
+            row.push(
+                `${this.getName(order, 'updater')};${this.getName(
+                    order,
+                    'updater2'
+                )}`
             )
             if (order.reportExportedAt)
                 row.push(
