@@ -84,6 +84,7 @@ class Order extends Component {
                 unit: item.itemUnit.unitName,
             }
         })
+        // console.log(itemName)
         let ordersListId = []
 
         const columns = [
@@ -308,9 +309,14 @@ class Order extends Component {
                 quantityList = ''
             order.orders.forEach((item) => {
                 if (item.itemName) {
-                    itemList += itemName[item.itemName].name + ';'
-                    unitList += itemName[item.itemName].unit + ';'
-                    quantityList += item.itemQuantity + ';'
+                    try {
+                        itemList += itemName[item.itemName].name + ';'
+                        unitList += itemName[item.itemName].unit + ';'
+                        quantityList += item.itemQuantity + ';'
+                    } catch (error) {
+                        console.log(item.itemName)
+                        console.log(order)
+                    }
                 }
             })
             row.push(itemList)
