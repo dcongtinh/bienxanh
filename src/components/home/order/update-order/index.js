@@ -147,7 +147,11 @@ class UpdateOrder extends React.Component {
         let optionsItem = [],
             itemName = {}
         items.forEach((item) => {
-            itemName[item._id] = item.itemName
+            // itemName[item._id] = item.itemName
+            itemName[item._id] = {
+                name: item.itemName,
+                unit: item.itemUnit.unitName,
+            }
             optionsItem.push({
                 value: item._id,
                 label: item.itemName,
@@ -180,14 +184,32 @@ class UpdateOrder extends React.Component {
                     marginBottom: 4,
                 },
                 render: (rowData) => {
-                    return <div>{itemName[rowData.itemName]}</div>
+                    // return <div>{itemName[rowData.itemName].name}</div>
+                    return (
+                        <div>
+                            <a
+                                href={
+                                    process.env.REACT_APP_URL +
+                                    '/dashboard/items/view/' +
+                                    rowData.itemName
+                                }
+                                target="_blank"
+                                style={{
+                                    color: 'black',
+                                    'text-decoration': 'none',
+                                }}
+                            >
+                                {itemName[rowData.itemName].name}
+                            </a>
+                        </div>
+                    )
                 },
                 editComponent: (props) => {
                     let value
                     if (props.value)
                         value = {
                             value: props.value,
-                            label: itemName[props.value],
+                            label: itemName[props.value].name,
                         }
                     return (
                         <Select
@@ -218,6 +240,13 @@ class UpdateOrder extends React.Component {
                 },
             },
             {
+                title: 'Đơn vị tính',
+                field: 'itemUnit',
+                render: (rowData) => {
+                    return <div>{itemName[rowData.itemName].unit}</div>
+                },
+            },
+            {
                 title: 'Số lượng',
                 field: 'itemQuantity',
                 render: (rowData) => {
@@ -226,7 +255,7 @@ class UpdateOrder extends React.Component {
                             {rowData.itemQuantity
                                 ? numeral(rowData.itemQuantity).format(
                                       '(0,0.[0000])'
-                                  ) + ' KG'
+                                  )
                                 : '-'}
                         </div>
                     )

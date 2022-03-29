@@ -130,14 +130,31 @@ class Order extends Component {
                 options: {
                     filter: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
-                        let itemList = value.split(';')
+                        let _item = value.split('@')
+                        let itemList = _item[0].split(';')
+                        let itemLinkList = _item[1].split(';')
                         return (
                             <div>
-                                {itemList.map((item) => {
+                                {itemList.map((item, index) => {
                                     if (item)
                                         return (
                                             <div className={classes.items}>
-                                                {item}
+                                                <a
+                                                    href={
+                                                        process.env
+                                                            .REACT_APP_URL +
+                                                        '/dashboard/items/view/' +
+                                                        itemLinkList[index]
+                                                    }
+                                                    target="_blank"
+                                                    style={{
+                                                        color: 'black',
+                                                        'text-decoration':
+                                                            'none',
+                                                    }}
+                                                >
+                                                    {item}
+                                                </a>
                                             </div>
                                         )
                                     return null
@@ -305,12 +322,14 @@ class Order extends Component {
             //     `${order.warehouse.warehouseName} (${order.warehouse.warehouse})`
             // )
             let itemList = '',
+                itemLinkList = '',
                 unitList = '',
                 quantityList = ''
             order.orders.forEach((item) => {
                 if (item.itemName) {
                     try {
                         itemList += itemName[item.itemName].name + ';'
+                        itemLinkList += item.itemName + ';'
                         unitList += itemName[item.itemName].unit + ';'
                         quantityList += item.itemQuantity + ';'
                     } catch (error) {
@@ -319,7 +338,7 @@ class Order extends Component {
                     }
                 }
             })
-            row.push(itemList)
+            row.push(itemList + '@' + itemLinkList)
             row.push(unitList)
             row.push(quantityList)
             row.push(
